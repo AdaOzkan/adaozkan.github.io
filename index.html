@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Mahalle Haritası</title>
+<title>Lüleburgaz CBS</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
 
 <style>
 body { margin:0; }
@@ -42,13 +41,14 @@ color:black;
 text-shadow:1px 1px 3px white;
 }
 
+/* ÇİZİM ARAÇLARINI AŞAĞI KAYDIR */
 .leaflet-top.leaflet-left{
-top:110px;
+top:120px;
 }
 </style>
 </head>
-<body>
 
+<body>
 <div id="map"></div>
 
 <div class="panel">
@@ -56,84 +56,103 @@ top:110px;
 <button onclick="gosterYas()">Yaş</button>
 <button onclick="gosterMedeni()">Medeni</button>
 <button onclick="gosterEgitim()">Eğitim</button>
-<button onclick="resetMap()">Temizle</button>
+<button onclick="reset()">Temizle</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 
 <script>
 
-var aktifKatman = "nufus";
+var map = L.map('map').setView([41.402, 27.36], 13);
 
-var map = L.map('map').setView([41.398, 27.35], 13);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap'
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution:'© OpenStreetMap'
 }).addTo(map);
 
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-
 var drawControl = new L.Control.Draw({
-    edit: { featureGroup: drawnItems }
+draw:{
+polygon:true,
+polyline:true,
+rectangle:true,
+circle:false,
+marker:false
+}
 });
 map.addControl(drawControl);
 
-map.on(L.Draw.Event.CREATED, function (e) {
-    drawnItems.addLayer(e.layer);
-});
+map.on('draw:created', function (e) {
+var layer = e.layer;
+map.addLayer(layer);
 
-// Mahalle verileri
-var mahalleler = [
-{name:"Sevgi",lat:41.391902631712775, lon:27.345482596083997, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
-{name:"8 Kasım",lat:41.39016369400948, lon:27.35491889453962, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-{name:"Hürriyet",lat:41.40317234004511, lon:27.342456427165533, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Yılmaz",lat:41.41200749237624, lon:27.350804559672905, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Dere",lat:41.40909876762109, lon:27.332197473456567, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Gençlik",lat:41.3981623139793, lon:27.34915056866236, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Kurtuluş",lat:41.39892904839235, lon:27.35650302210077, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Siteler",lat:41.39668481042163, lon:27.357024645687474, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Yıldız",lat:41.398276436690466, lon:27.365913598817414, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"İnönü",lat:41.401995612178276, lon:27.36003874485168, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-
-{name:"Kocasinan",lat:41.40688241099159, lon:27.345369174010454, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Gündoğu",lat:41.40827232000609, lon:27.363003091831168, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-{name:"Atatürk",lat:41.40333318502777, lon:27.36971906416532, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-{name:"Güneş",lat:41.40588323642748, lon:27.369804843022905, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-{name:"Cumhuriyet",lat:41.41394508744789, lon:27.359282432239283, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Barış",lat:41.41162289907757, lon:27.359820182990884, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
-];
-
-var katmanlar = [];
-
-// popup içeriği üret
-function popupIcerik(veri){
-    if(aktifKatman==="nufus") return `<b>${veri.name}</b><br>Nüfus: ${veri.nufus}`;
-    if(aktifKatman==="yas") return `<b>${veri.name}</b><br>Yaş grubu: ${veri.yas}`;
-    if(aktifKatman==="medeni") return `<b>${veri.name}</b><br>Medeni: ${veri.medeni}`;
-    if(aktifKatman==="egitim") return `<b>${veri.name}</b><br>Eğitim: ${veri.egitim}`;
-    return veri.name;
+if(e.layerType === "polygon" || e.layerType === "rectangle"){
+var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+alert("Alan: " + (area/1000000).toFixed(2) + " km²");
 }
 
-mahalleler.forEach(function(m){
-    var circle = L.circleMarker([m.lat,m.lon],{
-        radius:16,
-        color:"#222",
-        fillColor:"#cccccc",
-        fillOpacity:0.9
-    }).addTo(map);
-
-    circle.veri = m;
-
-    circle.on("click", function(){
-        circle.bindPopup(popupIcerik(m)).openPopup();
-    });
-
-    katmanlar.push(circle);
+if(e.layerType === "polyline"){
+var latlngs = layer.getLatLngs();
+var total = 0;
+for(var i=0;i<latlngs.length-1;i++){
+total += latlngs[i].distanceTo(latlngs[i+1]);
+}
+alert("Uzunluk: " + (total/1000).toFixed(2) + " km");
+}
 });
 
-// Nüfus choropleth
+/* MAHALLE MERKEZ KOORDİNATLARI */
+var mahalleler = [
+
+{name:"8 Kasım",lat:41.4015,lon:27.3587,nufus:10908,yas:"40-44",medeni:"Evli",egitim:"Lise"},
+{name:"Atatürk",lat:41.4159,lon:27.3641,nufus:9705,yas:"40-44",medeni:"Evli",egitim:"Lise"},
+{name:"Barış",lat:41.4138,lon:27.3695,nufus:4140,yas:"65+",medeni:"Evli",egitim:"İlkokul"},
+{name:"Cumhuriyet",lat:41.4146,lon:27.3623,nufus:3644,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Dere",lat:41.4108,lon:27.3668,nufus:1861,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Durak",lat:41.4028,lon:27.3559,nufus:2982,yas:"65+",medeni:"Evli",egitim:"İlkokul"},
+{name:"Gençlik",lat:41.4039,lon:27.3604,nufus:6476,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Gündoğu",lat:41.4168,lon:27.3672,nufus:6752,yas:"65+",medeni:"Evli",egitim:"İlkokul"},
+{name:"Güneş",lat:41.4081,lon:27.3719,nufus:5927,yas:"65+",medeni:"Evli",egitim:"İlkokul"},
+{name:"Hürriyet",lat:41.4012,lon:27.3588,nufus:7331,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"İnönü",lat:41.4182,lon:27.3617,nufus:6026,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"İstiklal",lat:41.4003,lon:27.3502,nufus:6066,yas:"40-44",medeni:"Evli",egitim:"Lise"},
+{name:"Kocasinan",lat:41.4058,lon:27.3517,nufus:6245,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Kurtuluş",lat:41.3979,lon:27.3572,nufus:8056,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Özerler",lat:41.4079,lon:27.3538,nufus:2347,yas:"65+",medeni:"Evli",egitim:"İlkokul"},
+{name:"Sarımsaklı",lat:41.4044,lon:27.3562,nufus:17,yas:"0-4",medeni:"Evli",egitim:"Bilinmiyor"},
+{name:"Sevgi",lat:41.4049,lon:27.3599,nufus:2101,yas:"65+",medeni:"Evli",egitim:"Lisans"},
+{name:"Siteler",lat:41.3962,lon:27.3595,nufus:7679,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Yeni",lat:41.3962,lon:27.3595,nufus:5068,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Yıldırım",lat:41.4175,lon:27.3653,nufus:5519,yas:"20-24",medeni:"Evli",egitim:"Lise"},
+{name:"Yıldız",lat:41.3999,lon:27.3650,nufus:8011,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Yılmaz",lat:41.4194,lon:27.3638,nufus:3256,yas:"65+",medeni:"Evli",egitim:"Lise"},
+{name:"Zafer",lat:41.3890,lon:27.3657,nufus:7572,yas:"35-39",medeni:"Evli",egitim:"Lisans"}
+
+];
+
+var katmanlar=[];
+
+mahalleler.forEach(function(m){
+
+var circle = L.circleMarker([m.lat,m.lon],{
+radius:18,
+color:"#222",
+fillColor:"#cccccc",
+fillOpacity:0.85
+}).addTo(map);
+
+var label = L.marker([m.lat,m.lon],{
+icon:L.divIcon({
+className:'labelDiv',
+html:m.name+"<br><span id='val_"+m.name+"'>"+m.nufus+"</span>"
+})
+}).addTo(map);
+
+circle.veri = m;
+circle.labelID = "val_"+m.name;
+katmanlar.push(circle);
+
+});
+
 function renkNufus(n){
 if(n>9000) return "#800026";
 if(n>7000) return "#BD0026";
@@ -143,56 +162,40 @@ return "#FD8D3C";
 }
 
 function gosterNufus(){
-aktifKatman="nufus";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkNufus(k.veri.nufus)}));
-}
-
-// YAŞ choropleth
-function renkYas(y){
-if(y==="0-14") return "#ffffcc";
-if(y==="15-24") return "#a1dab4";
-if(y==="25-44") return "#41b6c4";
-if(y==="45-64") return "#2c7fb8";
-if(y==="65+") return "#253494";
-return "#969696";
-}
-
-function gosterYas(){
-aktifKatman="yas";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkYas(k.veri.yas)}));
-}
-
-// MEDENİ korokromatik
-function gosterMedeni(){
-aktifKatman="medeni";
 katmanlar.forEach(function(k){
-let renk = k.veri.medeni==="Evli" ? "#6a0dad" : "#ff1493";
-k.setStyle({fillColor:renk});
+k.setStyle({fillColor:renkNufus(k.veri.nufus)});
+document.getElementById(k.labelID).innerHTML=k.veri.nufus;
 });
 }
 
-// EĞİTİM farklı renkler
-function renkEgitim(e){
-if(e==="İlkokul") return "#FFD700";
-if(e==="Ortaokul") return "#FF0000";
-if(e==="Lise") return "#008000";
-if(e==="Lisans") return "#0000FF";
-if(e==="Yüksek Lisans") return "#800080";
-if(e==="Doktora") return "#FF8C00";
-return "#999999";
+function gosterYas(){
+katmanlar.forEach(function(k){
+k.setStyle({fillColor:"#2b8cbe"});
+document.getElementById(k.labelID).innerHTML=k.veri.yas;
+});
+}
+
+function gosterMedeni(){
+katmanlar.forEach(function(k){
+k.setStyle({fillColor:"#6a0dad"});
+document.getElementById(k.labelID).innerHTML=k.veri.medeni;
+});
 }
 
 function gosterEgitim(){
-aktifKatman="egitim";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkEgitim(k.veri.egitim)}));
+katmanlar.forEach(function(k){
+k.setStyle({fillColor:"#084081"});
+document.getElementById(k.labelID).innerHTML=k.veri.egitim;
+});
 }
 
-function resetMap(){
-katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"}));
-drawnItems.clearLayers();
+function reset(){
+katmanlar.forEach(function(k){
+k.setStyle({fillColor:"#cccccc"});
+document.getElementById(k.labelID).innerHTML=k.veri.nufus;
+});
 }
 
 </script>
-
 </body>
 </html>
