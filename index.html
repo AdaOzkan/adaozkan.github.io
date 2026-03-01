@@ -53,37 +53,22 @@
 
         .logo { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
 
-        /* HERO SECTION - MESAFE AYARLANDI */
-        .hero { 
-            padding: 150px 20px; 
-            text-align: center; 
-        }
-        
-        .title-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .hero { padding: 120px 20px; text-align: center; }
+        .hero .name-ada { font-family: 'Northwell', cursive; font-size: clamp(80px, 12vw, 130px); color: #27f4d2; line-height: 0.5; }
 
-        .hero .name-ada { 
-            font-family: 'Northwell', cursive; 
-            font-size: clamp(90px, 14vw, 150px); 
-            color: #27f4d2; 
-            line-height: 0.3; /* Mesafeyi yukarıdan daraltır */
-            z-index: 2;
-        }
-
+        /* ÖZKAN İÇİN ÖZEL STİL */
         .hero .name-ozkan { 
             font-family: 'F1Black', sans-serif; 
             font-size: clamp(40px, 8vw, 80px); 
             letter-spacing: 12px; 
             display: block; 
-            margin-top: -10px; /* Ada'ya doğru yukarı çeker */
+            margin-top: 25px; 
             color: #ffffff; 
             text-transform: uppercase;
+            position: relative;
         }
 
-        /* Ö HARFİ İÇİN NOKTA TASARIMI */
+        /* O harfinin üzerine noktaları ekleyen büyü */
         .umlaut {
             position: relative;
             display: inline-block;
@@ -91,18 +76,16 @@
         .umlaut::before {
             content: "..";
             position: absolute;
-            top: -25px; /* Noktaların yüksekliği */
+            top: -20%; /* Noktaların yüksekliği */
             left: 50%;
             transform: translateX(-50%);
-            font-size: 35px;
+            font-size: 0.6em;
             letter-spacing: -2px;
-            font-family: Arial, sans-serif;
-            color: #ffffff;
+            font-family: Arial, sans-serif; /* Noktalar standart font olsun ki her yerde görünsün */
         }
 
-        .hero p { letter-spacing: 5px; color: #27f4d2; margin-top: 50px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        .hero p { letter-spacing: 5px; color: #27f4d2; margin-top: 45px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
 
-        /* BÖLÜM TASARIMLARI */
         .section { max-width: 850px; margin: 0 auto 40px auto; padding: 50px 40px; background: rgba(15, 15, 15, 0.9); border-radius: 20px; border: 1px solid #222; }
         h2 { font-family: 'F1Black', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 30px; font-size: 24px; }
 
@@ -119,13 +102,10 @@
         .feedback-btn { background: #27f4d2; color: #0a0a0a; border: none; padding: 18px; border-radius: 10px; font-family: 'F1Black', sans-serif; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .feedback-btn:hover { background: #ff8000; color: white; transform: scale(1.02); }
 
+        .spotify-container { display: grid; gap: 20px; margin-top: 20px; }
         footer { text-align: center; padding: 60px; font-family: 'F1Black', sans-serif; font-size: 11px; opacity: 0.5; }
 
-        /* MOBİL UYUMLULUK */
-        @media (max-width: 600px) { 
-            .hero .name-ada { font-size: 80px; } 
-            .umlaut::before { top: -15px; font-size: 25px; }
-        }
+        @media (max-width: 600px) { .section { padding: 30px 20px; width: 90%; } }
     </style>
 </head>
 <body>
@@ -159,6 +139,11 @@
         <a href="https://github.com/adaOzkan" target="_blank"><i class="fab fa-github"></i> GitHub</a>
         <a href="https://linkedin.com/in/ada-özkan-a7b984287/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         <a href="https://open.spotify.com/user/bfdgv11xqokua4z13cd1sbxt0" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+    </div>
+
+    <h2 style="margin-top:40px;">Spotify</h2>
+    <div class="spotify-container">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </section>
 
