@@ -21,15 +21,39 @@
             font-display: swap;
         }
 
+        @font-face {
+            font-family: 'F1Regular';
+            src: url('Formula1-Regular-1.ttf') format('truetype');
+            font-display: swap;
+        }
+
+        /* GENEL AYARLAR */
         body {
             margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            /* Black ve Northwell dışındaki tüm yazılar F1Regular olacak */
+            font-family: 'F1Regular', sans-serif; 
             background: #0a0a0a;
             color: white;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* HAREKETLİ ARKA PLAN (PARTICLES) KONUMU */
+        /* ARKA PLAN DESENİ (YÜKLEDİĞİN GÖRSEL) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('image_cc4e40.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            opacity: 0.15; /* Görselin okunabilirliği bozmaması için şeffaflık */
+            z-index: -2;
+        }
+
         #particles-js {
             position: fixed;
             width: 100%;
@@ -70,9 +94,9 @@
 
         nav a:hover { color: #27f4d2; }
 
-        /* HERO SECTION - GÜNCELLENMİŞ STİLLER */
+        /* HERO SECTION */
         .hero {
-            padding: 150px 20px; /* Biraz daha fazla dikey boşluk */
+            padding: 150px 20px;
             text-align: center;
         }
         
@@ -82,28 +106,28 @@
             align-items: center;
         }
 
-        /* ADA YAZISI (ÜST KATMAN) */
+        /* ADA YAZISI (ÜSTTE) */
         .hero .name-ada {
             font-family: 'Northwell', cursive;
-            font-size: clamp(90px, 14vw, 150px); /* Biraz daha büyük */
+            font-size: clamp(90px, 14vw, 150px);
             color: #27f4d2;
-            line-height: 0.2; /* Alttan iyice daralttık */
+            line-height: 0.2; /* Mesafeyi daraltan satır */
             display: block;
-            position: relative; /* z-index için gerekli */
-            z-index: 2; /* KATMAN: Diğerinin üstünde dursun */
+            position: relative;
+            z-index: 2; /* Özkan'ın üstünde durmasını sağlar */
         }
 
-        /* ÖZKAN YAZISI (ALT KATMAN) */
+        /* ÖZKAN YAZISI (ALTTA) */
         .hero .name-ozkan {
             font-family: 'F1Black', sans-serif;
             font-size: clamp(40px, 8vw, 80px);
             letter-spacing: 12px;
             display: block;
-            margin-top: -25px; /* Ada'nın içine doğru yukarı çektik */
+            margin-top: -20px; /* Ada'ya yaklaştıran satır */
             color: #ffffff;
             text-transform: uppercase;
-            position: relative; /* z-index için gerekli */
-            z-index: 1; /* KATMAN: Diğerinin altında dursun */
+            position: relative;
+            z-index: 1;
         }
 
         .hero p {
@@ -115,7 +139,7 @@
             text-transform: uppercase;
         }
 
-        /* BÖLÜMLER (BEYAZ ŞEFFAF KUTULAR) */
+        /* BÖLÜMLER */
         .section {
             max-width: 850px;
             margin: 0 auto 40px auto;
@@ -133,7 +157,7 @@
             font-size: 24px;
         }
 
-        /* İLETİŞİM KUTUSU */
+        /* İLETİŞİM VE LİNKLER */
         .contactBox {
             border-left: 5px solid #ff8000;
             padding: 20px;
@@ -153,9 +177,7 @@
         }
 
         .contact-link i { margin-right: 15px; color: #ff8000; width: 20px; text-align: center; }
-        .contact-link:hover { transform: translateX(10px); color: #27f4d2; }
 
-        /* LİNKLER */
         .links {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -186,7 +208,7 @@
             color: #000;
         }
 
-        /* FEEDBACK FORMU */
+        /* FORM */
         .feedback-form {
             display: flex;
             flex-direction: column;
@@ -200,12 +222,6 @@
             padding: 15px;
             border-radius: 10px;
             font-family: inherit;
-            transition: 0.3s;
-        }
-
-        .feedback-form input:focus, .feedback-form textarea:focus {
-            outline: none;
-            border-color: #27f4d2;
         }
 
         .feedback-btn {
@@ -218,12 +234,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-        }
-
-        .feedback-btn:hover {
-            background: #ff8000;
-            color: white;
-            transform: scale(1.02);
         }
 
         /* SPOTIFY */
@@ -245,8 +255,7 @@
         /* MOBİL AYARLAR */
         @media (max-width: 600px) {
             .section { padding: 30px 20px; width: 90%; }
-            header { padding: 15px 20px; }
-            .hero .name-ada { font-size: 80px; line-height: 0.1; } /* Mobilde mesafe iyice daralsın */
+            .hero .name-ada { font-size: 80px; line-height: 0.1; }
         }
     </style>
 </head>
@@ -272,7 +281,7 @@
 
 <section class="section" id="about">
     <h2>About</h2>
-    <p>I am Ada Özkan. I build electronics and engineering projects. My main interests include embedded systems, aerospace and motorsport engineering.</p>
+    <p>I am Ada Özkan.</p>
 </section>
 
 <section class="section" id="contact">
@@ -304,11 +313,9 @@
 
 <section class="section">
     <h2>Feedback</h2>
-    <p style="margin-bottom: 20px; color: #888;">Mesajlarınız doğrudan e-posta adresime iletilecektir.</p>
-    
     <form action="https://formspree.io/f/xgolbzyv" method="POST" class="feedback-form">
         <input type="email" name="email" placeholder="E-posta Adresiniz" required>
-        <textarea name="message" rows="5" placeholder="Mesajınız veya proje öneriniz..." required></textarea>
+        <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
         <button type="submit" class="feedback-btn">GÖNDER</button>
     </form>
 </section>
@@ -333,11 +340,7 @@
             },
             "move": { "speed": 1.5 }
         },
-        "interactivity": {
-            "events": { "onhover": { "enable": true, "mode": "grab" } },
-            "modes": { "grab": { "distance": 140 } }
-        },
-        "retina_detect": true
+        "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 </script>
 
