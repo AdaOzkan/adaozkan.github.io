@@ -23,7 +23,7 @@
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: #0a0a0a;
             color: white;
             overflow-x: hidden;
@@ -70,34 +70,46 @@
 
         nav a:hover { color: #27f4d2; }
 
-        /* HERO SECTION */
+        /* HERO SECTION - GÜNCELLENMİŞ STİLLER */
         .hero {
-            padding: 120px 20px;
+            padding: 150px 20px; /* Biraz daha fazla dikey boşluk */
             text-align: center;
         }
-
-        .hero .name-ada {
-            font-family: 'Northwell', cursive;
-            font-size: clamp(80px, 12vw, 130px);
-            color: #27f4d2;
-            line-height: 0.5;
-            display: block;
+        
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
+        /* ADA YAZISI (ÜST KATMAN) */
+        .hero .name-ada {
+            font-family: 'Northwell', cursive;
+            font-size: clamp(90px, 14vw, 150px); /* Biraz daha büyük */
+            color: #27f4d2;
+            line-height: 0.2; /* Alttan iyice daralttık */
+            display: block;
+            position: relative; /* z-index için gerekli */
+            z-index: 2; /* KATMAN: Diğerinin üstünde dursun */
+        }
+
+        /* ÖZKAN YAZISI (ALT KATMAN) */
         .hero .name-ozkan {
             font-family: 'F1Black', sans-serif;
             font-size: clamp(40px, 8vw, 80px);
             letter-spacing: 12px;
             display: block;
-            margin-top: -25px;
+            margin-top: -20px; /* Ada'nın içine doğru yukarı çektik */
             color: #ffffff;
             text-transform: uppercase;
+            position: relative; /* z-index için gerekli */
+            z-index: 1; /* KATMAN: Diğerinin altında dursun */
         }
 
         .hero p {
             letter-spacing: 5px;
             color: #27f4d2;
-            margin-top: 45px;
+            margin-top: 50px;
             font-weight: bold;
             font-size: 14px;
             text-transform: uppercase;
@@ -234,7 +246,7 @@
         @media (max-width: 600px) {
             .section { padding: 30px 20px; width: 90%; }
             header { padding: 15px 20px; }
-            .hero .name-ada { font-size: 70px; }
+            .hero .name-ada { font-size: 80px; line-height: 0.1; } /* Mobilde mesafe iyice daralsın */
         }
     </style>
 </head>
