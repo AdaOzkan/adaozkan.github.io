@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ada Özkan</title>
     
+    <link rel="icon" type="image/x-icon" href="adalogo.ico">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* FONT TANIMLARI */
+        /* FONT TANIMLARI [cite: 1, 22] */
         @font-face {
             font-family: 'Northwell';
             src: url('Northwell.otf') format('opentype');
@@ -27,10 +29,8 @@
             font-display: swap;
         }
 
-        /* GENEL AYARLAR */
         body {
             margin: 0;
-            /* Black ve Northwell dışındaki tüm yazılar F1Regular olacak */
             font-family: 'F1Regular', sans-serif; 
             background: #0a0a0a;
             color: white;
@@ -38,7 +38,7 @@
             position: relative;
         }
 
-        /* ARKA PLAN DESENİ (YÜKLEDİĞİN GÖRSEL) */
+        /* ARKA PLAN DESENİ [cite: 27] */
         body::before {
             content: "";
             position: fixed;
@@ -50,7 +50,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
-            opacity: 0.15; /* Görselin okunabilirliği bozmaması için şeffaflık */
+            opacity: 0.15;
             z-index: -2;
         }
 
@@ -63,7 +63,7 @@
             left: 0;
         }
 
-        /* HEADER */
+        /* HEADER & LOGO ALANI */
         header {
             background: rgba(20, 41, 72, 0.85);
             backdrop-filter: blur(10px);
@@ -77,7 +77,18 @@
             z-index: 1000;
         }
 
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo-img {
+            height: 35px;
+            width: auto;
+        }
+
+        .logo-text {
             font-family: 'F1Black', sans-serif;
             color: #27f4d2;
             font-size: 20px;
@@ -106,24 +117,22 @@
             align-items: center;
         }
 
-        /* ADA YAZISI (ÜSTTE) */
         .hero .name-ada {
             font-family: 'Northwell', cursive;
             font-size: clamp(90px, 14vw, 150px);
             color: #27f4d2;
-            line-height: 0.2; /* Mesafeyi daraltan satır */
+            line-height: 0.2;
             display: block;
             position: relative;
-            z-index: 2; /* Özkan'ın üstünde durmasını sağlar */
+            z-index: 2;
         }
 
-        /* ÖZKAN YAZISI (ALTTA) */
         .hero .name-ozkan {
             font-family: 'F1Black', sans-serif;
             font-size: clamp(40px, 8vw, 80px);
             letter-spacing: 12px;
             display: block;
-            margin-top: -20px; /* Ada'ya yaklaştıran satır */
+            margin-top: -20px;
             color: #ffffff;
             text-transform: uppercase;
             position: relative;
@@ -157,7 +166,6 @@
             font-size: 24px;
         }
 
-        /* İLETİŞİM VE LİNKLER */
         .contactBox {
             border-left: 5px solid #ff8000;
             padding: 20px;
@@ -208,7 +216,6 @@
             color: #000;
         }
 
-        /* FORM */
         .feedback-form {
             display: flex;
             flex-direction: column;
@@ -236,7 +243,6 @@
             transition: 0.3s;
         }
 
-        /* SPOTIFY */
         .spotify-container {
             display: grid;
             gap: 20px;
@@ -252,7 +258,6 @@
             letter-spacing: 2px;
         }
 
-        /* MOBİL AYARLAR */
         @media (max-width: 600px) {
             .section { padding: 30px 20px; width: 90%; }
             .hero .name-ada { font-size: 80px; line-height: 0.1; }
@@ -264,7 +269,10 @@
 <div id="particles-js"></div>
 
 <header>
-    <div class="logo">ADA OZKAN</div>
+    <div class="logo-container">
+        <img src="adalogo.ico" alt="Ada Özkan Logo" class="header-logo-img">
+        <span class="logo-text">ADA OZKAN</span>
+    </div>
     <nav>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
@@ -281,7 +289,7 @@
 
 <section class="section" id="about">
     <h2>About</h2>
-    <p>I am Ada Özkan.</p>
+    <p>I am Ada Özkan. I build electronics and engineering projects. My main interests include embedded systems, aerospace and motorsport engineering.</p>
 </section>
 
 <section class="section" id="contact">
