@@ -32,12 +32,10 @@
         /* GENEL AYARLAR */
         body {
             margin: 0;
-            /* Black ve Northwell dışındaki tüm yazılar F1Regular */
             font-family: 'F1Regular', sans-serif; 
             background: #0a0a0a;
             color: white;
-            overflow-x: hiddennav
-            ;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -99,12 +97,26 @@
             letter-spacing: 2px;
         }
 
+        /* NAVIGASYON VE IKONLAR */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
         nav a {
             color: white;
             margin-left: 25px;
             text-decoration: none;
             font-weight: 500;
             transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; /* İkon ve yazı arası boşluk */
+            font-size: 14px;
+        }
+
+        nav a i {
+            font-size: 16px;
         }
 
         nav a:hover { color: #27f4d2; }
@@ -265,6 +277,7 @@
         @media (max-width: 600px) {
             .section { padding: 30px 20px; width: 90%; }
             .hero .name-ada { font-size: 80px; line-height: 0.1; }
+            nav a { margin-left: 15px; font-size: 12px; }
         }
     </style>
 </head>
@@ -278,10 +291,10 @@
         <span class="logo-text">ADA OZKAN</span>
     </a>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="projeler.html">Projects</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="projeler.html"><i class="fa-solid fa-layer-group"></i> Projects</a>
+        <a href="#about"><i class="fa-solid fa-user"></i> About</a>
+        <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
     </nav>
 </header>
 
