@@ -17,7 +17,6 @@
         /* GENEL AYARLAR */
         body { margin: 0; font-family: 'F1Regular', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; position: relative; }
         
-        /* ARKA PLAN DESENİ - Orijinal Ayarlar */
         body::before { 
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-image: url('image_cc4e40.png'); background-repeat: no-repeat; 
@@ -51,8 +50,9 @@
         .contactBox { border-left: 5px solid #ff8000; padding: 20px; background: rgba(30, 30, 30, 0.5); margin-bottom: 30px; border-radius: 0 10px 10px 0; }
         .contact-link { color: white; text-decoration: none; display: flex; align-items: center; margin-bottom: 15px; font-size: 18px; }
         .contact-link i { margin-right: 15px; color: #ff8000; width: 20px; text-align: center; }
-        .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; }
         .links a:hover { border-color: #27f4d2; background: #27f4d2; color: #000; transform: translateY(-3px); }
 
         /* SPOTIFY & FORM */
@@ -120,14 +120,15 @@
     <div class="links">
         <a href="https://github.com/adaOzkan" target="_blank"><i class="fab fa-github"></i> GitHub</a>
         <a href="https://linkedin.com/in/ada-özkan-a7b984287/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://leetcode.com/u/Ada_Ozkan/" target="_blank"><i class="fas fa-code"></i> LeetCode</a>
         <a href="https://replit.com/@AdaOzkan1" target="_blank"><i class="fas fa-terminal"></i> Replit</a>
-        <a href="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator3" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+        <a href="googleusercontent.com/spotify.com/15" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
     </div>
 
     <h2 style="margin-top:40px;">Spotify</h2>
     <div class="spotify-container">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator4" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator5" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator7" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator8" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </section>
 
@@ -144,15 +145,12 @@
     <div style="margin-bottom: 25px;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" alt="F1 Logo" width="80" style="filter: drop-shadow(0 0 5px #e8002d);">
     </div>
-
     <div class="f1-status-label">CURRENT RACE</div>
-    
     <div class="race-header">
         <img id="curr-flag" src="" class="circle-flag" style="display:none;">
         <span id="curr-location" class="location-name">LOADING...</span>
         <span class="f1-arrow">></span>
     </div>
-
     <div class="countdown-row">
         <div class="race-label">Race</div>
         <div class="vertical-divider"></div>
@@ -162,7 +160,6 @@
             <span id="s-val" class="t-num">00</span><span class="t-unit">S</span>
         </div>
     </div>
-
     <div class="next-race-preview">
         <div class="next-race-label">NEXT RACE</div>
         <div id="next-race-details" class="next-race-info">---</div>
@@ -173,7 +170,6 @@
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-    // ARKA PLAN PARÇACIK AYARLARI - Orijinal Koddan Geri Getirildi
     particlesJS("particles-js", {
         "particles": {
             "number": { "value": 150, "density": { "enable": true, "value_area": 1000 } },
@@ -193,7 +189,6 @@
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 
-    // F1 Sayaç Mantığı (2026 Takvimi)
     const schedule = [
         { name: "Australia", date: "2026-03-08T07:00:00", country: "au" },
         { name: "China", date: "2026-03-22T10:00:00", country: "cn" },
@@ -207,7 +202,6 @@
         
         if (idx === -1) {
             document.getElementById('curr-location').innerText = "Season Ended";
-            document.getElementById('curr-flag').style.display = 'none';
             return;
         }
 
@@ -226,8 +220,6 @@
         if (next) {
             const d = new Date(next.date);
             document.getElementById('next-race-details').innerText = `${next.name} — ${d.getDate()} ${d.toLocaleString('en-GB', { month: 'long' })}`;
-        } else {
-            document.getElementById('next-race-details').innerText = "Last race of the season";
         }
     }
     setInterval(updateF1, 1000);
