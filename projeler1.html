@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeler | Ada Özkan</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+
+    <style>
+        /* ANA SİTENİN FONTU VE STİLİ */
+        @font-face {
+            font-family: 'F1Black';
+            src: url('Formula1-Black.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'F1Regular';
+            src: url('Formula1-Regular-1.ttf') format('truetype');
+        }
+
+        body { margin:0; font-family: 'F1Regular', sans-serif; background: #0a0a0a; color: white; }
+        
+        /* HEADER - ANA SAYFA İLE AYNI */
+        header {
+            background: rgba(20, 41, 72, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #3671c6;
+            position: relative;
+            z-index: 1001;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .header-logo-img { height: 30px; width: auto; }
+        .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 18px; letter-spacing: 2px; }
+        nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        nav a:hover { color: #27f4d2; }
+
+        /* HARİTA ALANI */
+        #map { height: calc(100vh - 68px); width: 100%; }
+
+        .panel{
+            position:absolute;
+            top:80px; /* Header'ın altında kalması için */
+            left:10px;
+            background: rgba(15, 15, 15, 0.9);
+            padding: 15px;
+            z-index: 1000;
+            border-radius: 10px;
+            border: 1px solid #3671c6;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        button{
+            margin: 3px;
+            padding: 8px 12px;
+            border: 1px solid #27f4d2;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+            color: #27f4d2;
+            font-family: 'F1Regular', sans-serif;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #27f4d2;
+            color: #000;
+        }
+
+        .leaflet-container { background: #0a0a0a; }
+        .leaflet-top.leaflet-left { top: 180px; } /* Butonların altına çekildi */
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo-container">
+        <img src="adalogo.ico" alt="Logo" class="header-logo-img">
+        <span class="logo-text">ADA OZKAN</span>
+    </a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="projeler.html" style="color: #27f4d2;">Projects</a>
+    </nav>
+</header>
+
+<div id="map"></div>
+
+<div class="panel">
+    <div style="color: #27f4d2; font-family: 'F1Black'; font-size: 14px; margin-bottom: 10px; text-align: center;">MAP CONTROLS</div>
+    <button onclick="gosterNufus()">Nüfus</button>
+    <button onclick="gosterYas()">Yaş</button>
+    <button onclick="gosterMedeni()">Medeni</button>
+    <button onclick="gosterEgitim()">Eğitim</button>
+    <button onclick="resetMap()" style="border-color: #e8002d; color: #e8002d;">Temizle</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+<script>
+// BURAYA SENİN ORİJİNAL JAVASCRIPT KODLARIN GELECEK
+// (var aktifKatman = "nufus" ile başlayan ve sona kadar giden kısım)
+var aktifKatman = "nufus";
+var map = L.map('map').setView([41.398, 27.35], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// ... (Kalan tüm JS kodlarını buraya yapıştırabilirsin)
+</script>
+
+</body>
+</html>
