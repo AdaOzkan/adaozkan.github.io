@@ -11,17 +11,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
 
     <style>
-        /* SİTE GENEL FONT TANIMLARI */
+        /* FONT TANIMLARI */
         @font-face {
             font-family: 'F1Black';
             src: url('Formula1-Black.ttf') format('truetype');
-            font-display: swap;
         }
-
         @font-face {
             font-family: 'F1Regular';
             src: url('Formula1-Regular-1.ttf') format('truetype');
-            font-display: swap;
         }
 
         body { 
@@ -32,7 +29,7 @@
             overflow: hidden; 
         }
 
-        /* HEADER - ANA SAYFA İLE AYNI */
+        /* HEADER */
         header {
             background: rgba(20, 41, 72, 0.95);
             backdrop-filter: blur(10px);
@@ -52,33 +49,14 @@
             text-decoration: none;
         }
 
-        .header-logo-img {
-            height: 35px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-family: 'F1Black', sans-serif;
-            color: #27f4d2;
-            font-size: 20px;
-            letter-spacing: 2px;
-        }
-
-        nav a {
-            color: white;
-            margin-left: 25px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
+        .header-logo-img { height: 35px; width: auto; }
+        .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
+        
+        nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
         nav a:hover { color: #27f4d2; }
 
-        /* HARİTA VE PANEL AYARLARI */
-        #map { 
-            height: calc(100vh - 71px); 
-            width: 100%; 
-        }
+        /* HARİTA VE PANEL */
+        #map { height: calc(100vh - 71px); width: 100%; z-index: 1; }
 
         .panel {
             position: absolute;
@@ -98,7 +76,6 @@
             font-size: 12px;
             margin-bottom: 12px;
             text-align: center;
-            letter-spacing: 1px;
         }
 
         button {
@@ -114,30 +91,18 @@
             transition: 0.3s;
         }
 
-        button:hover {
-            background: #27f4d2;
-            color: #000;
-        }
+        button:hover { background: #27f4d2; color: #000; }
+        .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
+        .reset-btn:hover { background: #e8002d !important; color: white !important; }
 
-        button.reset-btn {
-            border-color: #e8002d;
-            color: #e8002d;
-        }
-
-        button.reset-btn:hover {
-            background: #e8002d;
-            color: white;
-        }
-
-        /* HARİTA POPUP (BİLGİ KUTUSU) TASARIMI */
+        /* HARİTA POPUP AYARLARI */
         .leaflet-popup-content-wrapper {
-            background: #1a1a1a;
-            color: white;
+            background: #1a1a1a !important;
+            color: white !important;
             font-family: 'F1Regular', sans-serif;
             border: 1px solid #3671c6;
         }
-        .leaflet-popup-tip { background: #1a1a1a; }
-        
+        .leaflet-popup-tip { background: #1a1a1a !important; }
         .leaflet-top.leaflet-left { top: 220px; }
     </style>
 </head>
@@ -170,120 +135,114 @@
 
 <script>
     var aktifKatman = "nufus";
+    var katmanlar = [];
+    
+    // Haritayı başlat
     var map = L.map('map').setView([41.398, 27.35], 13);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
+    // Çizim araçları
     var drawnItems = new L.FeatureGroup();
     map.addLayer(drawnItems);
-
-    var drawControl = new L.Control.Draw({
-        edit: { featureGroup: drawnItems }
-    });
+    var drawControl = new L.Control.Draw({ edit: { featureGroup: drawnItems } });
     map.addControl(drawControl);
+    map.on(L.Draw.Event.CREATED, function (e) { drawnItems.addLayer(e.layer); });
 
-    map.on(L.Draw.Event.CREATED, function (e) {
-        drawnItems.addLayer(e.layer);
-    });
-
+    // Mahalle verileri
     var mahalleler = [
-        {name:"Sevgi",lat:41.391902631712775, lon:27.345482596083997, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
-        {name:"8 Kasım",lat:41.39016369400948, lon:27.35491889453962, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-        {name:"Hürriyet",lat:41.40317234004511, lon:27.342456427165533, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Yılmaz",lat:41.41200749237624, lon:27.350804559672905, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Dere",lat:41.40909876762109, lon:27.332197473456567, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gençlik",lat:41.3981623139793, lon:27.34915056866236, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kurtuluş",lat:41.39892904839235, lon:27.35650302210077, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Siteler",lat:41.39668481042163, lon:27.357024645687474, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Yıldız",lat:41.398276436690466, lon:27.365913598817414, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"İnönü",lat:41.401995612178276, lon:27.36003874485168, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kocasinan",lat:41.40688241099159, lon:27.345369174010454, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gündoğu",lat:41.40827232000609, lon:27.363003091831168, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Atatürk",lat:41.40333318502777, lon:27.36971906416532, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-        {name:"Güneş",lat:41.40588323642748, lon:27.369804843022905, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Cumhuriyet",lat:41.41394508744789, lon:27.359282432239283, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Barış",lat:41.41162289907757, lon:27.359820182990884, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
+        {name:"Sevgi",lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
+        {name:"8 Kasım",lat:41.3901, lon:27.3549, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
+        {name:"Hürriyet",lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Yılmaz",lat:41.4120, lon:27.3508, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Dere",lat:41.4090, lon:27.3321, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Gençlik",lat:41.3981, lon:27.3491, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Kurtuluş",lat:41.3989, lon:27.3565, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Siteler",lat:41.3966, lon:27.3570, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Yıldız",lat:41.3982, lon:27.3659, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"İnönü",lat:41.4019, lon:27.3600, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Kocasinan",lat:41.4068, lon:27.3453, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Gündoğu",lat:41.4082, lon:27.3630, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
+        {name:"Atatürk",lat:41.4033, lon:27.3697, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
+        {name:"Güneş",lat:41.4058, lon:27.3698, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
+        {name:"Cumhuriyet",lat:41.4139, lon:27.3592, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Barış",lat:41.4116, lon:27.3598, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
     ];
 
-    var katmanlar = [];
-
-    function popupIcerik(veri){
-        if(aktifKatman==="nufus") return `<b>${veri.name}</b><br>Nüfus: ${veri.nufus}`;
-        if(aktifKatman==="yas") return `<b>${veri.name}</b><br>Yaş grubu: ${veri.yas}`;
-        if(aktifKatman==="medeni") return `<b>${veri.name}</b><br>Medeni: ${veri.medeni}`;
-        if(aktifKatman==="egitim") return `<b>${veri.name}</b><br>Eğitim: ${veri.egitim}`;
-        return veri.name;
+    function popupIcerik(m) {
+        let icerik = `<b>${m.name} Mahallesi</b><br>`;
+        if(aktifKatman==="nufus") icerik += `Nüfus: ${m.nufus}`;
+        else if(aktifKatman==="yas") icerik += `Yaş Grubu: ${m.yas}`;
+        else if(aktifKatman==="medeni") icerik += `Medeni Durum: ${m.medeni}`;
+        else if(aktifKatman==="egitim") icerik += `Eğitim: ${m.egitim}`;
+        return icerik;
     }
 
+    // Noktaları oluştur
     mahalleler.forEach(function(m){
-        var circle = L.circleMarker([m.lat,m.lon],{
-            radius:16,
-            color:"#222",
-            fillColor:"#cccccc",
-            fillOpacity:0.9
+        var circle = L.circleMarker([m.lat, m.lon], {
+            radius: 16,
+            color: "#222",
+            fillColor: "#cccccc",
+            fillOpacity: 0.9,
+            weight: 2
         }).addTo(map);
 
         circle.veri = m;
-        circle.on("click", function(){
-            circle.bindPopup(popupIcerik(m)).openPopup();
+        circle.on("click", function() {
+            circle.bindPopup(popupIcerik(circle.veri)).openPopup();
         });
         katmanlar.push(circle);
     });
 
-    function renkNufus(n){
-        if(n>9000) return "#800026";
-        if(n>7000) return "#BD0026";
-        if(n>5000) return "#E31A1C";
-        if(n>3000) return "#FC4E2A";
-        return "#FD8D3C";
+    // Renk Fonksiyonları
+    function renkNufus(n) {
+        return n > 9000 ? "#800026" : n > 7000 ? "#BD0026" : n > 5000 ? "#E31A1C" : n > 3000 ? "#FC4E2A" : "#FD8D3C";
     }
 
-    function gosterNufus(){
-        aktifKatman="nufus";
-        katmanlar.forEach(k=>k.setStyle({fillColor:renkNufus(k.veri.nufus)}));
-    }
-
-    function renkYas(y){
-        if(y==="0-14") return "#ffffcc";
-        if(y==="15-24") return "#a1dab4";
-        if(y==="25-44") return "#41b6c4";
-        if(y==="45-64") return "#2c7fb8";
-        if(y==="65+") return "#253494";
+    function renkYas(y) {
+        if(y === "40-44") return "#41b6c4";
+        if(y === "65+") return "#253494";
         return "#969696";
     }
 
-    function gosterYas(){
-        aktifKatman="yas";
-        katmanlar.forEach(k=>k.setStyle({fillColor:renkYas(k.veri.yas)}));
-    }
-
-    function gosterMedeni(){
-        aktifKatman="medeni";
-        katmanlar.forEach(function(k){
-            let renk = k.veri.medeni==="Evli" ? "#6a0dad" : "#ff1493";
-            k.setStyle({fillColor:renk});
-        });
-    }
-
-    function renkEgitim(e){
-        if(e==="İlkokul") return "#FFD700";
-        if(e==="Ortaokul") return "#FF0000";
-        if(e==="Lise") return "#008000";
-        if(e==="Lisans") return "#0000FF";
+    function renkEgitim(e) {
+        if(e === "Lisans") return "#0000FF";
+        if(e === "Lise") return "#008000";
+        if(e === "İlkokul") return "#FFD700";
         return "#999999";
     }
 
-    function gosterEgitim(){
-        aktifKatman="egitim";
-        katmanlar.forEach(k=>k.setStyle({fillColor:renkEgitim(k.veri.egitim)}));
-    }
+    // Buton Tetikleyicileri
+    window.gosterNufus = function() {
+        aktifKatman = "nufus";
+        katmanlar.forEach(k => k.setStyle({fillColor: renkNufus(k.veri.nufus)}));
+    };
 
-    function resetMap(){
-        katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"}));
+    window.gosterYas = function() {
+        aktifKatman = "yas";
+        katmanlar.forEach(k => k.setStyle({fillColor: renkYas(k.veri.yas)}));
+    };
+
+    window.gosterMedeni = function() {
+        aktifKatman = "medeni";
+        katmanlar.forEach(k => {
+            let renk = k.veri.medeni === "Evli" ? "#6a0dad" : "#ff1493";
+            k.setStyle({fillColor: renk});
+        });
+    };
+
+    window.gosterEgitim = function() {
+        aktifKatman = "egitim";
+        katmanlar.forEach(k => k.setStyle({fillColor: renkEgitim(k.veri.egitim)}));
+    };
+
+    window.resetMap = function() {
+        aktifKatman = "nufus";
+        katmanlar.forEach(k => k.setStyle({fillColor: "#cccccc"}));
         drawnItems.clearLayers();
-    }
+    };
 </script>
 
 </body>
