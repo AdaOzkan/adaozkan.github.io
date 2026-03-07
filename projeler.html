@@ -27,6 +27,7 @@
             background: #0a0a0a; 
             color: white; 
             position: relative;
+            overflow-x: hidden;
         }
 
         #particles-js {
@@ -57,13 +58,14 @@
         nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
         nav a:hover { color: #27f4d2; }
 
-        .main-container {
-            margin: 30px auto;
-            max-width: 1200px;
+        /* PROJE KUTUSU (DİKDÖRTGENLER) */
+        .project-card {
+            max-width: 1100px;
+            margin: 40px auto;
             background: rgba(15, 15, 15, 0.9);
             border-radius: 25px;
             border: 1px solid #222;
-            padding: 30px;
+            padding: 35px;
             position: relative;
             z-index: 10;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -73,35 +75,35 @@
             font-family: 'F1Black', sans-serif;
             border-left: 5px solid #e8002d;
             padding-left: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-size: 20px;
             color: #ffffff;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* HARİTA BÖLÜMÜ */
         #map { 
             width: 100%; 
-            height: 500px;
+            height: 450px;
             border-radius: 15px;
-            margin-bottom: 40px;
             z-index: 1; 
         }
 
-        .panel {
+        .map-panel {
             position: absolute;
-            top: 110px;
-            left: 50px;
+            top: 115px;
+            left: 55px;
             background: rgba(10, 10, 10, 0.9);
-            padding: 12px;
+            padding: 10px;
             z-index: 1000;
             border-radius: 12px;
             border: 1px solid #3671c6;
         }
 
-        button {
-            margin: 3px;
-            padding: 8px 12px;
+        .map-btn {
+            margin: 2px;
+            padding: 8px 10px;
             border: 1px solid #27f4d2;
             border-radius: 6px;
             cursor: pointer;
@@ -112,20 +114,13 @@
             transition: 0.3s;
         }
 
-        button:hover { background: #27f4d2; color: #000; }
+        .map-btn:hover { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
 
-        /* CURRENCY CONVERTER BÖLÜMÜ */
-        .converter-section {
-            background: rgba(30, 30, 30, 0.5);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #333;
-        }
-
+        /* CURRENCY CONVERTER TASARIMI */
         .converter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             align-items: end;
         }
@@ -135,26 +130,27 @@
 
         input, select {
             background: #111;
-            border: 1px solid #444;
+            border: 1px solid #333;
             color: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             font-family: 'F1Regular', sans-serif;
             outline: none;
-            cursor: pointer;
+            transition: 0.3s;
         }
 
-        select option { background: #1a1a1a; color: white; }
-        input:focus, select:focus { border-color: #27f4d2; }
+        input:focus, select:focus { border-color: #27f4d2; box-shadow: 0 0 10px rgba(39, 244, 210, 0.2); }
 
         .result-display {
-            margin-top: 25px;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(39, 244, 210, 0.05);
+            border-radius: 12px;
             font-family: 'F1Black', sans-serif;
-            font-size: 24px;
+            font-size: 22px;
             color: #27f4d2;
             text-align: center;
-            min-height: 40px;
-            text-transform: uppercase;
+            border: 1px dashed rgba(39, 244, 210, 0.3);
         }
 
         .convert-btn {
@@ -162,13 +158,16 @@
             color: #000;
             font-family: 'F1Black', sans-serif;
             border: none;
-            padding: 14px;
-            width: 100%;
-            font-size: 14px;
-            letter-spacing: 1px;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.3s;
         }
 
-        .convert-btn:hover { background: #fff; transform: scale(1.02); }
+        .convert-btn:hover { background: #fff; transform: translateY(-2px); }
+
+        footer { text-align: center; padding: 40px; font-family: 'F1Black', sans-serif; font-size: 10px; opacity: 0.4; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -186,43 +185,45 @@
     </nav>
 </header>
 
-<div class="main-container">
-    <h2>Project 01: Mahalle Veri Analizi</h2>
-    <div class="panel">
-        <button onclick="gosterNufus()">Nüfus</button>
-        <button onclick="gosterYas()">Yaş</button>
-        <button onclick="gosterMedeni()">Medeni</button>
-        <button onclick="gosterEgitim()">Eğitim</button>
-        <button onclick="resetMap()" class="reset-btn">Temizle</button>
+<div class="project-card">
+    <h2>Project 01 // Mahalle Veri Analizi</h2>
+    <div class="map-panel">
+        <button class="map-btn" onclick="gosterNufus()">Nüfus</button>
+        <button class="map-btn" onclick="gosterYas()">Yaş</button>
+        <button class="map-btn" onclick="gosterMedeni()">Medeni</button>
+        <button class="map-btn" onclick="gosterEgitim()">Eğitim</button>
+        <button class="map-btn reset-btn" onclick="resetMap()">Sıfırla</button>
     </div>
     <div id="map"></div>
-
-    <h2>Project 02: Global Currency Converter</h2>
-    <div class="converter-section">
-        <div class="converter-grid">
-            <div class="input-group">
-                <label>MİKTAR</label>
-                <input type="number" id="amount" value="1" step="any">
-            </div>
-            <div class="input-group">
-                <label>KAYNAK</label>
-                <select id="fromCurrency"></select>
-            </div>
-            <div class="input-group">
-                <label>HEDEF</label>
-                <select id="toCurrency"></select>
-            </div>
-            <button class="convert-btn" onclick="convertCurrency()">DÖNÜŞTÜR</button>
-        </div>
-        <div class="result-display" id="result">HESAPLAMAK İÇİN TIKLAYIN</div>
-    </div>
 </div>
+
+<div class="project-card">
+    <h2>Project 02 // Global Currency Converter</h2>
+    <div class="converter-grid">
+        <div class="input-group">
+            <label>MİKTAR</label>
+            <input type="number" id="amount" value="1" step="any">
+        </div>
+        <div class="input-group">
+            <label>KAYNAK</label>
+            <select id="fromCurrency"></select>
+        </div>
+        <div class="input-group">
+            <label>HEDEF</label>
+            <select id="toCurrency"></select>
+        </div>
+        <button class="convert-btn" onclick="convertCurrency()">HESAPLA</button>
+    </div>
+    <div class="result-display" id="result">LÜTFEN MİKTAR GİRİN</div>
+</div>
+
+<footer>© 2026 ADA OZKAN • PROJECT SHOWCASE</footer>
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    // 50 POPÜLER PARA BİRİMİ LİSTESİ
+    // 50 PARA BİRİMİ LİSTESİ
     const currencies = [
         {code: "USD", name: "ABD Doları"}, {code: "EUR", name: "Euro"}, {code: "GBP", name: "İngiliz Sterlini"},
         {code: "TRY", name: "Türk Lirası"}, {code: "JPY", name: "Japon Yeni"}, {code: "AUD", name: "Avustralya Doları"},
@@ -243,21 +244,14 @@
         {code: "JOD", name: "Ürdün Dinarı"}, {code: "OMR", name: "Umman Riyali"}
     ];
 
-    // SELECT KUTULARINI DOLDUR
     function populateCurrencies() {
         const fromSelect = document.getElementById('fromCurrency');
         const toSelect = document.getElementById('toCurrency');
-        
         currencies.forEach(c => {
-            let opt1 = document.createElement('option');
-            opt1.value = c.code;
-            opt1.text = `${c.code} - ${c.name}`;
+            let opt1 = new Option(`${c.code} - ${c.name}`, c.code);
             if(c.code === "TRY") opt1.selected = true;
             fromSelect.add(opt1);
-
-            let opt2 = document.createElement('option');
-            opt2.value = c.code;
-            opt2.text = `${c.code} - ${c.name}`;
+            let opt2 = new Option(`${c.code} - ${c.name}`, c.code);
             if(c.code === "USD") opt2.selected = true;
             toSelect.add(opt2);
         });
@@ -269,46 +263,47 @@
         const from = document.getElementById('fromCurrency').value;
         const to = document.getElementById('toCurrency').value;
         const resultDiv = document.getElementById('result');
-
-        if (!amount || amount <= 0) {
-            resultDiv.innerText = "GEÇERSİZ MİKTAR";
-            return;
-        }
-
-        resultDiv.innerText = "VERİ ÇEKİLİYOR...";
-
+        if (!amount || amount <= 0) { resultDiv.innerText = "GEÇERSİZ MİKTAR"; return; }
+        resultDiv.innerText = "GÜNCEL KUR ALINIYOR...";
         try {
             const response = await fetch(`https://open.er-api.com/v6/latest/${from}`);
             const data = await response.json();
-            
             if (data.result === "success") {
                 const rate = data.rates[to];
                 const converted = (amount * rate).toLocaleString('tr-TR', { minimumFractionDigits: 2 });
                 resultDiv.innerText = `${amount} ${from} = ${converted} ${to}`;
-            } else {
-                resultDiv.innerText = "HATA: VERİ ALINAMADI";
             }
-        } catch (error) {
-            resultDiv.innerText = "BAĞLANTI HATASI";
-        }
+        } catch (e) { resultDiv.innerText = "BAĞLANTI HATASI"; }
     }
 
     // PARTICLES-JS
     particlesJS("particles-js", {
         "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+            "number": { "value": 100 },
             "color": { "value": "#27f4d2" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.4 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#3671c6", "opacity": 0.3, "width": 1 },
+            "line_linked": { "color": "#3671c6", "opacity": 0.3 },
             "move": { "speed": 1.5 }
         }
     });
 
-    // HARİTA (Sadeleştirilmiş başlatma)
+    // HARİTA
     var map = L.map('map').setView([41.398, 27.35], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    var katmanlar = [];
+    var mahalleler = [
+        {name:"Sevgi",lat:41.3919, lon:27.3454, nufus:2100},
+        {name:"8 Kasım",lat:41.3901, lon:27.3549, nufus:10900},
+        {name:"Hürriyet",lat:41.4031, lon:27.3424, nufus:7300}
+        // ... diğer mahalleleri buraya ekleyebilirsin
+    ];
+    mahalleler.forEach(m => {
+        let c = L.circleMarker([m.lat, m.lon], {radius: 12, fillColor: "#cccccc", fillOpacity: 0.9, color: "#000"}).addTo(map);
+        c.bindPopup(`<b>${m.name}</b>`);
+        katmanlar.push({circle: c, veri: m});
+    });
+
+    window.gosterNufus = () => katmanlar.forEach(k => k.circle.setStyle({fillColor: k.veri.nufus > 7000 ? "#e8002d" : "#27f4d2"}));
+    window.resetMap = () => katmanlar.forEach(k => k.circle.setStyle({fillColor: "#cccccc"}));
 </script>
 
 </body>
