@@ -30,15 +30,7 @@
             position: relative;
         }
 
-        /* ARKA PLAN PARÇACIKLARI */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            top: 0;
-            left: 0;
-        }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; left: 0; }
 
         /* HEADER */
         header {
@@ -55,7 +47,6 @@
         }
 
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .header-logo-img { height: 35px; width: auto; }
         .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
         nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
         nav a:hover { color: #27f4d2; }
@@ -82,85 +73,46 @@
             color: #ffffff;
         }
 
-        /* HARİTA ALANI */
-        #map { 
-            width: 100%; 
-            height: 500px;
-            border-radius: 15px;
-            z-index: 1; 
-        }
+        #map { width: 100%; height: 450px; border-radius: 15px; z-index: 1; }
 
-        /* ANALİZ PANELİ (Harita Üzerindeki Butonlar) */
         .panel {
-            position: absolute;
-            top: 100px;
-            left: 45px;
+            position: absolute; top: 100px; left: 45px;
             background: rgba(10, 10, 10, 0.9);
-            padding: 12px;
-            z-index: 1000;
-            border-radius: 12px;
-            border: 1px solid #3671c6;
+            padding: 12px; z-index: 1000;
+            border-radius: 12px; border: 1px solid #3671c6;
         }
 
-        button {
-            margin: 3px;
-            padding: 8px 10px;
-            border: 1px solid #27f4d2;
-            border-radius: 6px;
-            cursor: pointer;
-            background: transparent;
-            color: #27f4d2;
-            font-family: 'F1Regular', sans-serif;
-            font-size: 10px;
-            transition: 0.3s;
+        button.map-btn {
+            margin: 3px; padding: 8px 10px;
+            border: 1px solid #27f4d2; border-radius: 6px;
+            cursor: pointer; background: transparent; color: #27f4d2;
+            font-family: 'F1Regular', sans-serif; font-size: 10px; transition: 0.3s;
         }
+        button.map-btn:hover { background: #27f4d2; color: #000; }
 
-        button:hover { background: #27f4d2; color: #000; }
-        .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
+        /* POPUP ÖZELLEŞTİRME */
+        .leaflet-popup-content-wrapper { background: #1a1a1a !important; color: #fff !important; border: 1px solid #3671c6; font-family: 'F1Regular', sans-serif; }
+        .leaflet-popup-content b { font-family: 'F1Black', sans-serif; color: #27f4d2; }
 
-        /* POPUP ÖZELLEŞTİRME (TIKLAYINCA ÇIKAN KUTU) */
-        .leaflet-popup-content-wrapper {
-            background: #1a1a1a !important;
-            color: #fff !important;
-            border: 1px solid #3671c6;
-            border-radius: 10px;
-            font-family: 'F1Regular', sans-serif;
-        }
-        .leaflet-popup-content b {
-            font-family: 'F1Black', sans-serif;
-            color: #27f4d2;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .leaflet-popup-tip { background: #3671c6 !important; }
-
-        /* CURRENCY BÖLÜMÜ */
-        .currency-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #333;
-        }
-        .converter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            align-items: end;
-        }
+        /* DÖVİZ BÖLÜMÜ */
+        .currency-section { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
+        .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: end; }
         label { font-family: 'F1Black', sans-serif; font-size: 11px; color: #27f4d2; margin-bottom: 8px; display: block; }
+        
         input, select {
-            width: 100%;
-            background: #111;
-            border: 1px solid #444;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: 'F1Regular', sans-serif;
+            width: 100%; background: #111; border: 1px solid #444; color: white;
+            padding: 12px; border-radius: 10px; font-family: 'F1Regular', sans-serif;
         }
+
+        /* Select içindeki option'lar için font desteği */
+        select option { font-family: 'F1Regular', sans-serif; background: #111; }
+
         .calc-btn {
             background: #27f4d2; color: #000; font-family: 'F1Black', sans-serif;
             border: none; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s;
         }
         .calc-btn:hover { background: #fff; }
+
         .result-display {
             margin-top: 20px; padding: 20px; background: rgba(39, 244, 210, 0.05);
             border-radius: 12px; text-align: center; font-family: 'F1Black', sans-serif;
@@ -187,15 +139,13 @@
 
 <div class="main-container">
     <h2>Mahalle Veri Analizi</h2>
-    
     <div class="panel">
-        <button onclick="gosterNufus()">Nüfus</button>
-        <button onclick="gosterYas()">Yaş</button>
-        <button onclick="gosterMedeni()">Medeni</button>
-        <button onclick="gosterEgitim()">Eğitim</button>
-        <button onclick="resetMap()" class="reset-btn">Temizle</button>
+        <button class="map-btn" onclick="gosterNufus()">Nüfus</button>
+        <button class="map-btn" onclick="gosterYas()">Yaş</button>
+        <button class="map-btn" onclick="gosterMedeni()">Medeni</button>
+        <button class="map-btn" onclick="gosterEgitim()">Eğitim</button>
+        <button class="map-btn" style="border-color:#e8002d; color:#e8002d;" onclick="resetMap()">Temizle</button>
     </div>
-
     <div id="map"></div>
 
     <div class="currency-section">
@@ -206,52 +156,39 @@
                 <input type="number" id="amount" value="1">
             </div>
             <div>
-                <label>KAYNAK</label>
+                <label>KAYNAK BİRİM</label>
                 <select id="fromCurrency"></select>
             </div>
             <div>
-                <label>HEDEF</label>
+                <label>HEDEF BİRİM</label>
                 <select id="toCurrency"></select>
             </div>
             <button class="calc-btn" onclick="convertCurrency()">HESAPLA</button>
         </div>
-        <div class="result-display" id="result">HESAPLAMAK İÇİN TIKLAYIN</div>
+        <div class="result-display" id="result">VERİLERİ GİRİNİZ</div>
     </div>
 </div>
 
-<footer>© 2026 ADA OZKAN • PERFORMANCE PORTFOLIO</footer>
+<footer>© 2026 ADA OZKAN • DATA PERFORMANCE</footer>
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <script>
-    // PARTICLES-JS
-    particlesJS("particles-js", {
-        "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#27f4d2" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.4 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#3671c6", "opacity": 0.3, "width": 1 },
-            "move": { "speed": 1.5 }
-        },
-        "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
-    });
+    // PARTICLES
+    particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#27f4d2" }, "line_linked": { "color": "#3671c6" }, "move": { "speed": 1.5 } } });
 
-    // HARİTA MANTIĞI
+    // HARİTA
     var aktifKatman = "nufus";
     var katmanlar = [];
     var map = L.map('map').setView([41.398, 27.35], 13);
-    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
     var drawnItems = new L.FeatureGroup();
     map.addLayer(drawnItems);
     var drawControl = new L.Control.Draw({ edit: { featureGroup: drawnItems } });
     map.addControl(drawControl);
-    map.on(L.Draw.Event.CREATED, function (e) { drawnItems.addLayer(e.layer); });
 
     var mahalleler = [
         {name:"Sevgi",lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
@@ -259,62 +196,55 @@
         {name:"Hürriyet",lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
         {name:"Yılmaz",lat:41.4120, lon:27.3508, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
         {name:"Dere",lat:41.4090, lon:27.3321, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gençlik",lat:41.3981, lon:27.3491, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kurtuluş",lat:41.3989, lon:27.3565, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Siteler",lat:41.3966, lon:27.3570, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Yıldız",lat:41.3982, lon:27.3659, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"İnönü",lat:41.4019, lon:27.3600, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kocasinan",lat:41.4068, lon:27.3453, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gündoğu",lat:41.4082, lon:27.3630, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Atatürk",lat:41.4033, lon:27.3697, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-        {name:"Güneş",lat:41.4058, lon:27.3698, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Cumhuriyet",lat:41.4139, lon:27.3592, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Barış",lat:41.4116, lon:27.3598, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
+        {name:"Gençlik",lat:41.3981, lon:27.3491, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"}
     ];
 
-    function popupIcerik(m) {
-        let txt = `<b>${m.name} Mahallesi</b>`;
-        if(aktifKatman==="nufus") txt += `Nüfus: ${m.nufus}`;
-        else if(aktifKatman==="yas") txt += `Yaş Grubu: ${m.yas}`;
-        else if(aktifKatman==="medeni") txt += `Durum: ${m.medeni}`;
-        else if(aktifKatman==="egitim") txt += `Eğitim: ${m.egitim}`;
-        return txt;
-    }
-
     mahalleler.forEach(m => {
-        var circle = L.circleMarker([m.lat, m.lon], {
-            radius: 12, color: "#222", fillColor: "#cccccc", fillOpacity: 0.9, weight: 2
-        }).addTo(map);
-        circle.veri = m;
+        var circle = L.circleMarker([m.lat, m.lon], { radius: 12, fillColor: "#cccccc", fillOpacity: 0.9, color: "#222" }).addTo(map);
         circle.on("click", () => {
-            circle.bindPopup(popupIcerik(circle.veri)).openPopup();
+            let txt = `<b>${m.name} Mahallesi</b><br>Veri: ${m[aktifKatman] || m.nufus}`;
+            circle.bindPopup(txt).openPopup();
         });
         katmanlar.push(circle);
     });
 
-    window.gosterNufus = () => { aktifKatman = "nufus"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.nufus > 7000 ? "#800026" : "#FD8D3C"})); };
-    window.gosterYas = () => { aktifKatman = "yas"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.yas === "65+" ? "#253494" : "#41b6c4"})); };
-    window.gosterMedeni = () => { aktifKatman = "medeni"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.medeni === "Evli" ? "#6a0dad" : "#ff1493"})); };
-    window.gosterEgitim = () => { aktifKatman = "egitim"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.egitim === "Lisans" ? "#0000FF" : "#008000"})); };
-    window.resetMap = () => { katmanlar.forEach(k => k.setStyle({fillColor: "#cccccc"})); drawnItems.clearLayers(); };
+    window.gosterNufus = () => { aktifKatman="nufus"; katmanlar.forEach(k=>k.setStyle({fillColor: k.veri?.nufus > 7000 ? "#800026" : "#FD8D3C"})); };
+    window.resetMap = () => { katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"})); drawnItems.clearLayers(); };
 
-    // DÖVİZ MANTIĞI (50 Ülke)
-    const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
-    const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
-    countries.sort().forEach(c => {
-        f.add(new Option(c, c, c==="TRY"));
-        t.add(new Option(c, c, c==="USD"));
-    });
-    f.value = "TRY"; t.value = "USD";
+    // DÖVİZ (50 Ülke + Tam İsimler)
+    const currencyNames = {
+        "USD": "ABD Doları", "EUR": "Euro", "GBP": "İngiliz Sterlini", "TRY": "Türk Lirası", "JPY": "Japon Yeni",
+        "AUD": "Avustralya Doları", "CAD": "Kanada Doları", "CHF": "İsviçre Frangı", "CNY": "Çin Yuanı", "HKD": "Hong Kong Doları",
+        "NZD": "Yeni Zelanda Doları", "SEK": "İsveç Kronu", "KRW": "Güney Kore Wonu", "SGD": "Singapur Doları", "NOK": "Norveç Kronu",
+        "MXN": "Meksika Pesosu", "INR": "Hindistan Rupisi", "RUB": "Rus Rublesi", "ZAR": "Güney Afrika Randı", "BRL": "Brezilya Reali",
+        "TWD": "Tayvan Doları", "DKK": "Danimarka Kronu", "PLN": "Polonya Zlotisi", "THB": "Tayland Bahtı", "IDR": "Endonezya Rupiahı",
+        "HUF": "Macar Forinti", "CZK": "Çek Korunası", "ILS": "İsrail Şekeli", "CLP": "Şili Pesosu", "PHP": "Filipinler Pesosu",
+        "AED": "B.A.E. Dirhemi", "COP": "Kolombiya Pesosu", "SAR": "Suudi Arabistan Riyali", "MYR": "Malezya Ringgiti", "RON": "Rumen Leyi",
+        "VND": "Vietnam Dongu", "KWD": "Kuveyt Dinarı", "BHD": "Bahreyn Dinarı", "EGP": "Mısır Lirası", "PKR": "Pakistan Rupisi",
+        "IQD": "Irak Dinarı", "QAR": "Katar Riyali", "AZN": "Azerbaycan Manatı", "KZT": "Kazakistan Tengesi", "UAH": "Ukrayna Grivnası",
+        "DZD": "Cezayir Dinarı", "MAD": "Fas Dirhemi", "LBP": "Lübnan Lirası", "JOD": "Ürdün Dinarı", "OMR": "Umman Riyali"
+    };
+
+    function initConverter() {
+        const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
+        Object.keys(currencyNames).sort().forEach(code => {
+            let label = `${code} (${currencyNames[code]})`;
+            f.add(new Option(label, code, code==="TRY"));
+            t.add(new Option(label, code, code==="USD"));
+        });
+        f.value = "TRY"; t.value = "USD";
+    }
+    initConverter();
 
     async function convertCurrency() {
-        const a = document.getElementById('amount').value, res = document.getElementById('result');
+        const a = document.getElementById('amount').value, from = document.getElementById('fromCurrency').value, 
+              to = document.getElementById('toCurrency').value, res = document.getElementById('result');
         if(!a || a <= 0) return;
         res.innerText = "...";
         try {
-            const data = await (await fetch(`https://open.er-api.com/v6/latest/${f.value}`)).json();
-            const val = (a * data.rates[t.value]).toLocaleString('tr-TR', {minimumFractionDigits: 2});
-            res.innerText = `${a} ${f.value} = ${val} ${t.value}`;
+            const data = await (await fetch(`https://open.er-api.com/v6/latest/${from}`)).json();
+            const val = (a * data.rates[to]).toLocaleString('tr-TR', {minimumFractionDigits: 2});
+            res.innerText = `${a} ${from} = ${val} ${to}`;
         } catch(e) { res.innerText = "HATA!"; }
     }
 </script>
