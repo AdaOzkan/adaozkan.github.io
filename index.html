@@ -35,7 +35,7 @@
             font-family: 'F1Regular', sans-serif; 
             background: #0a0a0a;
             color: white;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Yatay taşmayı engeller */
             position: relative;
         }
 
@@ -111,7 +111,7 @@
             transition: 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 8px; /* İkon ve yazı arası boşluk */
+            gap: 8px; 
             font-size: 14px;
         }
 
@@ -232,33 +232,6 @@
             color: #000;
         }
 
-        .feedback-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .feedback-form input, .feedback-form textarea {
-            background: #111;
-            border: 1px solid #333;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: inherit;
-        }
-
-        .feedback-btn {
-            background: #27f4d2;
-            color: #0a0a0a;
-            border: none;
-            padding: 18px;
-            border-radius: 10px;
-            font-family: 'F1Black', sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
         .spotify-container {
             display: grid;
             gap: 20px;
@@ -274,10 +247,11 @@
             letter-spacing: 2px;
         }
 
+        /* Telefon olayını unuttuk ama taşma yapmaması için temel önlem */
         @media (max-width: 600px) {
-            .section { padding: 30px 20px; width: 90%; }
-            .hero .name-ada { font-size: 80px; line-height: 0.1; }
-            nav a { margin-left: 15px; font-size: 12px; }
+            header { padding: 20px 15px; }
+            nav a { margin-left: 12px; font-size: 12px; }
+            .logo-text { font-size: 16px; }
         }
     </style>
 </head>
@@ -293,6 +267,7 @@
     <nav>
         <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
         <a href="projeler.html"><i class="fa-solid fa-layer-group"></i> Projects</a>
+        <a href="feedback.html"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
         <a href="#about"><i class="fa-solid fa-user"></i> About</a>
         <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
     </nav>
@@ -328,23 +303,14 @@
         <a href="https://linkedin.com/in/ada-özkan-a7b984287/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         <a href="https://leetcode.com/u/adaozkan_7106/" target="_blank"><i class="fas fa-code"></i> LeetCode</a>
         <a href="https://replit.com/@AdaOzkan1" target="_blank"><i class="fas fa-terminal"></i> Replit</a>
-        <a href="https://open.spotify.com/user/bfdgv11xqokua4z13cd1sbxt0" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+        <a href="https://open.spotify.com/user/adaozkan" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
     </div>
 
     <h2 style="margin-top:40px;">Spotify</h2>
     <div class="spotify-container">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4uqlFpMPTKO6uAsX6qvK0l?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E37j9z9z9z9z9" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E37j9z9z9z9z1" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-</section>
-
-<section class="section">
-    <h2>Feedback</h2>
-    <form action="https://formspree.io/f/xgolbzyv" method="POST" class="feedback-form">
-        <input type="email" name="email" placeholder="E-posta Adresiniz" required>
-        <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
-        <button type="submit" class="feedback-btn">GÖNDER</button>
-    </form>
 </section>
 
 <footer>© 2026 ADA OZKAN • DESIGNED FOR PERFORMANCE</footer>
