@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* FONT TANIMLARI [cite: 1, 22] */
+        /* FONT TANIMLARI */
         @font-face {
             font-family: 'Northwell';
             src: url('Northwell.otf') format('opentype');
@@ -29,16 +29,19 @@
             font-display: swap;
         }
 
+        /* GENEL AYARLAR */
         body {
             margin: 0;
+            /* Black ve Northwell dışındaki tüm yazılar F1Regular */
             font-family: 'F1Regular', sans-serif; 
             background: #0a0a0a;
             color: white;
-            overflow-x: hidden;
+            overflow-x: hiddennav
+            ;
             position: relative;
         }
 
-        /* ARKA PLAN DESENİ [cite: 27] */
+        /* ARKA PLAN DESENİ */
         body::before {
             content: "";
             position: fixed;
@@ -81,6 +84,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
         }
 
         .header-logo-img {
@@ -269,11 +273,13 @@
 <div id="particles-js"></div>
 
 <header>
-    <div class="logo-container">
+    <a href="index.html" class="logo-container">
         <img src="adalogo.ico" alt="Ada Özkan Logo" class="header-logo-img">
         <span class="logo-text">ADA OZKAN</span>
-    </div>
+    </a>
     <nav>
+        <a href="index.html">Home</a>
+        <a href="projeler.html">Projects</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -282,7 +288,7 @@
 <section class="hero">
     <div class="title-container">
         <span class="name-ada">Ada</span>
-        <span class="name-ozkan">ÖZKAN</span>
+        <span class="name-ozkan">OZKAN</span>
     </div>
     <p>ELECTRONICS • SPACE • ENGINEERING</p>
 </section>
