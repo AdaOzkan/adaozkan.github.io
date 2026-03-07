@@ -46,13 +46,19 @@
         .section { max-width: 850px; margin: 0 auto 40px auto; padding: 50px 40px; background: rgba(15, 15, 15, 0.9); border-radius: 20px; border: 1px solid #222; }
         h2 { font-family: 'F1Black', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 30px; font-size: 24px; }
 
-        /* CONTACT & LINKS (Dokunulmadı) */
+        /* CONTACT & LINKS */
         .contactBox { border-left: 5px solid #ff8000; padding: 20px; background: rgba(30, 30, 30, 0.5); margin-bottom: 30px; border-radius: 0 10px 10px 0; }
         .contact-link { color: white; text-decoration: none; display: flex; align-items: center; margin-bottom: 15px; font-size: 18px; }
         .contact-link i { margin-right: 15px; color: #ff8000; width: 20px; text-align: center; }
         .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .links a:hover { border-color: #27f4d2; background: #27f4d2; color: #000; transform: translateY(-3px); }
+
+        /* SPOTIFY & FORM */
+        .spotify-container { display: grid; gap: 20px; margin-top: 20px; }
+        .feedback-form { display: flex; flex-direction: column; gap: 15px; }
+        .feedback-form input, .feedback-form textarea { background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; font-family: inherit; }
+        .feedback-btn { background: #27f4d2; color: #0a0a0a; border: none; padding: 18px; border-radius: 10px; font-family: 'F1Black', sans-serif; cursor: pointer; font-weight: bold; }
 
         /* F1 TASARIM */
         .f1-status-label { font-family: 'F1Black', sans-serif; font-size: 14px; color: #aaa; margin-bottom: 15px; letter-spacing: 2px; }
@@ -69,12 +75,6 @@
         .next-race-preview { margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; }
         .next-race-label { font-family: 'F1Black', sans-serif; font-size: 12px; color: #e8002d; margin-bottom: 10px; }
         .next-race-info { font-family: 'F1Regular', sans-serif; font-size: 18px; color: #fff; opacity: 0.7; }
-
-        /* SPOTIFY & FORM */
-        .spotify-container { display: grid; gap: 20px; margin-top: 20px; }
-        .feedback-form { display: flex; flex-direction: column; gap: 15px; }
-        .feedback-form input, .feedback-form textarea { background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; font-family: inherit; }
-        .feedback-btn { background: #27f4d2; color: #0a0a0a; border: none; padding: 18px; border-radius: 10px; font-family: 'F1Black', sans-serif; cursor: pointer; font-weight: bold; }
 
         footer { text-align: center; padding: 60px; font-family: 'F1Black', sans-serif; font-size: 11px; opacity: 0.5; letter-spacing: 2px; }
 
@@ -120,12 +120,13 @@
         <a href="https://github.com/adaOzkan" target="_blank"><i class="fab fa-github"></i> GitHub</a>
         <a href="https://linkedin.com/in/ada-özkan-a7b984287/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         <a href="https://replit.com/@AdaOzkan1" target="_blank"><i class="fas fa-terminal"></i> Replit</a>
-        <a href="http://googleusercontent.com/spotify.com/7" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+        <a href="https://open.spotify.com/user/ada.ozkan" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
     </div>
 
     <h2 style="margin-top:40px;">Spotify</h2>
     <div class="spotify-container">
-        <iframe style="border-radius:12px" src="http://googleusercontent.com/spotify.com/8" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E37r6j1vKIn1E?utm_source=generator" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2v9X8WqT6r6m7v9R8v9R8v" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </section>
 
@@ -172,7 +173,21 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
     particlesJS("particles-js", {
-        "particles": { "number": { "value": 100 }, "color": { "value": "#27f4d2" }, "line_linked": { "enable": true, "color": "#ff8000" }, "move": { "speed": 1 } }
+        "particles": { 
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#27f4d2" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#3671c6", "opacity": 0.4, "width": 1 },
+            "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+            "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
+        },
+        "retina_detect": true
     });
 
     const schedule = [
