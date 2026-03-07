@@ -97,7 +97,7 @@
             letter-spacing: 2px;
         }
 
-        /* NAVIGASYON VE IKONLAR */
+        /* NAVIGASYON */
         nav {
             display: flex;
             align-items: center;
@@ -111,7 +111,7 @@
             transition: 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 8px; /* İkon ve yazı arası boşluk */
+            gap: 8px; 
             font-size: 14px;
         }
 
@@ -265,6 +265,17 @@
             margin-top: 20px;
         }
 
+        /* F1 COUNTDOWN ÖZEL STİLLER */
+        .f1-logo-container { text-align: center; margin-bottom: 15px; }
+        .f1-logo-img { width: 80px; filter: drop-shadow(0 0 5px #e8002d); }
+        .next-race-title { font-family: 'F1Black', sans-serif; text-align: center; letter-spacing: 3px; font-size: 26px; margin-bottom: 25px; color: #fff; }
+        .country-box { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .circle-flag { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #27f4d2; display: none; }
+        .country-name-text { font-family: 'F1Regular', sans-serif; font-size: 22px; text-transform: uppercase; letter-spacing: 2px; }
+        .countdown-row { display: flex; justify-content: center; gap: 30px; text-align: center; font-family: 'F1Regular', sans-serif; }
+        .time-val { font-size: 40px; font-weight: bold; color: #27f4d2; display: block; line-height: 1; }
+        .time-label { font-size: 14px; color: #aaa; margin-top: 5px; display: inline-block; }
+
         footer {
             text-align: center;
             padding: 60px;
@@ -278,6 +289,8 @@
             .section { padding: 30px 20px; width: 90%; }
             .hero .name-ada { font-size: 80px; line-height: 0.1; }
             nav a { margin-left: 15px; font-size: 12px; }
+            .countdown-row { gap: 15px; }
+            .time-val { font-size: 30px; }
         }
     </style>
 </head>
@@ -313,7 +326,6 @@
 
 <section class="section" id="contact">
     <h2>Contact & Links</h2>
-    
     <div class="contactBox">
         <a href="mailto:adaozkan7106@gmail.com" class="contact-link">
             <i class="fas fa-envelope"></i> adaozkan7106@gmail.com
@@ -335,6 +347,33 @@
     <div class="spotify-container">
         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4uqlFpMPTKO6uAsX6qvK0l?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+</section>
+
+<section class="section">
+    <div class="f1-logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" alt="F1" class="f1-logo-img">
+    </div>
+    <div class="next-race-title">NEXT RACE</div>
+    
+    <div class="country-box">
+        <img id="f1-flag" src="" alt="Flag" class="circle-flag">
+        <span id="f1-country" class="country-name-text">LOADING...</span>
+    </div>
+
+    <div class="countdown-row">
+        <div>
+            <span id="h-val" class="time-val">00</span>
+            <span class="time-label">H</span>
+        </div>
+        <div>
+            <span id="m-val" class="time-val">00</span>
+            <span class="time-label">M</span>
+        </div>
+        <div>
+            <span id="s-val" class="time-val">00</span>
+            <span class="time-label">S</span>
+        </div>
     </div>
 </section>
 
@@ -369,6 +408,49 @@
         },
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
+
+    // F1 API LOGIC
+    async function updateF1Countdown() {
+        try {
+            const res = await fetch('https://ergast.com/api/f1/current/next.json');
+            const data = await res.json();
+            const race = data.MRData.RaceTable.Races[0];
+            
+            const country = race.Circuit.Location.country;
+            document.getElementById('f1-country').innerText = country;
+
+            // Flag API
+            const flagRes = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+            const flagData = await flagRes.json();
+            const flagImg = document.getElementById('f1-flag');
+            flagImg.src = flagData[0].flags.png;
+            flagImg.style.display = 'block';
+
+            const target = new Date(`${race.date}T${race.time}`).getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+
+                if(diff <= 0) {
+                    document.querySelector('.countdown-row').innerHTML = "RACE WEEKEND!";
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('h-val').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('m-val').innerText = mins.toString().padStart(2, '0');
+                document.getElementById('s-val').innerText = secs.toString().padStart(2, '0');
+            }, 1000);
+
+        } catch (err) {
+            document.getElementById('f1-country').innerText = "F1 API ERROR";
+        }
+    }
+    updateF1Countdown();
 </script>
 
 </body>
