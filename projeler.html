@@ -6,12 +6,19 @@
     <title>Projeler | Ada Özkan</title>
 
     <link rel="icon" type="image/x-icon" href="adalogo.ico">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
     <style>
         /* FONT VE GENEL TASARIM */
-        @font-face { font-family: 'F1Black'; src: url('Formula1-Black.ttf') format('truetype'); }
-        @font-face { font-family: 'F1Regular'; src: url('Formula1-Regular-1.ttf') format('truetype'); }
+        @font-face {
+            font-family: 'F1Black';
+            src: url('Formula1-Black.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'F1Regular';
+            src: url('Formula1-Regular-1.ttf') format('truetype');
+        }
 
         body { 
             margin: 0; 
@@ -20,10 +27,11 @@
             background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
             color: white; 
             min-height: 100vh;
+            position: relative;
         }
 
         header {
-            background: rgba(20, 41, 72, 0.9);
+            background: rgba(20, 41, 72, 0.95);
             backdrop-filter: blur(10px);
             padding: 15px 40px;
             display: flex;
@@ -36,7 +44,9 @@
         }
 
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
+        .header-logo-img { height: 35px; width: auto; }
+        .logo-text { font-family: 'FBlack', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
+        
         nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
         nav a:hover { color: #27f4d2; }
 
@@ -44,51 +54,58 @@
         .project-card {
             max-width: 1100px;
             margin: 40px auto;
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(15, 15, 15, 0.9);
             border-radius: 25px; /* İstediğin yuvarlatılmış köşe */
-            border: 1px solid #333;
-            padding: 30px;
+            border: 1px solid #222;
+            padding: 35px;
             position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         h2 {
-            font-family: 'F1Black', sans-serif;
+            font-family: 'FBlack', sans-serif;
             border-left: 5px solid #e8002d;
             padding-left: 15px;
             margin-bottom: 25px;
             font-size: 18px;
+            color: #ffffff;
             text-transform: uppercase;
         }
 
-        /* HARİTA ALANI VE PANELİ */
+        /* HARİTA BÖLÜMÜ */
         #map { 
             width: 100%; 
-            height: 500px;
+            height: 450px;
             border-radius: 15px;
             z-index: 1; 
         }
 
-        .filter-panel {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+        .map-panel {
+            position: absolute;
+            top: 115px;
+            left: 55px;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 10px;
+            z-index: 1000;
+            border-radius: 12px;
+            border: 1px solid #3671c6;
         }
 
-        .filter-btn {
-            padding: 10px 15px;
+        .map-btn {
+            margin: 2px;
+            padding: 8px 10px;
             border: 1px solid #27f4d2;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             background: transparent;
             color: #27f4d2;
             font-family: 'F1Regular', sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             transition: 0.3s;
         }
 
-        .filter-btn:hover { background: #27f4d2; color: #000; }
+        .map-btn:hover { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
 
         /* DÖVİZ ARACI TASARIMI */
@@ -98,6 +115,9 @@
             gap: 20px;
             align-items: end;
         }
+
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 11px; color: #27f4d2; font-family: 'FBlack', sans-serif; }
 
         input, select {
             background: #111;
@@ -115,7 +135,7 @@
             background: rgba(39, 244, 210, 0.1);
             border-radius: 12px;
             text-align: center;
-            font-family: 'F1Black', sans-serif;
+            font-family: 'FBlack', sans-serif;
             color: #27f4d2;
             font-size: 20px;
         }
@@ -123,20 +143,21 @@
         .calc-btn {
             background: #27f4d2;
             color: #000;
-            font-family: 'F1Black', sans-serif;
+            font-family: 'FBlack', sans-serif;
             border: none;
             padding: 15px;
             border-radius: 10px;
             cursor: pointer;
         }
 
-        footer { text-align: center; padding: 40px; opacity: 0.3; font-size: 10px; }
+        footer { text-align: center; padding: 40px; font-family: 'FBlack', sans-serif; font-size: 10px; opacity: 0.3; }
     </style>
 </head>
 <body>
 
 <header>
     <a href="index.html" class="logo-container">
+        <img src="adalogo.ico" alt="Logo" class="header-logo-img">
         <span class="logo-text">ADA OZKAN</span>
     </a>
     <nav>
@@ -147,12 +168,12 @@
 
 <div class="project-card">
     <h2>Project 01 // Mahalle Veri Analizi</h2>
-    <div class="filter-panel">
-        <button class="filter-btn" onclick="gosterNufus()">Nüfus</button>
-        <button class="filter-btn" onclick="gosterYas()">Yaş</button>
-        <button class="filter-btn" onclick="gosterMedeni()">Medeni</button>
-        <button class="filter-btn" onclick="gosterEgitim()">Eğitim</button>
-        <button class="filter-btn reset-btn" onclick="resetMap()">Temizle</button>
+    <div class="map-panel">
+        <button class="map-btn" onclick="gosterNufus()">Nüfus</button>
+        <button class="map-btn" onclick="gosterYas()">Yaş</button>
+        <button class="map-btn" onclick="gosterMedeni()">Medeni</button>
+        <button class="map-btn" onclick="gosterEgitim()">Eğitim</button>
+        <button class="map-btn reset-btn" onclick="resetMap()">Sıfırla</button>
     </div>
     <div id="map"></div>
 </div>
@@ -160,16 +181,16 @@
 <div class="project-card">
     <h2>Project 02 // Global Currency Converter</h2>
     <div class="converter-grid">
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="font-size:10px; color:#27f4d2;">MİKTAR</label>
+        <div class="input-group">
+            <label>MİKTAR</label>
             <input type="number" id="amount" value="1">
         </div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="font-size:10px; color:#27f4d2;">KAYNAK</label>
+        <div class="input-group">
+            <label>KAYNAK</label>
             <select id="fromCurrency"></select>
         </div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="font-size:10px; color:#27f4d2;">HEDEF</label>
+        <div class="input-group">
+            <label>HEDEF</label>
             <select id="toCurrency"></select>
         </div>
         <button class="calc-btn" onclick="convertCurrency()">HESAPLA</button>
@@ -177,18 +198,21 @@
     <div class="result-box" id="result">Lütfen Hesaplama Yapın</div>
 </div>
 
-<footer>© 2026 ADA OZKAN • DATA VISUALIZATION</footer>
+<footer>© 2026 ADA OZKAN • PERFORMANCE PORTFOLIO</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    // --- HARİTA MANTIĞI ---
+    // --- HARİTA MANTIĞI (Senin Orijinal Kodun) ---
     var aktifKatman = "nufus";
     var map = L.map('map').setView([41.398, 27.35], 13);
     
-    // Modern Koyu Harita Stili
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+    // Klasik Harita Stili (İlk halindeki gibi)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
 
+    var katmanlar = [];
     var mahalleler = [
         {name:"Sevgi",lat:41.391902631712775, lon:27.345482596083997, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
         {name:"8 Kasım",lat:41.39016369400948, lon:27.35491889453962, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
@@ -208,7 +232,14 @@
         {name:"Barış",lat:41.41162289907757, lon:27.359820182990884, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
     ];
 
-    var katmanlar = [];
+    function popupIcerik(veri){
+        let icerik = `<b>${veri.name}</b><br>`;
+        if(aktifKatman==="nufus") icerik += `Nüfus: ${veri.nufus}`;
+        else if(aktifKatman==="yas") icerik += `Yaş grubu: ${veri.yas}`;
+        else if(aktifKatman==="medeni") icerik += `Medeni: ${veri.medeni}`;
+        else if(aktifKatman==="egitim") icerik += `Eğitim: ${veri.egitim}`;
+        return icerik;
+    }
 
     mahalleler.forEach(function(m){
         var circle = L.circleMarker([m.lat, m.lon], {
@@ -217,17 +248,12 @@
 
         circle.veri = m;
         circle.on("click", function(){
-            let txt = `<b>${m.name}</b><br>`;
-            if(aktifKatman==="nufus") txt += `Nüfus: ${m.nufus}`;
-            else if(aktifKatman==="yas") txt += `Yaş: ${m.yas}`;
-            else if(aktifKatman==="medeni") txt += `Medeni: ${m.medeni}`;
-            else if(aktifKatman==="egitim") txt += `Eğitim: ${m.egitim}`;
-            circle.bindPopup(txt).openPopup();
+            circle.bindPopup(popupIcerik(circle.veri)).openPopup();
         });
         katmanlar.push(circle);
     });
 
-    // RENK FONKSİYONLARI (Kendi kodundan alınmıştır)
+    // RENK FONKSİYONLARI (Orijinal Kodunla Tam Aynı)
     function renkNufus(n){ return n>9000 ? "#800026" : n>7000 ? "#BD0026" : n>5000 ? "#E31A1C" : n>3000 ? "#FC4E2A" : "#FD8D3C"; }
     function renkYas(y){ return y==="65+" ? "#253494" : y==="40-44" ? "#41b6c4" : "#969696"; }
     function renkEgitim(e){ return e==="İlkokul"?"#FFD700": e==="Lise"?"#008000": e==="Lisans"?"#0000FF":"#999999"; }
@@ -236,9 +262,9 @@
     window.gosterYas = () => { aktifKatman="yas"; katmanlar.forEach(k=>k.setStyle({fillColor:renkYas(k.veri.yas)})); }
     window.gosterMedeni = () => { aktifKatman="medeni"; katmanlar.forEach(k=>k.setStyle({fillColor: k.veri.medeni==="Evli" ? "#6a0dad":"#ff1493"})); }
     window.gosterEgitim = () => { aktifKatman="egitim"; katmanlar.forEach(k=>k.setStyle({fillColor:renkEgitim(k.veri.egitim)})); }
-    window.resetMap = () => katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"}));
+    window.resetMap = () => { katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"})); };
 
-    // --- DÖVİZ MANTIĞI ---
+    // --- DÖVİZ MANTIĞI (Öncekiyle Aynı) ---
     const list = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
     function fill() {
         const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
