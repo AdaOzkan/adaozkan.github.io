@@ -17,7 +17,6 @@
         /* GENEL AYARLAR */
         body { margin: 0; font-family: 'F1Regular', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; position: relative; }
         
-        /* ARKA PLAN DESENİ */
         body::before { 
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-image: url('image_cc4e40.png'); background-repeat: no-repeat; 
@@ -56,7 +55,7 @@
         .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .links a:hover { border-color: #27f4d2; background: #27f4d2; color: #000; transform: translateY(-3px); }
 
-        /* F1 TASARIM (Resimdeki Yapı) */
+        /* F1 TASARIM (Özel Bölüm) */
         .f1-status-label { font-family: 'F1Black', sans-serif; font-size: 14px; color: #aaa; margin-bottom: 15px; letter-spacing: 2px; }
         .race-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .circle-flag { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #333; }
@@ -154,12 +153,12 @@
         <a href="https://github.com/adaOzkan" target="_blank"><i class="fab fa-github"></i> GitHub</a>
         <a href="https://linkedin.com/in/ada-özkan-a7b984287/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         <a href="https://replit.com/@AdaOzkan1" target="_blank"><i class="fas fa-terminal"></i> Replit</a>
-        <a href="https://open.spotify.com" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
+        <a href="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M9" target="_blank"><i class="fab fa-spotify"></i> Spotify</a>
     </div>
 
     <h2 style="margin-top:40px;">Spotify</h2>
     <div class="spotify-container">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4JAvHpj9Z76" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1EVKuOShpS6uGv0" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </section>
 
@@ -182,17 +181,23 @@
 
     const schedule = [
         { name: "Australia", date: "2026-03-08T07:00:00", country: "au" },
+        { name: "China", date: "2026-03-15T10:00:00", country: "cn" },
         { name: "Japan", date: "2026-03-29T08:00:00", country: "jp" },
         { name: "Bahrain", date: "2026-04-12T18:00:00", country: "bh" },
         { name: "Saudi Arabia", date: "2026-04-19T20:00:00", country: "sa" },
+        { name: "Miami", date: "2026-05-03T22:30:00", country: "us" },
+        { name: "Canada", date: "2026-05-24T21:00:00", country: "ca" },
         { name: "Monaco", date: "2026-06-07T16:00:00", country: "mc" },
         { name: "Barcelona-Catalunya", date: "2026-06-14T16:00:00", country: "es" },
         { name: "Austria", date: "2026-06-28T16:00:00", country: "at" },
+        { name: "Great Britain", date: "2026-07-05T17:00:00", country: "gb" },
         { name: "Belgium", date: "2026-07-19T16:00:00", country: "be" },
         { name: "Hungary", date: "2026-07-26T16:00:00", country: "hu" },
+        { name: "Netherlands", date: "2026-08-23T16:00:00", country: "nl" },
         { name: "Italy", date: "2026-09-06T16:00:00", country: "it" },
         { name: "Spain (Madrid)", date: "2026-09-13T16:00:00", country: "es" },
         { name: "Azerbaijan", date: "2026-09-26T14:00:00", country: "az" },
+        { name: "Singapore", date: "2026-10-11T15:00:00", country: "sg" },
         { name: "United States", date: "2026-10-25T22:00:00", country: "us" },
         { name: "Mexico", date: "2026-11-01T23:00:00", country: "mx" },
         { name: "Brazil", date: "2026-11-08T20:00:00", country: "br" },
@@ -204,7 +209,11 @@
     function updateF1() {
         const now = new Date().getTime();
         let idx = schedule.findIndex(r => new Date(r.date).getTime() > now);
-        if (idx === -1) return;
+        
+        if (idx === -1) {
+            document.getElementById('curr-location').innerText = "Season Ended";
+            return;
+        }
 
         const curr = schedule[idx];
         const next = schedule[idx + 1];
@@ -221,6 +230,8 @@
         if (next) {
             const d = new Date(next.date);
             document.getElementById('next-race-details').innerText = `${next.name} — ${d.getDate()} ${d.toLocaleString('en-GB', { month: 'long' })}`;
+        } else {
+            document.getElementById('next-race-details').innerText = "Last race of the season";
         }
     }
     setInterval(updateF1, 1000);
