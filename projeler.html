@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         /* FONT TANIMLARI */
@@ -57,7 +58,19 @@
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .header-logo-img { height: 35px; width: auto; }
         .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
-        nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        
+        /* NAVIGASYON VE IKONLAR */
+        nav a { 
+            color: white; 
+            margin-left: 25px; 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: 0.3s; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; /* İkon ve yazı arasındaki boşluk */
+        }
+        nav a i { font-size: 16px; }
         nav a:hover { color: #27f4d2; }
 
         /* ANA KONTEYNER */
@@ -90,7 +103,7 @@
             z-index: 1; 
         }
 
-        /* ANALİZ PANELİ (Harita Üzerindeki Butonlar) */
+        /* ANALİZ PANELİ */
         .panel {
             position: absolute;
             top: 100px;
@@ -118,7 +131,7 @@
         button:hover { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
 
-        /* POPUP ÖZELLEŞTİRME (TIKLAYINCA ÇIKAN KUTU) */
+        /* POPUP ÖZELLEŞTİRME */
         .leaflet-popup-content-wrapper {
             background: #1a1a1a !important;
             color: #fff !important;
@@ -180,8 +193,8 @@
         <span class="logo-text">ADA OZKAN</span>
     </a>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="projeler.html" style="color: #27f4d2;">Projects</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="projeler.html" style="color: #27f4d2;"><i class="fa-solid fa-layer-group"></i> Projects</a>
     </nav>
 </header>
 
@@ -298,7 +311,7 @@
     window.gosterEgitim = () => { aktifKatman = "egitim"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.egitim === "Lisans" ? "#0000FF" : "#008000"})); };
     window.resetMap = () => { katmanlar.forEach(k => k.setStyle({fillColor: "#cccccc"})); drawnItems.clearLayers(); };
 
-    // DÖVİZ MANTIĞI (50 Ülke)
+    // DÖVİZ MANTIĞI
     const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
     const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
     countries.sort().forEach(c => {
