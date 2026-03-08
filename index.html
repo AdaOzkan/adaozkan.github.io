@@ -89,7 +89,7 @@
 <header>
     <a href="index.html" class="logo-container">
         <img src="adalogo.ico" alt="Ada Özkan" height="35">
-        <span class="logo-text">ADA OZKAN</span>
+        <span class="logo-text">ADA ÖZKAN</span>
     </a>
     <nav>
         <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
@@ -109,7 +109,7 @@
 
 <section class="section" id="about">
     <h2>About</h2>
-    <p>I am Ada Özkan. I build electronics and engineering projects. My main interests include embedded systems, aerospace and motorsport engineering.</p>
+    <p>I am Ada. I build electronics and engineering projects. My main interests include embedded systems, aerospace and motorsport engineering.</p>
 </section>
 
 <section class="section">
@@ -193,20 +193,25 @@
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 
-    // YENİ GÜNCEL TAKVİM
     const schedule = [
         { name: "Australia", date: "2026-03-08T07:00:00", country: "au" },
+        { name: "China", date: "2026-03-15T10:00:00", country: "cn" },
         { name: "Japan", date: "2026-03-29T08:00:00", country: "jp" },
         { name: "Bahrain", date: "2026-04-12T18:00:00", country: "bh" },
         { name: "Saudi Arabia", date: "2026-04-19T20:00:00", country: "sa" },
+        { name: "Miami", date: "2026-05-03T22:30:00", country: "us" },
+        { name: "Canada", date: "2026-05-24T21:00:00", country: "ca" },
         { name: "Monaco", date: "2026-06-07T16:00:00", country: "mc" },
         { name: "Barcelona", date: "2026-06-14T16:00:00", country: "es" },
         { name: "Austria", date: "2026-06-28T16:00:00", country: "at" },
+        { name: "Great Britain", date: "2026-07-05T17:00:00", country: "gb" },
         { name: "Belgium", date: "2026-07-19T16:00:00", country: "be" },
         { name: "Hungary", date: "2026-07-26T16:00:00", country: "hu" },
+        { name: "Netherlands", date: "2026-08-23T16:00:00", country: "nl" },
         { name: "Italy", date: "2026-09-06T16:00:00", country: "it" },
         { name: "Spain (Madrid)", date: "2026-09-13T16:00:00", country: "es" },
         { name: "Azerbaijan", date: "2026-09-26T14:00:00", country: "az" },
+        { name: "Singapore", date: "2026-10-11T15:00:00", country: "sg" },
         { name: "United States", date: "2026-10-25T22:00:00", country: "us" },
         { name: "Mexico", date: "2026-11-01T23:00:00", country: "mx" },
         { name: "Brazil", date: "2026-11-08T20:00:00", country: "br" },
@@ -233,9 +238,8 @@
         document.getElementById('curr-flag').style.display = 'block';
 
         const diff = new Date(curr.date).getTime() - now;
-        
-        // Toplam saati hesapla (günleri de saate dahil eder)
         const totalHours = Math.floor(diff / 3600000);
+        
         document.getElementById('h-val').innerText = totalHours.toString().padStart(2, '0');
         document.getElementById('m-val').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
         document.getElementById('s-val').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
