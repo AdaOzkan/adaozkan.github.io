@@ -301,8 +301,8 @@
     }
 
     let pilotName = "";
-    let myBestTime = Infinity; // Senin en iyi sonucun
-    let globalRecord = 0.245; // Kıyaslama yapılacak sabit rekor
+    let myBestTime = Infinity;
+    let globalRecord = 0.245; 
     let startTime, isWaiting = false, timeout;
 
     function initTimer() {
@@ -343,17 +343,21 @@
     function processReaction(t) {
         const display = document.getElementById('ui-time');
         const recordDisplay = document.getElementById('ui-record-time');
-        const delta = document.getElementById('ui-delta');
         const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
         
         let color = "yellow";
         let diff = t - globalRecord;
 
-        // Renk mantığı
-        if (t < globalRecord) color = "purple";
-        else if (t < (myBestTime === Infinity ? 99 : myBestTime)) color = "green";
+        // Mor Işık: Kendi rekorunu kırdığında
+        if (t < myBestTime && myBestTime !== Infinity) {
+            color = "purple";
+        } 
+        // Yeşil Işık: Global rekorun altına indiğinde ama kendi rekorun değilse
+        else if (t < globalRecord) {
+            color = "green";
+        }
 
-        // Senin en iyi sonucunu güncelle
+        // Kendi en iyi sonucunu güncelle
         if (t < myBestTime) {
             myBestTime = t;
             recordDisplay.innerText = myBestTime.toFixed(3);
