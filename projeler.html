@@ -32,7 +32,7 @@
             background: #0a0a0a; 
             color: white; 
             min-height: 100vh;
-            position: relative;
+            overflow-x: hidden;
         }
 
         #particles-js {
@@ -71,7 +71,6 @@
             align-items: center;
             gap: 8px;
         }
-        nav a i { font-size: 16px; }
         nav a:hover { color: #27f4d2; }
 
         .main-container {
@@ -95,40 +94,7 @@
             color: #ffffff;
         }
 
-        #map { 
-            width: 100%; 
-            height: 500px;
-            border-radius: 15px;
-            z-index: 1; 
-        }
-
-        .panel {
-            position: absolute;
-            top: 100px;
-            left: 45px;
-            background: rgba(10, 10, 10, 0.9);
-            padding: 12px;
-            z-index: 1000;
-            border-radius: 12px;
-            border: 1px solid #3671c6;
-        }
-
-        button {
-            margin: 3px;
-            padding: 8px 10px;
-            border: 1px solid #27f4d2;
-            border-radius: 6px;
-            cursor: pointer;
-            background: transparent;
-            color: #27f4d2;
-            font-family: 'F1Regular', sans-serif;
-            font-size: 10px;
-            transition: 0.3s;
-        }
-
-        button:hover { background: #27f4d2; color: #000; }
-        .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
-
+        /* REACTION TELEMETRY STYLES */
         .rt-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; }
         .timing-board { background: #0d0d0d; border: 1px solid #333; max-width: 550px; margin: 20px auto; border-radius: 10px; overflow: hidden; }
         .timing-header { background: #15151e; padding: 12px 15px; display: flex; align-items: center; border-bottom: 2px solid #333; }
@@ -154,26 +120,10 @@
         .ready { background: #e8002d !important; color: white; border-style: solid !important; }
         .go { background: #00ff00 !important; color: black !important; border-style: solid !important; }
 
+        /* RENKLER */
         .purple { color: #b15efb !important; } .bg-purple { background: #b15efb !important; }
         .green { color: #00ff00 !important; }  .bg-green { background: #00ff00 !important; }
         .yellow { color: #fff000 !important; } .bg-yellow { background: #fff000 !important; }
-
-        .currency-section { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
-        .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
-        label { font-family: 'F1Black', sans-serif; font-size: 11px; color: #27f4d2; margin-bottom: 8px; display: block; }
-        input, select {
-            width: 100%; background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; font-family: 'F1Regular', sans-serif;
-        }
-        .calc-btn {
-            background: #27f4d2; color: #000; font-family: 'F1Black', sans-serif;
-            border: none; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s;
-        }
-        .calc-btn:hover { background: #fff; }
-        .result-display {
-            margin-top: 20px; padding: 20px; background: rgba(39, 244, 210, 0.05);
-            border-radius: 12px; text-align: center; font-family: 'F1Black', sans-serif;
-            font-size: 22px; color: #27f4d2; border: 1px dashed #27f4d2;
-        }
 
         footer { text-align: center; padding: 40px; font-family: 'F1Black', sans-serif; font-size: 10px; opacity: 0.3; }
     </style>
@@ -194,46 +144,14 @@
 </header>
 
 <div class="main-container">
-    <h2>Mahalle Veri Analizi</h2>
-    
-    <div class="panel">
-        <button onclick="gosterNufus()">Nüfus</button>
-        <button onclick="gosterYas()">Yaş</button>
-        <button onclick="gosterMedeni()">Medeni</button>
-        <button onclick="gosterEgitim()">Eğitim</button>
-        <button onclick="resetMap()" class="reset-btn">Temizle</button>
-    </div>
-
-    <div id="map"></div>
-
-    <div class="currency-section">
-        <h2>Global Currency Converter</h2>
-        <div class="converter-grid">
-            <div>
-                <label>MİKTAR</label>
-                <input type="number" id="amount" value="1">
-            </div>
-            <div>
-                <label>KAYNAK</label>
-                <select id="fromCurrency"></select>
-            </div>
-            <div>
-                <label>HEDEF</label>
-                <select id="toCurrency"></select>
-            </div>
-            <button class="calc-btn" onclick="convertCurrency()">HESAPLA</button>
-        </div>
-        <div class="result-display" id="result">HESAPLAMAK İÇİN TIKLAYIN</div>
-    </div>
-
     <div class="rt-section">
         <h2>Reaction Telemetry</h2>
         
         <div id="setup-panel" style="text-align:center; padding: 20px;">
-            <label style="text-align:center;">PİLOT İSMİ GİRİNİZ</label>
-            <input type="text" id="p-name" placeholder="ÖRN: ÖZKAN" style="text-align:center; width: 250px; margin: 0 auto 15px auto;">
+            <label style="text-align:center; font-family: 'F1Black'; font-size: 12px; color: #27f4d2; display: block; margin-bottom: 10px;">PİLOT İSMİ GİRİNİZ</label>
+            <input type="text" id="p-name" placeholder="ÖRN: ÖZKAN" style="text-align:center; width: 250px; margin: 0 auto 15px auto; background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; font-family: 'F1Regular';">
             <br>
-            <button class="calc-btn" onclick="initTimer()">SİSTEMİ BAŞLAT</button>
+            <button onclick="initTimer()" style="background: #27f4d2; color: #000; font-family: 'F1Black'; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; transition: 0.3s;">SİSTEMİ BAŞLAT</button>
         </div>
 
         <div id="timer-ui" style="display:none;">
@@ -243,7 +161,7 @@
                     <div class="driver-name" id="ui-name">ADA</div>
                 </div>
                 <div class="timing-content">
-                    <div class="current-time" id="ui-time">0.000<span class="delta" id="ui-delta"></span></div>
+                    <div class="current-time" id="ui-time">0.000</div>
                     <div class="best-lap-container">
                         <span class="best-time" id="ui-record-time">0.000</span>
                         <span class="best-label">BEST TIME</span>
@@ -263,42 +181,9 @@
 <footer>© 2026 ADA OZKAN • PERFORMANCE PORTFOLIO</footer>
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-
 <script>
-    particlesJS("particles-js", {
-        "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#27f4d2" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.4 },
-            "size": { "value": 3 },
-            "line_linked": { "enable": true, "distance": 150, "color": "#3671c6", "opacity": 0.3, "width": 1 },
-            "move": { "speed": 1.5 }
-        },
-        "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
-    });
-
-    var map = L.map('map').setView([41.398, 27.35], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-    const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
-    const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
-    countries.sort().forEach(c => {
-        f.add(new Option(c, c, c==="TRY"));
-        t.add(new Option(c, c, c==="USD"));
-    });
-
-    async function convertCurrency() {
-        const a = document.getElementById('amount').value, res = document.getElementById('result');
-        if(!a || a <= 0) return;
-        try {
-            const data = await (await fetch(`https://open.er-api.com/v6/latest/${f.value}`)).json();
-            const val = (a * data.rates[t.value]).toLocaleString('tr-TR', {minimumFractionDigits: 2});
-            res.innerText = `${a} ${f.value} = ${val} ${t.value}`;
-        } catch(e) { res.innerText = "HATA!"; }
-    }
+    // Arkaplan Parçacıkları
+    particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#27f4d2" }, "shape": { "type": "circle" }, "opacity": { "value": 0.4 }, "size": { "value": 3 }, "line_linked": { "enable": true, "distance": 150, "color": "#3671c6", "opacity": 0.3, "width": 1 }, "move": { "speed": 1.5 } } });
 
     let pilotName = "";
     let myBestTime = Infinity;
@@ -317,7 +202,7 @@
     function handleTimerClick() {
         const zone = document.getElementById('start-zone');
         if(!isWaiting && zone.innerText !== "TIKLA!") {
-            zone.innerText = "IŞIKLARIN SÖNMESİNİ BEKLE...";
+            zone.innerText = "BEKLE...";
             zone.classList.add('ready');
             isWaiting = true;
             timeout = setTimeout(() => {
@@ -346,15 +231,22 @@
         const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
         
         let color = "yellow";
-        let diff = t - globalRecord;
+        let isFirstRun = (myBestTime === Infinity);
+        
+        // Renk Mantığı
+        if (!isFirstRun && t < myBestTime) {
+            color = "purple"; // Kendi rekorunu kırdın
+        } else if (t < globalRecord) {
+            color = "green"; // Global rekorun (0.245) altındasın
+        }
 
-        // Mor Işık: Kendi rekorunu kırdığında
-        if (t < myBestTime && myBestTime !== Infinity) {
-            color = "purple";
-        } 
-        // Yeşil Işık: Global rekorun altına indiğinde ama kendi rekorun değilse
-        else if (t < globalRecord) {
-            color = "green";
+        // Sembol ve Fark Hesaplama
+        let sign = "";
+        let diff = 0;
+        if (!isFirstRun) {
+            diff = Math.abs(t - myBestTime);
+            // Yeşil veya Morsa (-) koy, Sarıysa (+) koy
+            sign = (color === "purple" || color === "green") ? "-" : "+";
         }
 
         // Kendi en iyi sonucunu güncelle
@@ -363,8 +255,12 @@
             recordDisplay.innerText = myBestTime.toFixed(3);
         }
         
+        // Ekranı Güncelle
         display.className = "current-time " + color;
-        display.innerHTML = t.toFixed(3) + `<span class="delta">${diff > 0 ? '+' : ''}${diff.toFixed(3)}</span>`;
+        let deltaHtml = !isFirstRun ? `<span class="delta">${sign}${diff.toFixed(3)}</span>` : "";
+        display.innerHTML = t.toFixed(3) + deltaHtml;
+
+        // Sektör ışıklarını güncelle
         [s1, s2, s3].forEach(s => s.className = "sector bg-" + color);
     }
 </script>
