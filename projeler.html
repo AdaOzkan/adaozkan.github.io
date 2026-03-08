@@ -59,7 +59,6 @@
         .header-logo-img { height: 35px; width: auto; }
         .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
         
-        /* NAVIGASYON VE IKONLAR */
         nav a { 
             color: white; 
             margin-left: 25px; 
@@ -68,7 +67,7 @@
             transition: 0.3s; 
             display: inline-flex;
             align-items: center;
-            gap: 8px; /* İkon ve yazı arasındaki boşluk */
+            gap: 8px;
         }
         nav a i { font-size: 16px; }
         nav a:hover { color: #27f4d2; }
@@ -131,43 +130,43 @@
         button:hover { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
 
-        /* POPUP ÖZELLEŞTİRME */
-        .leaflet-popup-content-wrapper {
-            background: #1a1a1a !important;
-            color: #fff !important;
-            border: 1px solid #3671c6;
-            border-radius: 10px;
-            font-family: 'F1Regular', sans-serif;
+        /* REACTION TIMER STİLLERİ */
+        .rt-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; }
+        .timing-board { background: #0d0d0d; border: 1px solid #333; max-width: 550px; margin: 20px auto; border-radius: 10px; overflow: hidden; }
+        .timing-header { background: #15151e; padding: 12px 15px; display: flex; align-items: center; border-bottom: 2px solid #333; }
+        .team-indicator { width: 4px; height: 18px; background: #e8002d; margin-right: 10px; }
+        .driver-name { font-family: 'F1Black', sans-serif; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; }
+        
+        .timing-content { padding: 25px; display: flex; justify-content: space-between; align-items: baseline; }
+        .current-time { font-family: 'F1Black', sans-serif; font-size: 48px; position: relative; }
+        .delta { font-family: 'F1Regular', sans-serif; font-size: 16px; margin-left: 10px; vertical-align: middle; }
+        
+        .best-lap-container { text-align: right; }
+        .best-time { font-family: 'F1Regular', sans-serif; font-size: 22px; display: block; }
+        .best-driver { font-family: 'F1Black', sans-serif; font-size: 12px; color: #888; text-transform: uppercase; }
+
+        .status-bar { height: 6px; width: 100%; background: #222; display: flex; }
+        .sector { flex: 1; border-right: 1px solid #000; transition: 0.3s; }
+
+        #start-zone { 
+            width: 100%; height: 120px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; border-radius: 15px; margin-top: 15px; font-family: 'F1Black', sans-serif; border: 2px dashed #444; transition: 0.2s;
+            text-align: center;
         }
-        .leaflet-popup-content b {
-            font-family: 'F1Black', sans-serif;
-            color: #27f4d2;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .leaflet-popup-tip { background: #3671c6 !important; }
+        .ready { background: #e8002d !important; color: white; border-style: solid !important; }
+        .go { background: #00ff00 !important; color: black !important; border-style: solid !important; }
+
+        /* Durum Renkleri */
+        .purple { color: #b15efb !important; } .bg-purple { background: #b15efb !important; }
+        .green { color: #00ff00 !important; }  .bg-green { background: #00ff00 !important; }
+        .yellow { color: #fff000 !important; } .bg-yellow { background: #fff000 !important; }
 
         /* CURRENCY BÖLÜMÜ */
-        .currency-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #333;
-        }
-        .converter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            align-items: end;
-        }
+        .currency-section { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
+        .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
         label { font-family: 'F1Black', sans-serif; font-size: 11px; color: #27f4d2; margin-bottom: 8px; display: block; }
         input, select {
-            width: 100%;
-            background: #111;
-            border: 1px solid #444;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: 'F1Regular', sans-serif;
+            width: 100%; background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; font-family: 'F1Regular', sans-serif;
         }
         .calc-btn {
             background: #27f4d2; color: #000; font-family: 'F1Black', sans-serif;
@@ -229,6 +228,39 @@
             <button class="calc-btn" onclick="convertCurrency()">HESAPLA</button>
         </div>
         <div class="result-display" id="result">HESAPLAMAK İÇİN TIKLAYIN</div>
+    </div>
+
+    <div class="rt-section">
+        <h2>Reaction Telemetry</h2>
+        
+        <div id="setup-panel" style="text-align:center; padding: 20px;">
+            <label style="text-align:center;">PİLOT İSMİ GİRİNİZ</label>
+            <input type="text" id="p-name" placeholder="ÖRN: ÖZKAN" style="text-align:center; width: 250px; margin: 0 auto 15px auto;">
+            <br>
+            <button class="calc-btn" onclick="initTimer()">SİSTEMİ BAŞLAT</button>
+        </div>
+
+        <div id="timer-ui" style="display:none;">
+            <div class="timing-board">
+                <div class="timing-header">
+                    <div class="team-indicator"></div>
+                    <div class="driver-name" id="ui-name">ADA</div>
+                </div>
+                <div class="timing-content">
+                    <div class="current-time" id="ui-time">0.000<span class="delta" id="ui-delta"></span></div>
+                    <div class="best-lap-container">
+                        <span class="best-time" id="ui-record-time">0.245</span>
+                        <span class="best-driver" id="ui-record-name">PIASTRI</span>
+                    </div>
+                </div>
+                <div class="status-bar">
+                    <div id="s1" class="sector"></div>
+                    <div id="s2" class="sector"></div>
+                    <div id="s3" class="sector"></div>
+                </div>
+            </div>
+            <div id="start-zone" onclick="handleTimerClick()">BAŞLAMAK İÇİN TIKLA</div>
+        </div>
     </div>
 </div>
 
@@ -329,6 +361,76 @@
             const val = (a * data.rates[t.value]).toLocaleString('tr-TR', {minimumFractionDigits: 2});
             res.innerText = `${a} ${f.value} = ${val} ${t.value}`;
         } catch(e) { res.innerText = "HATA!"; }
+    }
+
+    // REACTION TIMER LOGIC
+    let pilotName = "";
+    let bestTime = Infinity;
+    let record = { name: "PIASTRI", time: 0.245 };
+    let startTime, isWaiting = false, timeout;
+
+    function initTimer() {
+        const val = document.getElementById('p-name').value;
+        if(!val) return;
+        pilotName = val.toUpperCase();
+        document.getElementById('setup-panel').style.display = 'none';
+        document.getElementById('timer-ui').style.display = 'block';
+        document.getElementById('ui-name').innerText = pilotName;
+        updateRecordUI();
+    }
+
+    function updateRecordUI() {
+        document.getElementById('ui-record-time').innerText = record.time.toFixed(3);
+        document.getElementById('ui-record-name').innerText = record.name;
+    }
+
+    function handleTimerClick() {
+        const zone = document.getElementById('start-zone');
+        if(!isWaiting && zone.innerText !== "TIKLA!") {
+            zone.innerText = "IŞIKLARIN SÖNMESİNİ BEKLE...";
+            zone.classList.add('ready');
+            isWaiting = true;
+            timeout = setTimeout(() => {
+                zone.innerText = "TIKLA!";
+                zone.classList.remove('ready');
+                zone.classList.add('go');
+                startTime = performance.now();
+                isWaiting = false;
+            }, Math.random() * 3000 + 2000);
+        } else if (isWaiting) {
+            clearTimeout(timeout);
+            isWaiting = false;
+            zone.innerText = "HATALI ÇIKIŞ! TEKRAR TIKLA";
+            zone.classList.remove('ready');
+        } else if (zone.innerText === "TIKLA!") {
+            const reaction = (performance.now() - startTime) / 1000;
+            processReaction(reaction);
+            zone.innerText = "TEKRAR DENEMEK İÇİN TIKLA";
+            zone.classList.remove('go');
+        }
+    }
+
+    function processReaction(t) {
+        const display = document.getElementById('ui-time');
+        const delta = document.getElementById('ui-delta');
+        const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
+        
+        let color = "yellow";
+        let diff = t - record.time;
+
+        if (t < record.time) {
+            color = "purple";
+            record = { name: pilotName, time: t };
+            updateRecordUI();
+        } else if (t < bestTime) {
+            color = "green";
+        }
+        
+        bestTime = Math.min(bestTime, t);
+        display.className = "current-time " + color;
+        display.innerHTML = t.toFixed(3) + `<span class="delta">${diff > 0 ? '+' : ''}${diff.toFixed(3)}</span>`;
+        
+        [s1, s2, s3].forEach(s => s.className = "sector bg-" + color);
     }
 </script>
 </body>
