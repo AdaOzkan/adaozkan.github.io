@@ -36,11 +36,37 @@
         nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
         nav a:hover { color: #27f4d2; }
 
-        /* HERO */
+        /* HERO - Güncellenen Bölüm */
         .hero { padding: 150px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        .title-container { display: flex; flex-direction: column; align-items: center; position: relative; }
-        .hero .name-ada { font-family: 'Northwell', cursive; font-size: clamp(90px, 16vw, 180px); color: #27f4d2; line-height: 0.1; margin-top: -20px; display: block; z-index: 2; }
-        .hero .name-ozkan { font-family: 'F1Black', sans-serif; font-size: clamp(40px, 8vw, 80px); letter-spacing: 12px; color: #ffffff; text-transform: uppercase; margin-top: -20px; display: block; z-index: 1; }
+        
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero .name-ada { 
+            font-family: 'Northwell', cursive; 
+            font-size: clamp(70px, 12vw, 140px); /* KÜÇÜLTÜLDÜ */
+            color: #27f4d2; 
+            line-height: 0.2; /* Neredeyse sıfır ama biraz artırıldı */
+            margin-top: -10px; /* Ozkan'ın üzerine bindirmek için - DAHA AZ BİNDİRME (Uzaklaştırma) */
+            display: block;
+            z-index: 2; /* Ozkan'ın önünde görünmesi için */
+        }
+
+        .hero .name-ozkan { 
+            font-family: 'F1Black', sans-serif; 
+            font-size: clamp(50px, 10vw, 100px); /* BÜYÜTÜLDÜ */
+            letter-spacing: 12px; 
+            color: #ffffff; 
+            text-transform: uppercase; 
+            margin-top: -20px; /* Ada'nın altına çekmek için */
+            display: block;
+            z-index: 1; /* Ada'nın arkasında kalması için */
+        }
+
         .hero p { letter-spacing: 5px; color: #27f4d2; margin-top: 50px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
 
         /* SECTIONS */
@@ -51,6 +77,7 @@
         .contactBox { border-left: 5px solid #ff8000; padding: 20px; background: rgba(30, 30, 30, 0.5); margin-bottom: 30px; border-radius: 0 10px 10px 0; }
         .contact-link { color: white; text-decoration: none; display: flex; align-items: center; margin-bottom: 15px; font-size: 18px; }
         .contact-link i { margin-right: 15px; color: #ff8000; width: 20px; text-align: center; }
+        
         .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; }
         .links a:hover { border-color: #27f4d2; background: #27f4d2; color: #000; transform: translateY(-3px); }
@@ -102,7 +129,7 @@
 <section class="hero">
     <div class="title-container">
         <span class="name-ada">Ada</span>
-        <span class="name-ozkan">OZKAN</span>
+        <span class="name-ozkan">ÖZKAN</span>
     </div>
     <p>ELECTRONICS • SPACE • ENGINEERING</p>
 </section>
