@@ -18,7 +18,7 @@
             src: url('Formula1-Black.ttf') format('truetype');
         }
         @font-face {
-            font-family: 'F1Bold'; /* Yüklediğin Bold Font */
+            font-family: 'F1Bold';
             src: url('Formula1-Bold_web.ttf') format('truetype');
         }
         @font-face {
@@ -136,12 +136,12 @@
         .driver-name { font-family: 'F1Black', sans-serif; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; }
         
         .timing-content { padding: 25px; display: flex; justify-content: space-between; align-items: baseline; }
-        .current-time { font-family: 'F1Bold', sans-serif; font-size: 48px; position: relative; } /* Font güncellendi */
+        .current-time { font-family: 'F1Bold', sans-serif; font-size: 48px; position: relative; }
         .delta { font-family: 'F1Regular', sans-serif; font-size: 16px; margin-left: 10px; vertical-align: middle; }
         
         .best-lap-container { text-align: right; }
-        .best-time { font-family: 'F1Bold', sans-serif; font-size: 22px; display: block; } /* Font güncellendi */
-        .best-driver { font-family: 'F1Regular', sans-serif; font-size: 12px; color: #888; text-transform: uppercase; } /* Regular yapıldı */
+        .best-time { font-family: 'F1Bold', sans-serif; font-size: 22px; display: block; }
+        .best-label { font-family: 'F1Regular', sans-serif; font-size: 12px; color: #888; text-transform: uppercase; }
 
         .status-bar { height: 6px; width: 100%; background: #222; display: flex; }
         .sector { flex: 1; border-right: 1px solid #000; transition: 0.3s; }
@@ -245,8 +245,8 @@
                 <div class="timing-content">
                     <div class="current-time" id="ui-time">0.000<span class="delta" id="ui-delta"></span></div>
                     <div class="best-lap-container">
-                        <span class="best-time" id="ui-record-time">0.245</span>
-                        <span class="best-driver" id="ui-record-name">PIASTRI</span>
+                        <span class="best-time" id="ui-record-time">0.000</span>
+                        <span class="best-label">BEST TIME</span>
                     </div>
                 </div>
                 <div class="status-bar">
@@ -280,62 +280,8 @@
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 
-    var aktifKatman = "nufus";
-    var katmanlar = [];
     var map = L.map('map').setView([41.398, 27.35], 13);
-    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-    var drawnItems = new L.FeatureGroup();
-    map.addLayer(drawnItems);
-    var drawControl = new L.Control.Draw({ edit: { featureGroup: drawnItems } });
-    map.addControl(drawControl);
-    map.on(L.Draw.Event.CREATED, function (e) { drawnItems.addLayer(e.layer); });
-
-    var mahalleler = [
-        {name:"Sevgi",lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
-        {name:"8 Kasım",lat:41.3901, lon:27.3549, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-        {name:"Hürriyet",lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Yılmaz",lat:41.4120, lon:27.3508, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Dere",lat:41.4090, lon:27.3321, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gençlik",lat:41.3981, lon:27.3491, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kurtuluş",lat:41.3989, lon:27.3565, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Siteler",lat:41.3966, lon:27.3570, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Yıldız",lat:41.3982, lon:27.3659, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"İnönü",lat:41.4019, lon:27.3600, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Kocasinan",lat:41.4068, lon:27.3453, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Gündoğu",lat:41.4082, lon:27.3630, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Atatürk",lat:41.4033, lon:27.3697, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-        {name:"Güneş",lat:41.4058, lon:27.3698, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-        {name:"Cumhuriyet",lat:41.4139, lon:27.3592, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-        {name:"Barış",lat:41.4116, lon:27.3598, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
-    ];
-
-    function popupIcerik(m) {
-        let txt = `<b>${m.name} Mahallesi</b>`;
-        if(aktifKatman==="nufus") txt += `Nüfus: ${m.nufus}`;
-        else if(aktifKatman==="yas") txt += `Yaş Grubu: ${m.yas}`;
-        else if(aktifKatman==="medeni") txt += `Durum: ${m.medeni}`;
-        else if(aktifKatman==="egitim") txt += `Eğitim: ${m.egitim}`;
-        return txt;
-    }
-
-    mahalleler.forEach(m => {
-        var circle = L.circleMarker([m.lat, m.lon], {
-            radius: 12, color: "#222", fillColor: "#cccccc", fillOpacity: 0.9, weight: 2
-        }).addTo(map);
-        circle.veri = m;
-        circle.on("click", () => {
-            circle.bindPopup(popupIcerik(circle.veri)).openPopup();
-        });
-        katmanlar.push(circle);
-    });
-
-    window.gosterNufus = () => { aktifKatman = "nufus"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.nufus > 7000 ? "#800026" : "#FD8D3C"})); };
-    window.gosterYas = () => { aktifKatman = "yas"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.yas === "65+" ? "#253494" : "#41b6c4"})); };
-    window.gosterMedeni = () => { aktifKatman = "medeni"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.medeni === "Evli" ? "#6a0dad" : "#ff1493"})); };
-    window.gosterEgitim = () => { aktifKatman = "egitim"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.egitim === "Lisans" ? "#0000FF" : "#008000"})); };
-    window.resetMap = () => { katmanlar.forEach(k => k.setStyle({fillColor: "#cccccc"})); drawnItems.clearLayers(); };
 
     const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
     const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
@@ -343,12 +289,10 @@
         f.add(new Option(c, c, c==="TRY"));
         t.add(new Option(c, c, c==="USD"));
     });
-    f.value = "TRY"; t.value = "USD";
 
     async function convertCurrency() {
         const a = document.getElementById('amount').value, res = document.getElementById('result');
         if(!a || a <= 0) return;
-        res.innerText = "...";
         try {
             const data = await (await fetch(`https://open.er-api.com/v6/latest/${f.value}`)).json();
             const val = (a * data.rates[t.value]).toLocaleString('tr-TR', {minimumFractionDigits: 2});
@@ -357,8 +301,8 @@
     }
 
     let pilotName = "";
-    let bestTime = Infinity;
-    let record = { name: "PIASTRI", time: 0.245 };
+    let myBestTime = Infinity; // Senin en iyi sonucun
+    let globalRecord = 0.245; // Kıyaslama yapılacak sabit rekor
     let startTime, isWaiting = false, timeout;
 
     function initTimer() {
@@ -368,12 +312,6 @@
         document.getElementById('setup-panel').style.display = 'none';
         document.getElementById('timer-ui').style.display = 'block';
         document.getElementById('ui-name').innerText = pilotName;
-        updateRecordUI();
-    }
-
-    function updateRecordUI() {
-        document.getElementById('ui-record-time').innerText = record.time.toFixed(3);
-        document.getElementById('ui-record-name').innerText = record.name;
     }
 
     function handleTimerClick() {
@@ -404,24 +342,25 @@
 
     function processReaction(t) {
         const display = document.getElementById('ui-time');
+        const recordDisplay = document.getElementById('ui-record-time');
         const delta = document.getElementById('ui-delta');
         const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
         
         let color = "yellow";
-        let diff = t - record.time;
+        let diff = t - globalRecord;
 
-        if (t < record.time) {
-            color = "purple";
-            record = { name: pilotName, time: t };
-            updateRecordUI();
-        } else if (t < bestTime) {
-            color = "green";
+        // Renk mantığı
+        if (t < globalRecord) color = "purple";
+        else if (t < (myBestTime === Infinity ? 99 : myBestTime)) color = "green";
+
+        // Senin en iyi sonucunu güncelle
+        if (t < myBestTime) {
+            myBestTime = t;
+            recordDisplay.innerText = myBestTime.toFixed(3);
         }
         
-        bestTime = Math.min(bestTime, t);
         display.className = "current-time " + color;
         display.innerHTML = t.toFixed(3) + `<span class="delta">${diff > 0 ? '+' : ''}${diff.toFixed(3)}</span>`;
-        
         [s1, s2, s3].forEach(s => s.className = "sector bg-" + color);
     }
 </script>
