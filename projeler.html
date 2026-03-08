@@ -18,6 +18,10 @@
             src: url('Formula1-Black.ttf') format('truetype');
         }
         @font-face {
+            font-family: 'F1Bold'; /* Yüklediğin Bold Font */
+            src: url('Formula1-Bold_web.ttf') format('truetype');
+        }
+        @font-face {
             font-family: 'F1Regular';
             src: url('Formula1-Regular-1.ttf') format('truetype');
         }
@@ -31,7 +35,6 @@
             position: relative;
         }
 
-        /* ARKA PLAN PARÇACIKLARI */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -41,7 +44,6 @@
             left: 0;
         }
 
-        /* HEADER */
         header {
             background: rgba(20, 41, 72, 0.95);
             backdrop-filter: blur(10px);
@@ -72,7 +74,6 @@
         nav a i { font-size: 16px; }
         nav a:hover { color: #27f4d2; }
 
-        /* ANA KONTEYNER */
         .main-container {
             margin: 30px auto;
             max-width: 1200px;
@@ -94,7 +95,6 @@
             color: #ffffff;
         }
 
-        /* HARİTA ALANI */
         #map { 
             width: 100%; 
             height: 500px;
@@ -102,7 +102,6 @@
             z-index: 1; 
         }
 
-        /* ANALİZ PANELİ */
         .panel {
             position: absolute;
             top: 100px;
@@ -130,7 +129,6 @@
         button:hover { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
 
-        /* REACTION TIMER STİLLERİ */
         .rt-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; }
         .timing-board { background: #0d0d0d; border: 1px solid #333; max-width: 550px; margin: 20px auto; border-radius: 10px; overflow: hidden; }
         .timing-header { background: #15151e; padding: 12px 15px; display: flex; align-items: center; border-bottom: 2px solid #333; }
@@ -138,12 +136,12 @@
         .driver-name { font-family: 'F1Black', sans-serif; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; }
         
         .timing-content { padding: 25px; display: flex; justify-content: space-between; align-items: baseline; }
-        .current-time { font-family: 'F1Black', sans-serif; font-size: 48px; position: relative; }
+        .current-time { font-family: 'F1Bold', sans-serif; font-size: 48px; position: relative; } /* Font güncellendi */
         .delta { font-family: 'F1Regular', sans-serif; font-size: 16px; margin-left: 10px; vertical-align: middle; }
         
         .best-lap-container { text-align: right; }
-        .best-time { font-family: 'F1Regular', sans-serif; font-size: 22px; display: block; }
-        .best-driver { font-family: 'F1Black', sans-serif; font-size: 12px; color: #888; text-transform: uppercase; }
+        .best-time { font-family: 'F1Bold', sans-serif; font-size: 22px; display: block; } /* Font güncellendi */
+        .best-driver { font-family: 'F1Regular', sans-serif; font-size: 12px; color: #888; text-transform: uppercase; } /* Regular yapıldı */
 
         .status-bar { height: 6px; width: 100%; background: #222; display: flex; }
         .sector { flex: 1; border-right: 1px solid #000; transition: 0.3s; }
@@ -156,12 +154,10 @@
         .ready { background: #e8002d !important; color: white; border-style: solid !important; }
         .go { background: #00ff00 !important; color: black !important; border-style: solid !important; }
 
-        /* Durum Renkleri */
         .purple { color: #b15efb !important; } .bg-purple { background: #b15efb !important; }
         .green { color: #00ff00 !important; }  .bg-green { background: #00ff00 !important; }
         .yellow { color: #fff000 !important; } .bg-yellow { background: #fff000 !important; }
 
-        /* CURRENCY BÖLÜMÜ */
         .currency-section { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
         .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
         label { font-family: 'F1Black', sans-serif; font-size: 11px; color: #27f4d2; margin-bottom: 8px; display: block; }
@@ -244,14 +240,13 @@
             <div class="timing-board">
                 <div class="timing-header">
                     <div class="team-indicator"></div>
-                    <div class="driver-name" id="ui-name" style="font-family: 'F1Black', sans-serif;">ADA</div>
+                    <div class="driver-name" id="ui-name">ADA</div>
                 </div>
                 <div class="timing-content">
-                    <div class="current-time" id="ui-time" style="font-family: 'F1Black', sans-serif;">0.000<span class="delta" id="ui-delta"></span></div>
+                    <div class="current-time" id="ui-time">0.000<span class="delta" id="ui-delta"></span></div>
                     <div class="best-lap-container">
-                        <span class="best-driver">BEST TIME</span>
                         <span class="best-time" id="ui-record-time">0.245</span>
-                        <span class="best-driver" id="ui-record-name" style="font-family: 'F1Black', sans-serif;">PIASTRI</span>
+                        <span class="best-driver" id="ui-record-name">PIASTRI</span>
                     </div>
                 </div>
                 <div class="status-bar">
@@ -272,7 +267,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <script>
-    // PARTICLES-JS
     particlesJS("particles-js", {
         "particles": {
             "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
@@ -286,7 +280,6 @@
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 
-    // HARİTA MANTIĞI
     var aktifKatman = "nufus";
     var katmanlar = [];
     var map = L.map('map').setView([41.398, 27.35], 13);
@@ -344,7 +337,6 @@
     window.gosterEgitim = () => { aktifKatman = "egitim"; katmanlar.forEach(k => k.setStyle({fillColor: k.veri.egitim === "Lisans" ? "#0000FF" : "#008000"})); };
     window.resetMap = () => { katmanlar.forEach(k => k.setStyle({fillColor: "#cccccc"})); drawnItems.clearLayers(); };
 
-    // DÖVİZ MANTIĞI
     const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
     const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
     countries.sort().forEach(c => {
@@ -364,7 +356,6 @@
         } catch(e) { res.innerText = "HATA!"; }
     }
 
-    // REACTION TIMER LOGIC
     let pilotName = "";
     let bestTime = Infinity;
     let record = { name: "PIASTRI", time: 0.245 };
