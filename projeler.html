@@ -95,27 +95,80 @@
             color: #ffffff;
         }
 
-        #map { 
-            width: 100%; 
-            height: 500px;
-            border-radius: 15px;
-            z-index: 1; 
+        /* HARİTA KONTEYNER VE ÖZEL STİLLER */
+        .map-wrapper { position: relative; width: 100%; height: 500px; border-radius: 15px; overflow: hidden; border: 1px solid #333; }
+        #map { width: 100%; height: 100%; z-index: 1; }
+
+        .search-container {
+            position: absolute;
+            top: 15px;
+            left: 55px;
+            z-index: 1000;
+            width: 200px;
+        }
+        #citySearch {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #3671c6;
+            background: rgba(10, 10, 10, 0.9);
+            color: white;
+            font-size: 12px;
+            outline: none;
+            font-family: 'F1Regular', sans-serif;
         }
 
-        .panel {
+        .map-overlay-panel {
             position: absolute;
-            top: 100px;
-            left: 45px;
+            top: 15px;
+            right: 15px;
             background: rgba(10, 10, 10, 0.9);
-            padding: 12px;
+            padding: 10px;
             z-index: 1000;
             border-radius: 12px;
             border: 1px solid #3671c6;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
+        .info-box {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px;
+            background: rgba(20, 41, 72, 0.95);
+            border-radius: 10px;
+            border: 1px solid #27f4d2;
+            z-index: 1000;
+            min-width: 180px;
+            font-size: 12px;
+        }
+        .info-box h4 { margin: 0 0 8px 0; color: #27f4d2; font-family: 'F1Black', sans-serif; }
+
+        /* KATMAN KONTROLÜ ÖZEL STİLİ */
+        .leaflet-control-layers {
+            background: #142948f2 !important;
+            backdrop-filter: blur(5px);
+            border: 1px solid #3671c6 !important;
+            border-radius: 10px !important;
+            color: white !important;
+            font-family: 'F1Regular', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+        }
+        .leaflet-control-layers-toggle {
+            filter: invert(1); /* İkonu beyaz yapar */
+        }
+        .leaflet-control-layers-base label, .leaflet-control-layers-overlays label {
+            font-size: 10px;
+            margin-bottom: 3px;
+            cursor: pointer;
+        }
+        .leaflet-control-layers-selector { margin-top: 0 !important; accent-color: #27f4d2; }
+
         button {
-            margin: 3px;
-            padding: 8px 10px;
+            margin: 2px;
+            padding: 8px 12px;
             border: 1px solid #27f4d2;
             border-radius: 6px;
             cursor: pointer;
@@ -125,11 +178,12 @@
             font-size: 10px;
             transition: 0.3s;
         }
-
-        button:hover { background: #27f4d2; color: #000; }
+        button:hover, button.active { background: #27f4d2; color: #000; }
         .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
+        .reset-btn:hover { background: #e8002d !important; color: white !important; }
 
-        .rt-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; }
+        /* RT & CONVERTER SECTIONS */
+        .rt-section, .currency-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; }
         .timing-board { background: #0d0d0d; border: 1px solid #333; max-width: 550px; margin: 20px auto; border-radius: 10px; overflow: hidden; }
         .timing-header { background: #15151e; padding: 12px 15px; display: flex; align-items: center; border-bottom: 2px solid #333; }
         .team-indicator { width: 4px; height: 18px; background: #e8002d; margin-right: 10px; }
@@ -158,7 +212,6 @@
         .green { color: #00ff00 !important; }  .bg-green { background: #00ff00 !important; }
         .yellow { color: #fff000 !important; } .bg-yellow { background: #fff000 !important; }
 
-        .currency-section { margin-top: 30px; padding-top: 30px; border-top: 1px solid #333; }
         .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
         label { font-family: 'F1Black', sans-serif; font-size: 11px; color: #27f4d2; margin-bottom: 8px; display: block; }
         input, select {
@@ -194,17 +247,29 @@
 </header>
 
 <div class="main-container">
-    <h2>Mahalle Veri Analizi</h2>
+    <h2>Gelişmiş Mahalle Analizi ve Ölçüm Aracı</h2>
     
-    <div class="panel">
-        <button onclick="gosterNufus()">Nüfus</button>
-        <button onclick="gosterYas()">Yaş</button>
-        <button onclick="gosterMedeni()">Medeni</button>
-        <button onclick="gosterEgitim()">Eğitim</button>
-        <button onclick="resetMap()" class="reset-btn">Temizle</button>
-    </div>
+    <div class="map-wrapper">
+        <div class="search-container">
+            <input type="text" id="citySearch" list="cityList" placeholder="Şehir ara..." onchange="goToCity(this.value)">
+            <datalist id="cityList"></datalist>
+        </div>
 
-    <div id="map"></div>
+        <div class="map-overlay-panel">
+            <button onclick="guncelle('nufus', this)">Nüfus</button>
+            <button onclick="guncelle('yas', this)">Yaş</button>
+            <button onclick="guncelle('medeni', this)">Medeni</button>
+            <button onclick="guncelle('egitim', this)">Eğitim</button>
+            <button onclick="resetMap()" class="reset-btn">Sıfırla</button>
+        </div>
+
+        <div id="infoBox" class="info-box">
+            <h4>Mahalle Detayı</h4>
+            <div id="infoContent">Lütfen bir veriye tıklayın.</div>
+        </div>
+
+        <div id="map"></div>
+    </div>
 
     <div class="currency-section">
         <h2>Global Currency Converter</h2>
@@ -267,6 +332,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <script>
+    // Particles Tanımı
     particlesJS("particles-js", {
         "particles": {
             "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
@@ -280,9 +346,122 @@
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
 
-    var map = L.map('map').setView([41.398, 27.35], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    // HARİTA SİSTEMİ
+    var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© CARTO' });
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '© Esri' });
 
+    var map = L.map('map', { 
+        zoomControl: true,
+        layers: [light] 
+    }).setView([41.403, 27.355], 14);
+
+    var cizilenOgeler = new L.FeatureGroup();
+    var mahalleGrubu = new L.LayerGroup().addTo(map);
+    map.addLayer(cizilenOgeler);
+
+    var baseMaps = { "Sade Harita": light, "Uydu Görünümü": satellite };
+    var overlayMaps = { "Mahalle Noktaları": mahalleGrubu, "Çizimlerim": cizilenOgeler };
+
+    // KATMAN KONTROLÜ (Açılır-Kapanır ve Sol Alt)
+    L.control.layers(baseMaps, overlayMaps, { 
+        position: 'bottomleft', 
+        collapsed: true 
+    }).addTo(map);
+
+    var drawControl = new L.Control.Draw({
+        edit: { featureGroup: cizilenOgeler, remove: true },
+        draw: {
+            polygon: { allowIntersection: false, showArea: true, shapeOptions: { color: '#27f4d2' } },
+            polyline: { shapeOptions: { color: '#e8002d' } },
+            rectangle: { shapeOptions: { color: '#3671c6' } },
+            circle: { shapeOptions: { color: '#f1c40f' } },
+            marker: true
+        }
+    });
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType, layer = e.layer, icerik = "";
+        if (type === 'polygon' || type === 'rectangle') {
+            var alan = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+            icerik = "<b>Alan:</b> " + (alan / 1000000).toFixed(3) + " km²<br>" + (alan).toFixed(0) + " m²";
+        } else if (type === 'polyline') {
+            var noktalar = layer.getLatLngs(), mesafe = 0;
+            for (var i = 0; i < noktalar.length - 1; i++) { mesafe += noktalar[i].distanceTo(noktalar[i+1]); }
+            icerik = "<b>Uzunluk:</b> " + (mesafe / 1000).toFixed(3) + " km";
+        } else if (type === 'circle') {
+            var yaricap = layer.getRadius(), alanDaire = Math.PI * Math.pow(yaricap, 2);
+            icerik = "<b>Yarıçap:</b> " + (yaricap).toFixed(1) + " m<br><b>Alan:</b> " + (alanDaire).toFixed(0) + " m²";
+        }
+        layer.bindPopup(icerik);
+        cizilenOgeler.addLayer(layer);
+    });
+
+    const iller = { "Ankara": [39.9, 32.8], "İstanbul": [41.0, 28.9], "İzmir": [38.4, 27.1], "Kırklareli": [41.7, 27.2] };
+    const dl = document.getElementById('cityList');
+    Object.keys(iller).sort().forEach(il => { let opt = document.createElement('option'); opt.value = il; dl.appendChild(opt); });
+
+    function goToCity(val) { if(iller[val]) map.flyTo(iller[val], 11); }
+
+    const mahalleler = [
+        {name:"Sevgi", lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Bekar", egitim:"Lisans"},
+        {name:"8 Kasım", lat:41.3901, lon:27.3549, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
+        {name:"Hürriyet", lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Yılmaz", lat:41.4120, lon:27.3508, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Dere", lat:41.4090, lon:27.3321, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Gençlik", lat:41.3981, lon:27.3491, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Kurtuluş", lat:41.3989, lon:27.3565, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Siteler", lat:41.3966, lon:27.3570, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Yıldız", lat:41.3982, lon:27.3659, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"İnönü", lat:41.4019, lon:27.3600, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Kocasinan", lat:41.4068, lon:27.3453, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Gündoğu", lat:41.4082, lon:27.3630, nufus:6700, yas:"65+", medeni:"Bekar", egitim:"İlkokul"},
+        {name:"Atatürk", lat:41.4033, lon:27.3697, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
+        {name:"Güneş", lat:41.4058, lon:27.3698, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
+        {name:"Cumhuriyet", lat:41.4139, lon:27.3592, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
+        {name:"Barış", lat:41.4116, lon:27.3598, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
+    ];
+
+    var katmanlar = [];
+    mahalleler.forEach(m => {
+        var marker = L.circleMarker([m.lat, m.lon], {
+            radius: 12, fillColor: "#ccc", color: "#fff", weight: 2, fillOpacity: 0.8
+        }).addTo(mahalleGrubu);
+        marker.veri = m;
+        marker.on("click", function() {
+            document.getElementById('infoContent').innerHTML = `<b>${m.name} Mah.</b><br>Nüfus: ${m.nufus}<br>Eğitim: ${m.egitim}`;
+        });
+        katmanlar.push(marker);
+    });
+
+    function getRenk(val, tip) {
+        if(tip === 'nufus') return val > 9000 ? '#800026' : val > 5000 ? '#E31A1C' : '#FD8D3C';
+        if(tip === 'egitim') {
+            if(val === "Lisans") return '#2ecc71';
+            if(val === "Lise") return '#e67e22';
+            if(val === "İlkokul") return '#8e44ad';
+        }
+        if(tip === 'yas') return val === "65+" ? '#253494' : '#41b6c4';
+        if(tip === 'medeni') return val === "Evli" ? '#c0392b' : '#f1c40f';
+        return "#ccc";
+    }
+
+    function guncelle(tip, btn) {
+        document.querySelectorAll('.map-overlay-panel button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        katmanlar.forEach(k => k.setStyle({ fillColor: getRenk(k.veri[tip], tip) }));
+    }
+
+    function resetMap() {
+        map.setView([41.403, 27.355], 14);
+        document.getElementById('citySearch').value = "";
+        document.getElementById('infoContent').innerHTML = "Lütfen bir veriye tıklayın.";
+        katmanlar.forEach(k => k.setStyle({ fillColor: "#ccc" }));
+        document.querySelectorAll('.map-overlay-panel button').forEach(b => b.classList.remove('active'));
+        cizilenOgeler.clearLayers();
+    }
+
+    // CURRENCY CONVERTER
     const countries = ["USD","EUR","GBP","TRY","JPY","AUD","CAD","CHF","CNY","HKD","NZD","SEK","KRW","SGD","NOK","MXN","INR","RUB","ZAR","BRL","TWD","DKK","PLN","THB","IDR","HUF","CZK","ILS","CLP","PHP","AED","COP","SAR","MYR","RON","VND","KWD","BHD","EGP","PKR","IQD","QAR","AZN","KZT","UAH","DZD","MAD","LBP","JOD","OMR"];
     const f = document.getElementById('fromCurrency'), t = document.getElementById('toCurrency');
     countries.sort().forEach(c => {
@@ -300,6 +479,7 @@
         } catch(e) { res.innerText = "HATA!"; }
     }
 
+    // TELEMETRY SİSTEMİ
     let pilotName = "";
     let myBestTime = Infinity;
     let globalRecord = 0.245; 
@@ -344,25 +524,14 @@
         const display = document.getElementById('ui-time');
         const recordDisplay = document.getElementById('ui-record-time');
         const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
-        
         let color = "yellow";
         let diff = t - globalRecord;
-
-        // Mor Işık: Kendi rekorunu kırdığında
-        if (t < myBestTime && myBestTime !== Infinity) {
-            color = "purple";
-        } 
-        // Yeşil Işık: Global rekorun altına indiğinde ama kendi rekorun değilse
-        else if (t < globalRecord) {
-            color = "green";
-        }
-
-        // Kendi en iyi sonucunu güncelle
+        if (t < myBestTime && myBestTime !== Infinity) { color = "purple"; } 
+        else if (t < globalRecord) { color = "green"; }
         if (t < myBestTime) {
             myBestTime = t;
             recordDisplay.innerText = myBestTime.toFixed(3);
         }
-        
         display.className = "current-time " + color;
         display.innerHTML = t.toFixed(3) + `<span class="delta">${diff > 0 ? '+' : ''}${diff.toFixed(3)}</span>`;
         [s1, s2, s3].forEach(s => s.className = "sector bg-" + color);
