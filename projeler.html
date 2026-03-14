@@ -38,7 +38,8 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10;
         }
 
-        h2 { font-family: 'F1Black', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 20px; font-size: 20px; color: #ffffff; }
+        /* Başlık stili F1Bold olarak güncellendi */
+        h2 { font-family: 'F1Bold', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 20px; font-size: 20px; color: #ffffff; }
 
         .map-wrapper { position: relative; width: 100%; height: 500px; border-radius: 15px; overflow: hidden; border: 1px solid #333; }
         #map { width: 100%; height: 100%; z-index: 1; }
@@ -210,7 +211,7 @@
 
     function resetMap() { aktifKategori = ""; map.setView([41.403, 27.355], 13); cizilenOgeler.clearLayers(); katmanlar.forEach(k=>k.setStyle({fillColor:"#ccc"})); document.getElementById('panelTitle').innerText = "Detay Paneli"; document.getElementById('infoContent').innerHTML = "Analiz türü seçin."; }
 
-    // PARA BİRİMİ LİSTESİ (İSİMLERLE BİRLİKTE)
+    // PARA BİRİMİ LİSTESİ
     const currencyNames = {
         "USD": "Amerikan Doları", "EUR": "Euro", "JPY": "Japon Yeni", "GBP": "İngiliz Sterlini", "AUD": "Avustralya Doları",
         "CAD": "Kanada Doları", "CHF": "İsviçre Frangı", "CNY": "Çin Yuanı", "HKD": "Hong Kong Doları", "NZD": "Yeni Zelanda Doları",
