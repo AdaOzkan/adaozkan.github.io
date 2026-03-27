@@ -63,7 +63,6 @@
         .info-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff; }
         .info-item i { color: #27f4d2; }
 
-        /* Stil Düzenleme Araçları */
         .style-tools { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
         .color-picker-container { display: flex; gap: 5px; flex-wrap: wrap; }
         .color-circle { width: 18px; height: 18px; border-radius: 50%; border: 1px solid white; cursor: pointer; transition: 0.2s; }
@@ -157,9 +156,15 @@
     L.polyline([[38.0, 38.5], [38.5, 39.3], [39.2, 40.2], [39.5, 40.5]], {color: '#ff7700', weight: 3, dashArray: '8, 8'}).addTo(fayHatlari).bindPopup("Doğu Anadolu Fay Hattı (DAF) - Ana Devamı");
     L.polyline([[38.5, 26.5], [38.4, 27.2], [38.3, 28.0], [38.1, 28.8]], {color: '#ff00ff', weight: 3, dashArray: '6, 6'}).addTo(fayHatlari).bindPopup("Gediz Grabeni Fay Sistemi");
 
-    var map = L.map('map', { layers: [light] }).setView([39.0, 35.0], 6);
+    // BAŞLANGIÇ KONUMU GÜNCELLEMESİ: Ramazan Yaman Fen Lisesi
+    var map = L.map('map', { layers: [light] }).setView([41.394981952701265, 27.345432685831696], 15);
+    
     var cizilenOgeler = new L.FeatureGroup().addTo(map);
     var mahalleGrubu = new L.LayerGroup().addTo(map);
+
+    // OKUL NOKTASI EKLEME
+    var schoolMarker = L.marker([41.394981952701265, 27.345432685831696]).addTo(map);
+    schoolMarker.bindPopup("<b style='color:#e8002d;'>Ramazan Yaman Fen Lisesi</b><br>Analiz Başlangıç Noktası").openPopup();
 
     L.control.layers({ "Sade": light, "Uydu": satellite }, { "İzohips": izohips, "Fay Hatları": fayHatlari, "Mahalleler": mahalleGrubu, "Çizimler": cizilenOgeler }, { position: 'bottomleft' }).addTo(map);
 
@@ -176,20 +181,17 @@
         return degrees + "° " + minutes + "' " + seconds + "'' " + direction;
     }
 
-    // Renk Ayarı Fonksiyonu
     function changeElementStyle(id, color) {
         cizilenOgeler.eachLayer(function(layer) {
             if (L.stamp(layer) == id) {
                 if (layer.setStyle) layer.setStyle({ color: color, fillColor: color });
-                if (layer instanceof L.Marker && layer.options.icon) {
-                    // Markerlar için basit renk değişimi (Opsiyonel: Custom icon da atanabilir)
+                if (layer instanceof L.Marker && layer.getElement()) {
                     layer.getElement().style.filter = `hue-rotate(150deg)`; 
                 }
             }
         });
     }
 
-    // İsim Değiştirme Fonksiyonu
     function changeElementName(id) {
         var yeniAd = prompt("Lütfen yeni bir isim girin:");
         if (yeniAd) {
@@ -209,7 +211,6 @@
         var nameTxt = layer.customName ? `<b style="color:#27f4d2">${layer.customName}</b><br>` : "";
         var content = nameTxt + layer.baseTxt;
 
-        // Stil araçlarını popup içine ekle
         var styleHtml = `
             <div class="style-tools">
                 <button class="edit-name-btn" onclick="changeElementName(${id})">Adı Düzenle</button>
@@ -262,7 +263,6 @@
         document.getElementById('infoContent').innerHTML = `<div class="info-item" style="display:block;"><i class="fa-solid fa-${type === 'marker' ? 'location-dot' : 'draw-polygon'}"></i> ${txt}</div>`;
     });
 
-    // --- BURADAN AŞAĞISI DİĞER FONKSİYONLARIN KORUNAN KISMIDIR ---
     const iller = {"Adana":[37,35.32],"Ankara":[39.93,32.85],"İstanbul":[41,28.97],"İzmir":[38.42,27.14],"Kırklareli":[41.73,27.21]};
     const dl = document.getElementById('cityList');
     Object.keys(iller).sort().forEach(il => { let opt = document.createElement('option'); opt.value = il; dl.appendChild(opt); });
@@ -288,7 +288,12 @@
         btn.classList.add('active');
     }
 
-    function resetMap() { aktifKategori = ""; map.setView([39.0, 35.0], 6); cizilenOgeler.clearLayers(); }
+    function resetMap() { 
+        aktifKategori = ""; 
+        // Resetlendiğinde tekrar okul konumuna döner
+        map.setView([41.394981952701265, 27.345432685831696], 15); 
+        cizilenOgeler.clearLayers(); 
+    }
 
     const currencyNames = {"USD": "Amerikan Doları", "EUR": "Euro", "TRY": "Türk Lirası"};
     const fromCur = document.getElementById('fromCurrency'), toCur = document.getElementById('toCurrency');
