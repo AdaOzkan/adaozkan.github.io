@@ -1,197 +1,310 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeler | Ada Özkan</title>
 
-<title>Mahalle Haritası</title>
+    <link rel="icon" type="image/x-icon" href="adalogo.ico">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<style>
-body { margin:0; }
-#map { height:100vh; }
+    <style>
+        @font-face { font-family: 'F1Black'; src: url('Formula1-Black.ttf') format('truetype'); }
+        @font-face { font-family: 'F1Bold'; src: url('Formula1-Bold_web.ttf') format('truetype'); }
+        @font-face { font-family: 'F1Regular'; src: url('Formula1-Regular-1.ttf') format('truetype'); }
 
-.panel{
-position:absolute;
-top:10px;
-left:10px;
-background:white;
-padding:10px;
-z-index:1000;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.3);
-}
+        body { margin: 0; font-family: 'F1Regular', sans-serif; background: #0a0a0a; color: white; min-height: 100vh; overflow-x: hidden; }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; left: 0; }
 
-button{
-margin:3px;
-padding:6px 10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:#2c3e50;
-color:white;
-}
+        header {
+            background: rgba(20, 41, 72, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 40px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px solid #3671c6; position: sticky; top: 0; z-index: 1001;
+        }
 
-.labelDiv{
-text-align:center;
-font-size:11px;
-font-weight:bold;
-color:black;
-text-shadow:1px 1px 3px white;
-}
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .header-logo-img { height: 35px; width: auto; }
+        .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
+        
+        nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        nav a:hover { color: #27f4d2; }
 
-.leaflet-top.leaflet-left{
-top:110px;
-}
-</style>
+        .main-container {
+            margin: 30px auto; max-width: 1200px; background: rgba(15, 15, 15, 0.9);
+            border-radius: 25px; border: 1px solid #222; padding: 25px; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10;
+        }
+
+        h2 { font-family: 'F1Bold', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 20px; font-size: 20px; color: #ffffff; }
+
+        .map-wrapper { position: relative; width: 100%; height: 500px; border-radius: 15px; overflow: hidden; border: 1px solid #333; }
+        #map { width: 100%; height: 100%; z-index: 1; }
+
+        .search-container { position: absolute; top: 15px; left: 55px; z-index: 1000; width: 220px; }
+        #citySearch {
+            width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid #3671c6;
+            background: rgba(10, 10, 10, 0.95); color: white; font-size: 13px; outline: none; font-family: 'F1Regular', sans-serif;
+        }
+
+        .map-overlay-panel {
+            position: absolute; top: 15px; right: 15px; background: rgba(10, 10, 10, 0.9);
+            padding: 10px; z-index: 1000; border-radius: 12px; border: 1px solid #3671c6; display: flex; flex-direction: column; gap: 5px;
+        }
+
+        .info-box {
+            position: absolute; bottom: 20px; right: 20px; padding: 18px; background: rgba(20, 41, 72, 0.98);
+            border-radius: 15px; border: 2px solid #27f4d2; z-index: 1000; min-width: 200px; 
+            box-shadow: 0 0 20px rgba(39, 244, 210, 0.2); transition: 0.3s;
+        }
+        .info-box h4 { margin: 0 0 12px 0; color: #27f4d2; font-family: 'F1Black', sans-serif; border-bottom: 1px solid #3671c6; padding-bottom: 5px; font-size: 14px; }
+        .info-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff; }
+        .info-item i { color: #27f4d2; }
+
+        /* Stil Düzenleme Araçları */
+        .style-tools { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
+        .color-picker-container { display: flex; gap: 5px; flex-wrap: wrap; }
+        .color-circle { width: 18px; height: 18px; border-radius: 50%; border: 1px solid white; cursor: pointer; transition: 0.2s; }
+        .color-circle:hover { transform: scale(1.2); }
+        .edit-name-btn { background: #3671c6; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+
+        .leaflet-control-layers { background: #142948f2 !important; border: 1px solid #3671c6 !important; color: white !important; font-family: 'F1Regular', sans-serif; }
+
+        button { margin: 2px; padding: 8px 12px; border: 1px solid #27f4d2; border-radius: 6px; cursor: pointer; background: transparent; color: #27f4d2; font-family: 'F1Regular', sans-serif; font-size: 10px; transition: 0.3s; }
+        button:hover, button.active { background: #27f4d2; color: #000; }
+        .reset-btn { border-color: #e8002d !important; color: #e8002d !important; }
+
+        .currency-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; margin-bottom: 100px; }
+        .converter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
+        input, select { width: 100%; background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; font-family: 'F1Regular', sans-serif; }
+        select option { background: #111; color: white; }
+        .calc-btn { background: #27f4d2; color: #000; font-family: 'F1Black', sans-serif; border: none; padding: 15px; border-radius: 10px; cursor: pointer; width: 100%; }
+        .result-display { margin-top: 20px; padding: 20px; background: rgba(39, 244, 210, 0.05); border-radius: 12px; text-align: center; font-family: 'F1Black', sans-serif; font-size: 22px; color: #27f4d2; border: 1px dashed #27f4d2; }
+        
+        footer { text-align: center; padding: 40px; font-family: 'F1Black', sans-serif; font-size: 10px; opacity: 0.3; }
+    </style>
 </head>
 <body>
 
-<div id="map"></div>
+<div id="particles-js"></div>
 
-<div class="panel">
-<button onclick="gosterNufus()">Nüfus</button>
-<button onclick="gosterYas()">Yaş</button>
-<button onclick="gosterMedeni()">Medeni</button>
-<button onclick="gosterEgitim()">Eğitim</button>
-<button onclick="resetMap()">Temizle</button>
+<header>
+    <a href="index.html" class="logo-container">
+        <img src="adalogo.ico" alt="Logo" class="header-logo-img">
+        <span class="logo-text">ADA OZKAN</span>
+    </a>
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="projeler.html" style="color: #27f4d2;"><i class="fa-solid fa-layer-group"></i> Projects</a>
+    </nav>
+</header>
+
+<div class="main-container">
+    <h2>Gelişmiş Mahalle Analizi ve Ölçüm Aracı</h2>
+    
+    <div class="map-wrapper">
+        <div class="search-container">
+            <input type="text" id="citySearch" list="cityList" placeholder="Şehir ara..." onchange="goToCity(this.value)">
+            <datalist id="cityList"></datalist>
+        </div>
+
+        <div class="map-overlay-panel">
+            <button onclick="guncelle('nufus', this)">Nüfus</button>
+            <button onclick="guncelle('yas', this)">Yaş</button>
+            <button onclick="guncelle('medeni', this)">Medeni</button>
+            <button onclick="guncelle('egitim', this)">Eğitim</button>
+            <button onclick="resetMap()" class="reset-btn">Sıfırla</button>
+        </div>
+
+        <div id="infoBox" class="info-box">
+            <h4 id="panelTitle">Detay Paneli</h4>
+            <div id="infoContent">Analiz türü seçin ve mahalle üzerine tıklayın.</div>
+        </div>
+
+        <div id="map"></div>
+    </div>
+
+    <div class="currency-section">
+        <h2>Global Currency Converter</h2>
+        <div class="converter-grid">
+            <div><label>MİKTAR</label><input type="number" id="amount" value="1"></div>
+            <div><label>KAYNAK</label><select id="fromCurrency"></select></div>
+            <div><label>HEDEF</label><select id="toCurrency"></select></div>
+            <button class="calc-btn" onclick="convertCurrency()">HESAPLA</button>
+        </div>
+        <div class="result-display" id="result">HESAPLAMAK İÇİN TIKLAYIN</div>
+    </div>
 </div>
 
+<footer>© 2026 ADA OZKAN • PERFORMANCE PORTFOLIO</footer>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <script>
+    particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#27f4d2" }, "shape": { "type": "circle" }, "opacity": { "value": 0.3 }, "size": { "value": 2 }, "line_linked": { "enable": true, "color": "#3671c6" }, "move": { "speed": 1.5 } } });
 
-var aktifKatman = "nufus";
+    var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png');
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+    var izohips = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { opacity: 0.5 });
 
-var map = L.map('map').setView([41.398, 27.35], 13);
+    var fayHatlari = L.featureGroup();
+    L.polyline([[40.6, 26.2], [40.7, 27.5], [40.8, 29.5], [40.8, 31.0], [40.9, 33.5], [40.8, 36.5], [39.9, 40.5], [39.7, 43.5]], {color: '#ff0000', weight: 4, dashArray: '10, 10'}).addTo(fayHatlari).bindPopup("Kuzey Anadolu Fay Hattı (KAF)");
+    L.polyline([[36.5, 36.2], [37.2, 37.0], [38.0, 38.5]], {color: '#ff7700', weight: 4, dashArray: '10, 10'}).addTo(fayHatlari).bindPopup("Doğu Anadolu Fay Hattı (DAF) - Güney Segmenti");
+    L.polyline([[38.0, 38.5], [38.5, 39.3], [39.2, 40.2], [39.5, 40.5]], {color: '#ff7700', weight: 3, dashArray: '8, 8'}).addTo(fayHatlari).bindPopup("Doğu Anadolu Fay Hattı (DAF) - Ana Devamı");
+    L.polyline([[38.5, 26.5], [38.4, 27.2], [38.3, 28.0], [38.1, 28.8]], {color: '#ff00ff', weight: 3, dashArray: '6, 6'}).addTo(fayHatlari).bindPopup("Gediz Grabeni Fay Sistemi");
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap'
-}).addTo(map);
+    var map = L.map('map', { layers: [light] }).setView([39.0, 35.0], 6);
+    var cizilenOgeler = new L.FeatureGroup().addTo(map);
+    var mahalleGrubu = new L.LayerGroup().addTo(map);
 
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
+    L.control.layers({ "Sade": light, "Uydu": satellite }, { "İzohips": izohips, "Fay Hatları": fayHatlari, "Mahalleler": mahalleGrubu, "Çizimler": cizilenOgeler }, { position: 'bottomleft' }).addTo(map);
 
-var drawControl = new L.Control.Draw({
-    edit: { featureGroup: drawnItems }
-});
-map.addControl(drawControl);
+    var drawControl = new L.Control.Draw({ edit: { featureGroup: cizilenOgeler }, draw: { polygon: true, polyline: true, rectangle: true, circle: true, marker: true } });
+    map.addControl(drawControl);
 
-map.on(L.Draw.Event.CREATED, function (e) {
-    drawnItems.addLayer(e.layer);
-});
+    function toDMS(deg, isLat) {
+        var absolute = Math.abs(deg);
+        var degrees = Math.floor(absolute);
+        var minutesNotTruncated = (absolute - degrees) * 60;
+        var minutes = Math.floor(minutesNotTruncated);
+        var seconds = ((minutesNotTruncated - minutes) * 60).toFixed(2);
+        var direction = isLat ? (deg >= 0 ? "N" : "S") : (deg >= 0 ? "E" : "W");
+        return degrees + "° " + minutes + "' " + seconds + "'' " + direction;
+    }
 
-// Mahalle verileri
-var mahalleler = [
-{name:"Sevgi",lat:41.391902631712775, lon:27.345482596083997, nufus:2100, yas:"65+", medeni:"Evli", egitim:"Lisans"},
-{name:"8 Kasım",lat:41.39016369400948, lon:27.35491889453962, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-{name:"Hürriyet",lat:41.40317234004511, lon:27.342456427165533, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Yılmaz",lat:41.41200749237624, lon:27.350804559672905, nufus:3200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Dere",lat:41.40909876762109, lon:27.332197473456567, nufus:1800, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Gençlik",lat:41.3981623139793, lon:27.34915056866236, nufus:6400, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Kurtuluş",lat:41.39892904839235, lon:27.35650302210077, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Siteler",lat:41.39668481042163, lon:27.357024645687474, nufus:7600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Yıldız",lat:41.398276436690466, lon:27.365913598817414, nufus:8000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"İnönü",lat:41.401995612178276, lon:27.36003874485168, nufus:6000, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Kocasinan",lat:41.40688241099159, lon:27.345369174010454, nufus:6200, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Gündoğu",lat:41.40827232000609, lon:27.363003091831168, nufus:6700, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-{name:"Atatürk",lat:41.40333318502777, lon:27.36971906416532, nufus:9700, yas:"40-44", medeni:"Evli", egitim:"Lise"},
-{name:"Güneş",lat:41.40588323642748, lon:27.369804843022905, nufus:5900, yas:"65+", medeni:"Evli", egitim:"İlkokul"},
-{name:"Cumhuriyet",lat:41.41394508744789, lon:27.359282432239283, nufus:3600, yas:"65+", medeni:"Evli", egitim:"Lise"},
-{name:"Barış",lat:41.41162289907757, lon:27.359820182990884, nufus:4100, yas:"65+", medeni:"Evli", egitim:"İlkokul"}
-];
+    // Renk Ayarı Fonksiyonu
+    function changeElementStyle(id, color) {
+        cizilenOgeler.eachLayer(function(layer) {
+            if (L.stamp(layer) == id) {
+                if (layer.setStyle) layer.setStyle({ color: color, fillColor: color });
+                if (layer instanceof L.Marker && layer.options.icon) {
+                    // Markerlar için basit renk değişimi (Opsiyonel: Custom icon da atanabilir)
+                    layer.getElement().style.filter = `hue-rotate(150deg)`; 
+                }
+            }
+        });
+    }
 
-var katmanlar = [];
+    // İsim Değiştirme Fonksiyonu
+    function changeElementName(id) {
+        var yeniAd = prompt("Lütfen yeni bir isim girin:");
+        if (yeniAd) {
+            cizilenOgeler.eachLayer(function(layer) {
+                if (L.stamp(layer) == id) {
+                    layer.customName = yeniAd;
+                    updatePopup(layer);
+                    layer.openPopup();
+                }
+            });
+        }
+    }
 
-// popup içeriği üret
-function popupIcerik(veri){
-    if(aktifKatman==="nufus") return `<b>${veri.name}</b><br>Nüfus: ${veri.nufus}`;
-    if(aktifKatman==="yas") return `<b>${veri.name}</b><br>Yaş grubu: ${veri.yas}`;
-    if(aktifKatman==="medeni") return `<b>${veri.name}</b><br>Medeni: ${veri.medeni}`;
-    if(aktifKatman==="egitim") return `<b>${veri.name}</b><br>Eğitim: ${veri.egitim}`;
-    return veri.name;
-}
+    function updatePopup(layer) {
+        var type = layer.drawType;
+        var id = L.stamp(layer);
+        var nameTxt = layer.customName ? `<b style="color:#27f4d2">${layer.customName}</b><br>` : "";
+        var content = nameTxt + layer.baseTxt;
 
-mahalleler.forEach(function(m){
-    var circle = L.circleMarker([m.lat,m.lon],{
-        radius:16,
-        color:"#222",
-        fillColor:"#cccccc",
-        fillOpacity:0.9
-    }).addTo(map);
+        // Stil araçlarını popup içine ekle
+        var styleHtml = `
+            <div class="style-tools">
+                <button class="edit-name-btn" onclick="changeElementName(${id})">Adı Düzenle</button>
+                <div class="color-picker-container">
+                    <div class="color-circle" style="background:#27f4d2" onclick="changeElementStyle(${id}, '#27f4d2')"></div>
+                    <div class="color-circle" style="background:#067e6a" onclick="changeElementStyle(${id}, '#067e6a')"></div>
+                    <div class="color-circle" style="background:#e8002d" onclick="changeElementStyle(${id}, '#e8002d')"></div>
+                    <div class="color-circle" style="background:#5c0012" onclick="changeElementStyle(${id}, '#5c0012')"></div>
+                    <div class="color-circle" style="background:#ff810b" onclick="changeElementStyle(${id}, '#ff810b')"></div>
+                    <div class="color-circle" style="background:#804000" onclick="changeElementStyle(${id}, '#804000')"></div>
+                    <div class="color-circle" style="background:#3671c6" onclick="changeElementStyle(${id}, '#3671c6')"></div>
+                    <div class="color-circle" style="background:#142948" onclick="changeElementStyle(${id}, '#142948')"></div>
+                    <div class="color-circle" style="background:#47464c" onclick="changeElementStyle(${id}, '#47464c')"></div>
+                    <div class="color-circle" style="background:#26262b" onclick="changeElementStyle(${id}, '#26262b')"></div>
+                </div>
+            </div>
+        `;
+        layer.bindPopup(content + styleHtml);
+    }
 
-    circle.veri = m;
+    map.on(L.Draw.Event.CREATED, function (e) {
+        var layer = e.layer, type = e.layerType;
+        layer.drawType = type;
+        var txt = "";
+        
+        if (type === 'polygon' || type === 'rectangle') {
+            txt = "Alan: " + (L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]) / 1000000).toFixed(3) + " km²";
+        } 
+        else if (type === 'polyline') {
+            var pts = layer.getLatLngs(), dist = 0;
+            for (var i=0; i<pts.length-1; i++) dist += pts[i].distanceTo(pts[i+1]);
+            txt = "Mesafe: " + (dist/1000).toFixed(3) + " km";
+        }
+        else if (type === 'circle') {
+            var radius = layer.getRadius();
+            txt = "Yarıçap: " + (radius >= 1000 ? (radius/1000).toFixed(3) + " km" : radius.toFixed(1) + " m");
+        }
+        else if (type === 'marker') {
+            var latlng = layer.getLatLng();
+            var latDir = latlng.lat >= 0 ? "N" : "S";
+            var lngDir = latlng.lng >= 0 ? "E" : "W";
+            txt = `${Math.abs(latlng.lat).toFixed(5)} ${latDir}, ${Math.abs(latlng.lng).toFixed(5)} ${lngDir}<br><small style="color:#ff0000">${toDMS(latlng.lat, true)} - ${toDMS(latlng.lng, false)}</small>`;
+        }
 
-    circle.on("click", function(){
-        circle.bindPopup(popupIcerik(m)).openPopup();
+        layer.baseTxt = txt;
+        cizilenOgeler.addLayer(layer);
+        updatePopup(layer);
+        
+        document.getElementById('panelTitle').innerText = (type === 'marker' ? "Konum Bilgisi" : "Çizim Bilgisi");
+        document.getElementById('infoContent').innerHTML = `<div class="info-item" style="display:block;"><i class="fa-solid fa-${type === 'marker' ? 'location-dot' : 'draw-polygon'}"></i> ${txt}</div>`;
     });
 
-    katmanlar.push(circle);
-});
+    // --- BURADAN AŞAĞISI DİĞER FONKSİYONLARIN KORUNAN KISMIDIR ---
+    const iller = {"Adana":[37,35.32],"Ankara":[39.93,32.85],"İstanbul":[41,28.97],"İzmir":[38.42,27.14],"Kırklareli":[41.73,27.21]};
+    const dl = document.getElementById('cityList');
+    Object.keys(iller).sort().forEach(il => { let opt = document.createElement('option'); opt.value = il; dl.appendChild(opt); });
+    function goToCity(val) { if(iller[val]) map.flyTo(iller[val], 11); }
 
-// Nüfus choropleth
-function renkNufus(n){
-if(n>9000) return "#800026";
-if(n>7000) return "#BD0026";
-if(n>5000) return "#E31A1C";
-if(n>3000) return "#FC4E2A";
-return "#FD8D3C";
-}
+    const mahalleler = [{name:"Sevgi", lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Bekar", egitim:"Lisans"}];
+    var aktifKategori = "";
+    var katmanlar = [];
+    mahalleler.forEach(m => {
+        var marker = L.circleMarker([m.lat, m.lon], { radius: 10, fillColor: "#ccc", color: "#fff", weight: 2, fillOpacity: 0.8 }).addTo(mahalleGrubu);
+        marker.veri = m;
+        marker.on("click", function() {
+            if(!aktifKategori) return;
+            document.getElementById('panelTitle').innerText = aktifKategori + " Analizi";
+            document.getElementById('infoContent').innerHTML = `<b>${m.name} Mah.</b><br>${aktifKategori}: ${m[aktifKategori]}`;
+        });
+        katmanlar.push(marker);
+    });
 
-function gosterNufus(){
-aktifKatman="nufus";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkNufus(k.veri.nufus)}));
-}
+    function guncelle(tip, btn) {
+        aktifKategori = tip;
+        document.querySelectorAll('.map-overlay-panel button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
 
-// YAŞ choropleth
-function renkYas(y){
-if(y==="0-14") return "#ffffcc";
-if(y==="15-24") return "#a1dab4";
-if(y==="25-44") return "#41b6c4";
-if(y==="45-64") return "#2c7fb8";
-if(y==="65+") return "#253494";
-return "#969696";
-}
+    function resetMap() { aktifKategori = ""; map.setView([39.0, 35.0], 6); cizilenOgeler.clearLayers(); }
 
-function gosterYas(){
-aktifKatman="yas";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkYas(k.veri.yas)}));
-}
+    const currencyNames = {"USD": "Amerikan Doları", "EUR": "Euro", "TRY": "Türk Lirası"};
+    const fromCur = document.getElementById('fromCurrency'), toCur = document.getElementById('toCurrency');
+    Object.keys(currencyNames).forEach(code => {
+        fromCur.add(new Option(code, code, code === "TRY"));
+        toCur.add(new Option(code, code, code === "USD"));
+    });
 
-// MEDENİ korokromatik
-function gosterMedeni(){
-aktifKatman="medeni";
-katmanlar.forEach(function(k){
-let renk = k.veri.medeni==="Evli" ? "#6a0dad" : "#ff1493";
-k.setStyle({fillColor:renk});
-});
-}
-
-// EĞİTİM farklı renkler
-function renkEgitim(e){
-if(e==="İlkokul") return "#FFD700";
-if(e==="Ortaokul") return "#FF0000";
-if(e==="Lise") return "#008000";
-if(e==="Lisans") return "#0000FF";
-if(e==="Yüksek Lisans") return "#800080";
-if(e==="Doktora") return "#FF8C00";
-return "#999999";
-}
-
-function gosterEgitim(){
-aktifKatman="egitim";
-katmanlar.forEach(k=>k.setStyle({fillColor:renkEgitim(k.veri.egitim)}));
-}
-
-function resetMap(){
-katmanlar.forEach(k=>k.setStyle({fillColor:"#cccccc"}));
-drawnItems.clearLayers();
-}
-
+    async function convertCurrency() {
+        const amt = document.getElementById('amount').value, res = document.getElementById('result');
+        try {
+            const response = await fetch(`https://open.er-api.com/v6/latest/${fromCur.value}`);
+            const data = await response.json();
+            res.innerText = `${amt} ${fromCur.value} = ${(amt * data.rates[toCur.value]).toFixed(2)} ${toCur.value}`;
+        } catch(e) { res.innerText = "Hata!"; }
+    }
 </script>
-
 </body>
 </html>
