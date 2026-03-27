@@ -173,7 +173,7 @@
     L.polyline([[38.0, 38.5], [38.5, 39.3], [39.2, 40.2], [39.5, 40.5]], {color: '#ff7700', weight: 3, dashArray: '8, 8'}).addTo(fayHatlari).bindPopup("Doğu Anadolu Fay Hattı (DAF) - Ana Devamı");
     L.polyline([[38.5, 26.5], [38.4, 27.2], [38.3, 28.0], [38.1, 28.8]], {color: '#ff00ff', weight: 3, dashArray: '6, 6'}).addTo(fayHatlari).bindPopup("Gediz Grabeni Fay Sistemi");
 
-    var map = L.map('map', { layers: [light] }).setView([41.39428, 27.37121], 15); // Başlangıç odağını Uras'ın evine aldım
+    var map = L.map('map', { layers: [light] }).setView([41.395012276202465, 27.345375514547314], 15); // Başlangıç odağını Uras'ın evine aldım
     var cizilenOgeler = new L.FeatureGroup().addTo(map);
     var mahalleGrubu = new L.LayerGroup().addTo(map);
     var ozelIsaretler = new L.LayerGroup().addTo(map); // Özel işaretler için yeni bir grup
