@@ -268,7 +268,14 @@
         document.getElementById('panelTitle').innerText = btn.innerText + " Analizi";
         katmanlar.forEach(k => {
             let v = k.veri[tip], r = "#ccc";
-            if(tip==='nufus') r = v > 9000 ? '#e8002d' : v > 5000 ? '#ff7700' : '#27f4d2';
+            if(tip==='nufus') {
+                // Kloroplet Mantığı: Mavi Tonları
+                r = v > 10000 ? '#08306b' : // En Koyu
+                    v > 8000  ? '#08519c' :
+                    v > 6000  ? '#2171b5' :
+                    v > 4000  ? '#4292c6' :
+                    v > 2000  ? '#6baed6' : '#9ecae1'; // En Açık
+            }
             else if(tip==='egitim') r = v==="Lisans" ? '#27f4d2' : v==="Lise" ? '#3671c6' : '#e8002d';
             else if(tip==='yas') r = v==="65+" ? '#8e44ad' : v==="40-44" ? '#e67e22' : '#27f4d2';
             else if(tip==='medeni') r = v==="Evli" ? '#3498db' : '#f1c40f';
@@ -303,7 +310,7 @@
         { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF" },
         { name: "Ada'nın Evi", coords: [40.8881788979584, 26.896884628848024], color: "#F333FF" },
         { name: "Zile", coords: [40.3019053073564, 35.88638033114324], color: "#FF3333" },
-        { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700" }, // 41°23'53.1"N 27°21'00.8"E dönüştürüldü
+        { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700" },
         { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF" },
         { name: "Mağusa", coords: [35.11823275714703, 33.95643421639265], color: "#FFA500" },
         { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F" }
