@@ -222,7 +222,7 @@
         if (layer.setStyle) {
             layer.setStyle({ color: newColor, fillColor: newColor });
         }
-        layer.options.color = newColor; // Bellekte rengi sakla
+        layer.options.color = newColor; 
         updatePopupContent(layer);
     };
 
@@ -295,6 +295,40 @@
             res.innerText = `${amt} ${fromCur.value} = ${(amt * rate).toFixed(2)} ${toCur.value}`;
         } catch(e) { res.innerText = "Hata!"; }
     }
+
+    // --- ÖZEL NOKTALAR BÖLÜMÜ ---
+    const ozelNoktalar = [
+        { name: "Sarp'ın Evi", coords: [41.42958165908988, 27.101126640986273], color: "#FF5733" },
+        { name: "Uras'ın Evi", coords: [41.39407915806824, 27.370980790728456], color: "#33FF57" },
+        { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF" },
+        { name: "Ada'nın Evi", coords: [40.8881788979584, 26.896884628848024], color: "#F333FF" },
+        { name: "Zile", coords: [40.3019053073564, 35.88638033114324], color: "#FF3333" },
+        { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700" }, // 41°23'53.1"N 27°21'00.8"E dönüştürüldü
+        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF" },
+        { name: "Mağusa", coords: [35.11823275714703, 33.95643421639265], color: "#FFA500" },
+        { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F" }
+    ];
+
+    ozelNoktalar.forEach(nokta => {
+        var marker = L.circleMarker(nokta.coords, {
+            radius: 12,
+            fillColor: nokta.color,
+            color: "#fff",
+            weight: 3,
+            fillOpacity: 1
+        }).addTo(map);
+
+        marker.bindPopup(`<b>${nokta.name}</b><br>Konum: ${nokta.coords[0].toFixed(5)}, ${nokta.coords[1].toFixed(5)}`);
+        
+        marker.on("click", function() {
+            document.getElementById('panelTitle').innerText = nokta.name;
+            document.getElementById('infoContent').innerHTML = `
+                <div class="info-item"><i class="fa-solid fa-location-dot" style="color:${nokta.color}"></i> <b>Özel Konum</b></div>
+                <div class="info-item">Enlem: ${nokta.coords[0]}</div>
+                <div class="info-item">Boylam: ${nokta.coords[1]}</div>
+            `;
+        });
+    });
 </script>
 </body>
 </html>
