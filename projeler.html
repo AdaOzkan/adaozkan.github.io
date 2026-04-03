@@ -82,6 +82,19 @@
         .result-display { margin-top: 20px; padding: 20px; background: rgba(39, 244, 210, 0.05); border-radius: 12px; text-align: center; font-family: 'F1Black', sans-serif; font-size: 22px; color: #27f4d2; border: 1px dashed #27f4d2; }
         
         footer { text-align: center; padding: 40px; font-family: 'F1Black', sans-serif; font-size: 10px; opacity: 0.3; }
+
+        /* Uras'ın Evi Özel İkon Stili */
+        .uras-home-icon {
+            border: 3px solid #33FF57; /* Orijinal yeşil renk çerçeve */
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(51, 255, 87, 0.5);
+        }
+        .uras-home-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Resmi yuvarlağın içine sığdır */
+        }
     </style>
 </head>
 <body>
@@ -304,29 +317,49 @@
     }
 
     // --- ÖZEL NOKTALAR BÖLÜMÜ ---
+    
+    // Uras'ın Evi için Özel Resimli İkon Oluşturma
+    var urasHomeIcon = L.divIcon({
+        className: 'uras-home-icon', // CSS sınıfı (style içinde tanımlı)
+        html: '<img src="uras.jpeg" alt="Uras">', // HTML içeriği (resim etiketi)
+        iconSize: [40, 40], // İkonun boyutu [genişlik, yükseklik]
+        iconAnchor: [20, 20], // İkonun hangi noktasının koordinata denk geleceği (merkez)
+        popupAnchor: [0, -20] // Popup'ın ikona göre konumu
+    });
+
     const ozelNoktalar = [
-        { name: "Sarp'ın Evi", coords: [41.42958165908988, 27.101126640986273], color: "#FF5733" },
-        { name: "Uras'ın Evi", coords: [41.39407915806824, 27.370980790728456], color: "#33FF57" },
-        { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF" },
-        { name: "Ada'nın Evi", coords: [40.8881788979584, 26.896884628848024], color: "#F333FF" },
-        { name: "Zile", coords: [40.3019053073564, 35.88638033114324], color: "#FF3333" },
-        { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700" },
-        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF" },
-        { name: "Mağusa", coords: [35.11823275714703, 33.95643421639265], color: "#FFA500" },
-        { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F" }
+        { name: "Sarp'ın Evi", coords: [41.42958165908988, 27.101126640986273], color: "#FF5733", useImageUrl: false },
+        { name: "Uras'ın Evi", coords: [41.39407915806824, 27.370980790728456], color: "#33FF57", useImageUrl: true, icon: urasHomeIcon }, // Resimli İkon Kullan
+        { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF", useImageUrl: false },
+        { name: "Ada'nın Evi", coords: [40.8881788979584, 26.896884628848024], color: "#F333FF", useImageUrl: false },
+        { name: "Zile", coords: [40.3019053073564, 35.88638033114324], color: "#FF3333", useImageUrl: false },
+        { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700", useImageUrl: false },
+        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF", useImageUrl: false },
+        { name: "Mağusa", coords: [35.11823275714703, 33.95643421639265], color: "#FFA500", useImageUrl: false },
+        { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F", useImageUrl: false }
     ];
 
     ozelNoktalar.forEach(nokta => {
-        var marker = L.circleMarker(nokta.coords, {
-            radius: 12,
-            fillColor: nokta.color,
-            color: "#fff",
-            weight: 3,
-            fillOpacity: 1
-        }).addTo(map);
+        var marker;
+        
+        if (nokta.useImageUrl) {
+            // Resimli İkon Kullan (Uras'ın Evi için)
+            marker = L.marker(nokta.coords, { icon: nokta.icon }).addTo(map);
+        } else {
+            // Normal CircleMarker Kullan (Diğer noktalar için)
+            marker = L.circleMarker(nokta.coords, {
+                radius: 12,
+                fillColor: nokta.color,
+                color: "#fff",
+                weight: 3,
+                fillOpacity: 1
+            }).addTo(map);
+        }
 
+        // Popup içeriği (Tüm noktalar için ortak)
         marker.bindPopup(`<b>${nokta.name}</b><br>Konum: ${nokta.coords[0].toFixed(5)}, ${nokta.coords[1].toFixed(5)}`);
         
+        // Tıklama olayı (Tüm noktalar için ortak)
         marker.on("click", function() {
             document.getElementById('panelTitle').innerText = nokta.name;
             document.getElementById('infoContent').innerHTML = `
