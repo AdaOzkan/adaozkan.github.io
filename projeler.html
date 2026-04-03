@@ -63,24 +63,14 @@
         .info-item { margin-bottom: 8px; font-size: 13px; color: #fff; line-height: 1.4; }
         .info-item i { color: #27f4d2; margin-right: 8px; }
 
-        .leaflet-popup-content-wrapper { background: #142948; color: white; border: 1px solid #27f4d2; font-family: 'F1Regular', sans-serif; }
-        .leaflet-popup-tip { background: #27f4d2; }
-
-        /* Resimli İkon Stili - Büyütülmüş ve Ortalanmış */
         .custom-location-icon {
             border-radius: 50%;
             overflow: hidden;
             box-shadow: 0 0 15px rgba(39, 244, 210, 0.7);
-            display: flex; /* Ortalamak için flexbox */
-            justify-content: center;
-            align-items: center;
-            background-color: #0a0a0a; /* Resim yüklenmezse arka plan */
+            display: flex; justify-content: center; align-items: center; background-color: #0a0a0a;
         }
         .custom-location-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Kare resmi yuvarlağa sığdırır ve ortalar */
-            border-radius: 50%; /* Resmin kendisini de yuvarla */
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
         }
 
         .currency-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; margin-bottom: 100px; }
@@ -157,60 +147,91 @@
 <script>
     particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#27f4d2" }, "shape": { "type": "circle" }, "opacity": { "value": 0.3 }, "size": { "value": 2 }, "line_linked": { "enable": true, "color": "#3671c6" }, "move": { "speed": 1.5 } } });
 
+    // --- HARİTA AYARLARI ---
     var light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png');
     var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-    
     var map = L.map('map', { layers: [light] }).setView([41.403, 27.355], 13);
+    
+    var cizilenOgeler = new L.FeatureGroup().addTo(map);
     var mahalleGrubu = new L.LayerGroup().addTo(map);
 
-    L.control.layers({ "Sade": light, "Uydu": satellite }, { "Mahalleler": mahalleGrubu }, { position: 'bottomleft' }).addTo(map);
+    L.control.layers({ "Sade": light, "Uydu": satellite }, { "Mahalleler": mahalleGrubu, "Çizimler": cizilenOgeler }, { position: 'bottomleft' }).addTo(map);
 
-    function goToCity(val) {
-        const iller = {"Edirne":[41.68,26.56],"İstanbul":[41,28.97],"Ankara":[39.93,32.85],"İzmir":[38.42,27.14]};
-        if(iller[val]) map.flyTo(iller[val], 11);
-    }
+    // --- ÇİZİM ARAÇLARI (ÖLÇÜM) ---
+    var drawControl = new L.Control.Draw({ 
+        edit: { featureGroup: cizilenOgeler }, 
+        draw: { polygon: true, polyline: true, rectangle: true, circle: true, marker: true } 
+    });
+    map.addControl(drawControl);
 
-    const mahalleler = [{name:"Sevgi", lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Bekar", egitim:"Lisans"},{name:"8 Kasım", lat:41.3901, lon:27.3549, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},{name:"Hürriyet", lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"}];
+    map.on(L.Draw.Event.CREATED, function (e) {
+        var layer = e.layer;
+        cizilenOgeler.addLayer(layer);
+        var type = e.layerType;
+        var info = "";
+        if (type === 'polygon' || type === 'rectangle') {
+            info = "Alan: " + (L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]) / 1000000).toFixed(2) + " km²";
+        } else if (type === 'polyline') {
+            var pts = layer.getLatLngs(), d = 0;
+            for(var i=0; i<pts.length-1; i++) d += pts[i].distanceTo(pts[i+1]);
+            info = "Mesafe: " + (d/1000).toFixed(2) + " km";
+        }
+        document.getElementById('infoContent').innerText = info;
+    });
+
+    // --- ŞEHİR ARAMA ---
+    const iller = {"İstanbul":[41.0082,28.9784],"Ankara":[39.9334,32.8597],"İzmir":[38.4237,27.1428],"Edirne":[41.6771,26.5559],"Tekirdağ":[40.9781,27.5110],"Kırklareli":[41.7333,27.2167]};
+    const dl = document.getElementById('cityList');
+    Object.keys(iller).forEach(il => { let opt = document.createElement('option'); opt.value = il; dl.appendChild(opt); });
+    function goToCity(val) { if(iller[val]) map.flyTo(iller[val], 12); }
+
+    // --- MAHALLE ANALİZİ ---
+    const mahalleler = [
+        {name:"Sevgi", lat:41.3919, lon:27.3454, nufus:2100, yas:"65+", medeni:"Bekar", egitim:"Lisans"},
+        {name:"8 Kasım", lat:41.3901, lon:27.3549, nufus:10900, yas:"40-44", medeni:"Evli", egitim:"Lise"},
+        {name:"Hürriyet", lat:41.4031, lon:27.3424, nufus:7300, yas:"65+", medeni:"Evli", egitim:"Lise"}
+    ];
 
     var katmanlar = [];
+    var aktifKategori = "";
     mahalleler.forEach(m => {
         var marker = L.circleMarker([m.lat, m.lon], { radius: 10, fillColor: "#ccc", color: "#fff", weight: 2, fillOpacity: 0.8 }).addTo(mahalleGrubu);
         marker.veri = m;
+        marker.on("click", function() {
+            if(!aktifKategori) return;
+            document.getElementById('panelTitle').innerText = m.name + " Mah. Detayı";
+            document.getElementById('infoContent').innerText = aktifKategori.toUpperCase() + ": " + m[aktifKategori];
+        });
         katmanlar.push(marker);
     });
 
     function guncelle(tip, btn) {
+        aktifKategori = tip;
         document.querySelectorAll('.map-overlay-panel button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        katmanlar.forEach(k => {
-            let v = k.veri[tip], r = "#27f4d2";
-            k.setStyle({ fillColor: r });
-        });
+        katmanlar.forEach(k => k.setStyle({ fillColor: "#27f4d2" }));
     }
 
-    function resetMap() { map.setView([41.403, 27.355], 13); katmanlar.forEach(k=>k.setStyle({fillColor:"#ccc"})); }
+    function resetMap() { map.setView([41.403, 27.355], 13); cizilenOgeler.clearLayers(); katmanlar.forEach(k=>k.setStyle({fillColor:"#ccc"})); }
 
-    // --- ÖZEL İKON SİSTEMİ - BÜYÜTÜLMÜŞ ---
+    // --- ÖZEL İKONLAR (RESİMLİ) ---
     function createCustomIcon(imgFile, color) {
         return L.divIcon({
             className: 'custom-location-icon',
-            // Resim stilini CSS sınıfına taşıdık, burada sadece sınırı belirliyoruz
             html: `<img src="${imgFile}" style="border: 4px solid ${color};">`,
-            iconSize: [80, 80], // İkon boyutunu 45x45'den 80x80'e çıkardık
-            iconAnchor: [40, 40], // Çapanı merkezlemek için [boyut/2, boyut/2] yaptık
-            popupAnchor: [0, -40] // Popup'ı ikonun üzerine aldık
+            iconSize: [45, 45], iconAnchor: [40, 40], popupAnchor: [0, -40]
         });
     }
 
     const ozelNoktalar = [
-        { name: "Uras'ın Evi", coords: [41.39407915806824, 27.370980790728456], color: "#33FF57", img: "uras.jpeg" },
-        { name: "Sarp'ın Evi", coords: [41.42958165908988, 27.101126640986273], color: "#FF5733", img: "sarp.jpeg" },
-        { name: "Ada'nın Evi", coords: [40.8881788979584, 26.896884628848024], color: "#F333FF", img: "ada.jpeg" },
-        { name: "Zile", coords: [40.3019053073564, 35.88638033114324], color: "#FF3333", img: "zile.jpeg" },
+        { name: "Uras'ın Evi", coords: [41.394079, 27.370980], color: "#33FF57", img: "uras.jpeg" },
+        { name: "Sarp'ın Evi", coords: [41.429581, 27.101126], color: "#FF5733", img: "sarp.jpeg" },
+        { name: "Ada'nın Evi", coords: [40.888178, 26.896884], color: "#F333FF", img: "ada.jpeg" },
+        { name: "Zile", coords: [40.301905, 35.886380], color: "#FF3333", img: "zile.jpeg" },
         { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700", img: "yusuf.jpeg" },
-        { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F", img: "edirne.jpeg" },
-        { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF", img: null },
-        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF", img: "ada.jpeg" }
+        { name: "Edirne", coords: [41.677065, 26.555878], color: "#ADFF2F", img: "edirne.jpeg" },
+        { name: "Mamak", coords: [39.912075, 32.920025], color: "#00FFFF", img: "ada.jpeg" },
+        { name: "Çatalca", coords: [41.142002, 28.454694], color: "#3357FF", img: null }
     ];
 
     ozelNoktalar.forEach(n => {
@@ -225,8 +246,7 @@
 
     async function convertCurrency() {
         const res = document.getElementById('result');
-        res.innerText = "Hesaplanıyor...";
-        setTimeout(() => { res.innerText = "Bağlantı Hatası!"; }, 1000);
+        res.innerText = "Bağlantı Kurulamadı.";
     }
 </script>
 </body>
