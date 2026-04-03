@@ -66,15 +66,21 @@
         .leaflet-popup-content-wrapper { background: #142948; color: white; border: 1px solid #27f4d2; font-family: 'F1Regular', sans-serif; }
         .leaflet-popup-tip { background: #27f4d2; }
 
+        /* Resimli İkon Stili - Büyütülmüş ve Ortalanmış */
         .custom-location-icon {
             border-radius: 50%;
             overflow: hidden;
-            box-shadow: 0 0 10px rgba(39, 244, 210, 0.5);
+            box-shadow: 0 0 15px rgba(39, 244, 210, 0.7);
+            display: flex; /* Ortalamak için flexbox */
+            justify-content: center;
+            align-items: center;
+            background-color: #0a0a0a; /* Resim yüklenmezse arka plan */
         }
         .custom-location-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Kare resmi yuvarlağa sığdırır ve ortalar */
+            border-radius: 50%; /* Resmin kendisini de yuvarla */
         }
 
         .currency-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; margin-bottom: 100px; }
@@ -184,14 +190,15 @@
 
     function resetMap() { map.setView([41.403, 27.355], 13); katmanlar.forEach(k=>k.setStyle({fillColor:"#ccc"})); }
 
-    // --- ÖZEL İKON SİSTEMİ ---
+    // --- ÖZEL İKON SİSTEMİ - BÜYÜTÜLMÜŞ ---
     function createCustomIcon(imgFile, color) {
         return L.divIcon({
             className: 'custom-location-icon',
-            html: `<img src="${imgFile}" style="border: 3px solid ${color}; width:100%; height:100%;">`,
-            iconSize: [45, 45],
-            iconAnchor: [22, 22],
-            popupAnchor: [0, -22]
+            // Resim stilini CSS sınıfına taşıdık, burada sadece sınırı belirliyoruz
+            html: `<img src="${imgFile}" style="border: 4px solid ${color};">`,
+            iconSize: [80, 80], // İkon boyutunu 45x45'den 80x80'e çıkardık
+            iconAnchor: [40, 40], // Çapanı merkezlemek için [boyut/2, boyut/2] yaptık
+            popupAnchor: [0, -40] // Popup'ı ikonun üzerine aldık
         });
     }
 
@@ -203,7 +210,7 @@
         { name: "Yusufun Evi", coords: [41.398083, 27.350222], color: "#FFD700", img: "yusuf.jpeg" },
         { name: "Edirne", coords: [41.67706568073738, 26.555878881794452], color: "#ADFF2F", img: "edirne.jpeg" },
         { name: "Çatalca", coords: [41.14200260636584, 28.454694179459242], color: "#3357FF", img: null },
-        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF", img: null }
+        { name: "Mamak", coords: [39.9120750375598, 32.92002513698317], color: "#00FFFF", img: "ada.jpeg" }
     ];
 
     ozelNoktalar.forEach(n => {
