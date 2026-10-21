@@ -3,94 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ada Özkan</title>
+    <title>Ada Özkan | Personal Portfolio</title>
     
     <link rel="icon" type="image/x-icon" href="adalogo.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* FONT TANIMLARI */
-        @font-face { font-family: 'Northwell'; src: url('Northwell.otf') format('opentype'); font-display: swap; }
+        @font-face { font-family: 'Northwell'; src: url('Northwell.ttf') format('opentype'); font-display: swap; }
         @font-face { font-family: 'F1Black'; src: url('Formula1-Black.ttf') format('truetype'); font-display: swap; }
         @font-face { font-family: 'F1Regular'; src: url('Formula1-Regular-1.ttf') format('truetype'); font-display: swap; }
+        @font-face { font-family: 'Northwell-Alt'; src: url('Northwell-Alt.ttf') format('truetype'); font-display: swap; }
+        @font-face { font-family: 'KH'; src: url('KHInterferenceTRIAL-Regular.otf') format('opentype'); font-display: swap; }
+        @font-face { font-family: 'wide'; src: url('Formula1-Wide.ttf') format('truetype'); font-display: swap; }
+
+
+        /* RENK PALETİ DEĞİŞKENLERİ */
+        :root {
+            --bg-dark: #0c1115;
+            --accent-neon-yellow: #e6f854;
+            --accent-cyan: #00eab1;
+            --accent-blue: #6692ff;
+            --accent-teal: #79dab3;
+            --f1-red: #e8002d;
+            --text-main: #f0f0f0;
+            --text-muted: #8892b0;
+        }
 
         /* GENEL AYARLAR */
-        body { margin: 0; font-family: 'F1Regular', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; position: relative; }
-        
-        body::before { 
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background-image: url('image_cc4e40.png'); background-repeat: no-repeat; 
-            background-position: center; background-size: cover; opacity: 0.15; z-index: -2; 
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            margin: 0; 
+            font-family: 'KH', sans-serif; 
+            background: var(--bg-dark); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            position: relative; 
+            line-height: 1.6;
         }
-
+        
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; left: 0; }
 
-        /* HEADER */
+        /* HEADER & NAV */
         header { 
-            background: rgba(20, 41, 72, 0.85); backdrop-filter: blur(10px); padding: 20px 40px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 3px solid #3671c6; position: sticky; top: 0; z-index: 1000; 
+            background: rgba(12, 17, 21, 0.85); 
+            backdrop-filter: blur(12px); 
+            padding: 20px 50px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(121, 218, 179, 0.2); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo-text { font-family: 'F1Black', sans-serif; color: #27f4d2; font-size: 20px; letter-spacing: 2px; }
-        nav a { color: white; margin-left: 25px; text-decoration: none; font-size: 14px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-        nav a:hover { color: #27f4d2; }
+        .logo-container { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-text { font-family: 'F1Black', sans-serif; color: var(--accent-cyan); font-size: 22px; letter-spacing: 3px; }
+        nav { display: flex; gap: 30px; }
+        nav a { 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 13px; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        nav a i { color: var(--accent-teal); transition: 0.3s; }
+        nav a:hover { color: var(--accent-neon-yellow); }
+        nav a:hover i { color: var(--accent-neon-yellow); transform: translateY(-2px); }
 
-        /* HERO */
-        .hero { padding: 150px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        .title-container { display: flex; flex-direction: column; align-items: center; position: relative; }
-        .hero .name-ada { font-family: 'Northwell', cursive; font-size: clamp(85px, 15vw, 170px); color: #27f4d2; line-height: 0.2; margin-top: -10px; display: block; z-index: 2; }
-        .hero .name-ozkan { font-family: 'F1Black', sans-serif; font-size: clamp(50px, 10vw, 100px); letter-spacing: 12px; color: #ffffff; text-transform: uppercase; margin-top: -20px; display: block; z-index: 1; }
-        .hero p { letter-spacing: 5px; color: #27f4d2; margin-top: 50px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        /* HERO SECTION */
+        .hero { 
+            min-height: 80vh;
+            padding: 20px; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .title-container { position: relative; }
+        .hero .name-ada { 
+            font-family: 'Northwell-Alt', cursive; 
+            font-size: clamp(90px, 18vw, 200px); 
+            color: var(--accent-neon-yellow); 
+            line-height: 0.4; 
+            display: block; 
+            z-index: 2; 
+            position: relative;
+            text-shadow: 0 0 20px rgba(230, 248, 84, 0.2);
+        }
+        .hero .name-ozkan { 
+            font-family: 'F1Black', sans-serif; 
+            font-size: clamp(45px, 9vw, 90px); 
+            letter-spacing: 15px; 
+            color: var(--accent-cyan); 
+            text-transform: uppercase; 
+            margin-top: -10px; 
+            display: block; 
+            z-index: 1; 
+            text-shadow: 0 0 20px rgba(0, 234, 177, 0.3);
+        }
+        .hero p { 
+            letter-spacing: 6px; 
+            color: var(--accent-blue); 
+            margin-top: 40px; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            font-family: 'F1Black', sans-serif;
+        }
 
-        /* SECTIONS */
-        .section { max-width: 850px; margin: 0 auto 40px auto; padding: 50px 40px; background: rgba(15, 15, 15, 0.9); border-radius: 20px; border: 1px solid #222; }
-        h2 { font-family: 'F1Black', sans-serif; border-left: 5px solid #e8002d; padding-left: 15px; margin-bottom: 30px; font-size: 24px; }
+        /* SECTIONS - GLASSMORPHISM UI */
+        .section { 
+            max-width: 900px; 
+            margin: 0 auto 60px auto; 
+            padding: 50px; 
+            background: rgba(20, 25, 30, 0.6); 
+            backdrop-filter: blur(8px);
+            border-radius: 16px; 
+            border: 1px solid rgba(121, 218, 179, 0.15); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .section:hover {
+            border-color: rgba(121, 218, 179, 0.4);
+            transform: translateY(-2px);
+        }
+        h2 { 
+            font-family: 'F1Black', sans-serif; 
+            color: var(--text-main);
+            border-left: 5px solid var(--accent-cyan); 
+            padding-left: 20px; 
+            margin-bottom: 35px; 
+            font-size: 26px; 
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+        p { color: var(--text-muted); font-size: 16px; margin-bottom: 20px; }
 
-        /* CONTACT & LINKS */
-        .contactBox { border-left: 5px solid #ff8000; padding: 20px; background: rgba(30, 30, 30, 0.5); margin-bottom: 30px; border-radius: 0 10px 10px 0; }
-        .contact-link { color: white; text-decoration: none; display: flex; align-items: center; margin-bottom: 15px; font-size: 18px; }
-        .contact-link i { margin-right: 15px; color: #ff8000; width: 20px; text-align: center; }
-        .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .links a { background: #1a1a1a; color: #27f4d2; padding: 15px; text-align: center; text-decoration: none; border-radius: 10px; border: 1px solid #333; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; }
-        .links a:hover { border-color: #27f4d2; background: #27f4d2; color: #000; transform: translateY(-3px); }
+        /* PROJECTS GRID */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: rgba(12, 17, 21, 0.8);
+            border: 1px solid rgba(102, 146, 255, 0.2);
+            padding: 25px;
+            border-radius: 12px;
+            border-top: 3px solid var(--accent-blue);
+        }
+        .project-card h3 {
+            font-family: 'F1Black', sans-serif;
+            color: var(--accent-neon-yellow);
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .project-card p { font-size: 14px; margin-bottom: 15px; }
+        .tech-tags span {
+            background: rgba(0, 234, 177, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-right: 5px;
+            font-family: 'F1Black', sans-serif;
+        }
+
+        /* F1 TASARIM */
+        .f1-wrapper { position: relative; }
+        .f1-badge { position: absolute; top: -10px; right: 0; color: var(--f1-red); font-size: 40px; opacity: 0.8;}
+        .f1-status-label { font-family: 'F1Black', sans-serif; font-size: 13px; color: var(--accent-teal); margin-bottom: 15px; letter-spacing: 3px; }
+        .race-header { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
+        .circle-flag { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-neon-yellow); box-shadow: 0 0 15px rgba(230, 248, 84, 0.2); }
+        .location-name { font-family: 'F1Regular', sans-serif; font-size: clamp(30px, 5vw, 45px); color: white; letter-spacing: 1px; }
+        .f1-arrow { font-size: 30px; color: var(--f1-red); margin-left: auto; font-family: 'F1Black', sans-serif;}
+        .countdown-row { display: flex; align-items: center; justify-content: flex-start; gap: 30px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border-left: 4px solid var(--f1-red); }
+        .race-label { font-family: 'F1Black', sans-serif; font-size: clamp(24px, 5vw, 36px); color: var(--text-main); }
+        .vertical-divider { width: 2px; height: 50px; background: rgba(255,255,255,0.1); }
+        .timer-display { display: flex; align-items: baseline; gap: 15px; }
+        .time-box { display: flex; align-items: baseline; }
+        .t-num { font-size: clamp(35px, 6vw, 55px); color: var(--accent-neon-yellow); font-family: 'F1Black', sans-serif; }
+        .t-unit { font-size: 16px; color: var(--accent-teal); margin-left: 4px; font-family: 'F1Black', sans-serif; }
+        .next-race-preview { margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .next-race-label { font-family: 'F1Black', sans-serif; font-size: 12px; color: var(--accent-blue); margin-bottom: 8px; letter-spacing: 2px; }
+        .next-race-info { font-size: 18px; color: var(--text-main); opacity: 0.9; }
 
         /* SPOTIFY GRID (2x2) */
         .spotify-container { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            gap: 20px; 
-            margin-top: 20px; 
+            gap: 25px; 
+            margin-top: 10px; 
+        }
+        .spotify-container iframe { box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: transform 0.3s; }
+        .spotify-container iframe:hover { transform: scale(1.02); }
+
+        /* CONTACT & LINKS */
+        .contactBox { 
+            border-left: 4px solid var(--accent-blue); 
+            padding: 25px; 
+            background: rgba(102, 146, 255, 0.05); 
+            margin-bottom: 35px; 
+            border-radius: 0 12px 12px 0; 
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .contact-link { color: var(--text-main); text-decoration: none; display: flex; align-items: center; font-size: 16px; transition: color 0.3s; }
+        .contact-link i { margin-right: 15px; color: var(--accent-blue); width: 20px; text-align: center; font-size: 20px; }
+        .contact-link:hover { color: var(--accent-neon-yellow); }
+        
+        .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 10px; }
+        .links a { 
+            background: rgba(0,0,0,0.5); 
+            color: var(--accent-teal); 
+            padding: 16px; 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            border: 1px solid rgba(121, 218, 179, 0.3); 
+            font-family: 'F1Black', sans-serif;
+            font-size: 12px; 
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+        }
+        .links a i { font-size: 16px; }
+        .links a:hover { 
+            border-color: var(--accent-neon-yellow); 
+            background: var(--accent-neon-yellow); 
+            color: var(--bg-dark); 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 20px rgba(230, 248, 84, 0.2);
         }
 
         /* FEEDBACK FORM */
-        .feedback-form { display: flex; flex-direction: column; gap: 15px; }
-        .feedback-form input, .feedback-form textarea { background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; font-family: inherit; }
-        .feedback-btn { background: #27f4d2; color: #0a0a0a; border: none; padding: 18px; border-radius: 10px; font-family: 'F1Black', sans-serif; cursor: pointer; font-weight: bold; }
+        .feedback-form { display: flex; flex-direction: column; gap: 20px; }
+        .feedback-form input, .feedback-form textarea { 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid rgba(121, 218, 179, 0.2); 
+            color: white; 
+            padding: 18px; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        .feedback-form input:focus, .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        .feedback-btn { 
+            background: var(--accent-teal); 
+            color: var(--bg-dark); 
+            border: none; 
+            padding: 18px; 
+            border-radius: 8px; 
+            font-family: 'F1Black', sans-serif; 
+            cursor: pointer; 
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.3s; 
+        }
+        .feedback-btn:hover {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 234, 177, 0.4);
+        }
 
-        /* F1 TASARIM */
-        .f1-status-label { font-family: 'F1Black', sans-serif; font-size: 14px; color: #aaa; margin-bottom: 15px; letter-spacing: 2px; }
-        .race-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .circle-flag { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #333; }
-        .location-name { font-family: 'F1Regular', sans-serif; font-size: clamp(28px, 5vw, 42px); color: white; }
-        .f1-arrow { font-size: 28px; color: #fff; margin-left: 5px; opacity: 0.6; }
-        .countdown-row { display: flex; align-items: center; gap: 25px; }
-        .race-label { font-family: 'F1Black', sans-serif; font-size: clamp(35px, 7vw, 60px); color: white; }
-        .vertical-divider { width: 2px; height: 70px; background: #444; }
-        .timer-display { display: flex; align-items: baseline; font-family: 'F1Black', sans-serif; }
-        .t-num { font-size: clamp(35px, 7vw, 60px); color: #fff; }
-        .t-unit { font-family: 'F1Regular', sans-serif; font-size: clamp(18px, 3.5vw, 30px); color: #888; margin-right: 12px; margin-left: 2px; }
-        .next-race-preview { margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; }
-        .next-race-label { font-family: 'F1Black', sans-serif; font-size: 12px; color: #e8002d; margin-bottom: 10px; }
-        .next-race-info { font-family: 'F1Regular', sans-serif; font-size: 18px; color: #fff; opacity: 0.7; }
-
-        footer { text-align: center; padding: 60px; font-family: 'F1Black', sans-serif; font-size: 11px; opacity: 0.5; letter-spacing: 2px; }
+        /* FOOTER */
+        footer { 
+            text-align: center; 
+            padding: 40px; 
+            font-family: 'wide', sans-serif; 
+            font-size: 12px; 
+            color: var(--text-muted);
+            letter-spacing: 3px; 
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(121, 218, 179, 0.1);
+        }
 
         /* RESPONSIVE AYARLAR */
         @media (max-width: 768px) {
-            .spotify-container { grid-template-columns: 1fr; }
-            .section { padding: 30px 20px; width: 90%; }
-            .vertical-divider { height: 50px; }
+            header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .spotify-container, .project-grid { grid-template-columns: 1fr; }
+            .section { padding: 30px 20px; width: 92%; margin-bottom: 40px; }
+            .countdown-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .vertical-divider { display: none; }
         }
     </style>
 </head>
@@ -105,9 +310,9 @@
     </a>
     <nav>
         <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="projeler.html"><i class="fa-solid fa-layer-group"></i> Projects</a>
-        <a href="#about"><i class="fa-solid fa-user"></i> About</a>
-        <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
+        <a href="projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
+        <a href="about"><i class="fa-solid fa-user"></i> About</a>
+        <a href="contact"><i class="fa-solid fa-envelope"></i> Contact</a>
     </nav>
 </header>
 
@@ -116,46 +321,48 @@
         <span class="name-ada">Ada</span>
         <span class="name-ozkan">ÖZKAN</span>
     </div>
-    <p>ELECTRONICS • AERODYNAMICS • ENGINEERING</p>
+    <p>Personal Portfolıo</p>
 </section>
 
 <section class="section" id="about">
-    <h2>About</h2>
-    <p>I am Ada. I build electronics and engineering projects. My main interests include embedded systems, aerospace and motorsport engineering.</p>
+    <h2>About Me</h2>
+    <p>I am a developer and engineering enthusiast specializing in full-stack web development, backend structures, and embedded systems. My core interests lie at the intersection of software engineering and hardware mechanics, with a deep passion for aerospace logic, microcontrollers, and motorsport telemetry.</p>
+    <p>Whether I'm writing C++ algorithms for proximity sensors, building Flask backends, or designing simulation dashboards, I focus on performance, efficiency, and clean interfaces.</p>
 </section>
 
-<section class="section">
-    <div style="margin-bottom: 25px;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" alt="F1 Logo" width="80" style="filter: drop-shadow(0 0 5px #e8002d);">
-    </div>
-    <div class="f1-status-label">CURRENT RACE</div>
+
+
+<section class="section f1-wrapper">
+    <div class="f1-status-label">F1 2026 CALENDAR</div>
     <div class="race-header">
-        <img id="curr-flag" src="" class="circle-flag" style="display:none;">
+        <img id="curr-flag" src="" class="circle-flag" style="display:none;" alt="Country Flag">
         <span id="curr-location" class="location-name">LOADING...</span>
-        <span class="f1-arrow">></span>
+        <span class="f1-arrow"><i class="fa-solid fa-chevron-right"></i></span>
     </div>
+    
     <div class="countdown-row">
         <div class="race-label">Race</div>
         <div class="vertical-divider"></div>
         <div class="timer-display">
-            <span id="h-val" class="t-num">00</span><span class="t-unit">H</span>
-            <span id="m-val" class="t-num">00</span><span class="t-unit">M</span>
-            <span id="s-val" class="t-num">00</span><span class="t-unit">S</span>
+            <div class="time-box"><span id="h-val" class="t-num">00</span><span class="t-unit">H</span></div>
+            <div class="time-box"><span id="m-val" class="t-num">00</span><span class="t-unit">M</span></div>
+            <div class="time-box"><span id="s-val" class="t-num">00</span><span class="t-unit">S</span></div>
         </div>
     </div>
+    
     <div class="next-race-preview">
-        <div class="next-race-label">NEXT RACE</div>
-        <div id="next-race-details" class="next-race-info">---</div>
+        <div class="next-race-label">NEXT ON GRID</div>
+        <div id="next-race-details" class="next-race-info">Calculating telemetry...</div>
     </div>
 </section>
 
 <section class="section">
-    <h2>Spotify</h2>
+    <h2>Vibes / Spotify</h2>
     <div class="spotify-container">
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/45ApO9y7RDuUqHdPBiGkvf?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mx7L4Axh5z3WSjP46Js7B?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/10KyyygV64vIUbYGxLOhgW?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/45ApO9y7RDuUqHdPBiGkvf?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mx7L4Axh5z3WSjP46Js7B?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2aIK2KcCpCOOFqJrjcLxkc?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/10KyyygV64vIUbYGxLOhgW?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </section>
 
@@ -163,7 +370,6 @@
     <h2>Contact & Links</h2>
     <div class="contactBox">
         <a href="mailto:adaozkan7106@gmail.com" class="contact-link"><i class="fas fa-envelope"></i> adaozkan7106@gmail.com</a>
-        <a href="tel:+905070107106" class="contact-link"><i class="fas fa-phone"></i> +90 507 010 7106</a>
     </div>
 
     <div class="links">
@@ -184,19 +390,21 @@
     </form>
 </section>
 
-<footer>© 2026 ADA OZKAN • DESIGNED FOR PERFORMANCE</footer>
+<footer>© ADA ÖZKAN • 2026</footer>
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
+
+    /* Particles.js ayarları neon renklere göre güncellendi */
     particlesJS("particles-js", {
         "particles": {
-            "number": { "value": 150, "density": { "enable": true, "value_area": 1000 } },
-            "color": { "value": "#27f4d2" },
+            "number": { "value": 80, "density": { "enable": true, "value_area": 1000 } },
+            "color": { "value": ["#00eab1", "#6692ff", "#79dab3"] },
             "shape": { "type": "circle" },
-            "opacity": { "value": 0.6 },
-            "size": { "value": 4 },
-            "line_linked": { "enable": true, "distance": 130, "color": "#ff8000", "opacity": 0.5, "width": 1.5 },
-            "move": { "speed": 1.5 }
+            "opacity": { "value": 0.4 },
+            "size": { "value": 3 },
+            "line_linked": { "enable": true, "distance": 150, "color": "#79dab3", "opacity": 0.2, "width": 1 },
+            "move": { "speed": 1 }
         },
         "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
     });
@@ -231,21 +439,28 @@
     function updateF1() {
         const now = new Date().getTime();
         let idx = schedule.findIndex(r => new Date(r.date).getTime() > now);
-        if (idx === -1) { document.getElementById('curr-location').innerText = "Season Ended"; return; }
+        if (idx === -1) { 
+            document.getElementById('curr-location').innerText = "Season Ended"; 
+            return; 
+        }
         const curr = schedule[idx];
         const next = schedule[idx + 1];
-        document.getElementById('curr-location').innerText = curr.name;
+        
+        document.getElementById('curr-location').innerText = curr.name.toUpperCase();
         document.getElementById('curr-flag').src = `https://flagcdn.com/w80/${curr.country}.png`;
         document.getElementById('curr-flag').style.display = 'block';
+        
         const diff = new Date(curr.date).getTime() - now;
         document.getElementById('h-val').innerText = Math.floor(diff / 3600000).toString().padStart(2, '0');
         document.getElementById('m-val').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
         document.getElementById('s-val').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+        
         if (next) {
             const d = new Date(next.date);
-            document.getElementById('next-race-details').innerText = `${next.name} — ${d.getDate()} ${d.toLocaleString('en-GB', { month: 'long' })}`;
+            document.getElementById('next-race-details').innerText = `${next.name.toUpperCase()} — ${d.getDate()} ${d.toLocaleString('en-GB', { month: 'long' }).toUpperCase()}`;
         }
     }
+    
     setInterval(updateF1, 1000);
     updateF1();
 </script>
